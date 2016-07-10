@@ -1,0 +1,123 @@
+/******************************************************************************
+  Footer
+*******************************************************************************/
+.site-footer {
+	@include fontSize(12px);
+	line-height: 1.75;
+  width: 100%;
+
+	.footer-banners {
+		.banners-title {
+			color: rgba(#000,.6);
+			text-align: center;
+		}
+		> ul {
+			list-style-type: none;
+			margin: 0;
+			overflow: hidden;
+			padding: 0;
+
+			> li {
+				float: left;
+				width: 12.5%;
+				@media (max-width: 767px) {
+					width: 25%;
+				}
+
+				a {
+					display: block;
+					position: relative;
+					text-decoration: none;
+
+					&:before {
+						bottom: 0;
+						content: '';
+						left: 0;
+						position: absolute;
+						right: 0;
+						top: 0;
+						transition:	background .2s ease-in-out;
+					}
+					.item-info {
+						color: #fff;
+						font-size: 14px;
+						left: 0;
+						list-style-type: none;
+						line-height: 1;
+						margin: 0;
+						opacity: 0;
+						padding: 0;
+						position: absolute;
+						right: 0;
+						text-align: center;
+						top: 50%;
+						transition:
+							.2s opacity 0s ease-in-out,
+							.2s margin 0s ease-in-out;
+						@media (max-width: 991px) {
+							display: none;
+						}
+
+						li {
+							display: inline-block;
+							margin: 0 5px;
+							vertical-align: top;
+
+							&:before {
+								display: inline-block;
+								font: normal normal normal 14px/1 FontAwesome;
+								text-rendering: auto;
+								-webkit-font-smoothing: antialiased;
+								-moz-osx-font-smoothing: grayscale;
+								font-style: normal;
+								font-weight: normal;
+								font-variant: normal;
+								text-transform: none;
+								line-height: 14px;
+								font-size: 16px;
+								margin-right: 5px;
+								vertical-align: top;
+							}
+							&.likes {
+								&:before {
+									content: '\f08a';
+								}
+							}
+							&.comments {
+								&:before {
+									content: '\f0e5';
+								}
+							}
+						}
+					}
+					&:hover {
+						&:before {
+							background: rgba($main-color,.3);
+						}
+						.item-info {
+							margin-top: -7px;
+							opacity: 1;
+							transition:
+								.2s opacity .2s ease-in-out,
+								.2s margin .2s ease-in-out;
+						}
+					}
+				}
+			}
+		}
+	}
+	.container {
+		padding-top: 21px;
+		padding-bottom: 21px;
+
+		.col-sm-6 {
+			@media (max-width: 767px) {
+				text-align: center;
+
+				.right-align {
+					text-align: center;
+				}
+			}
+		}
+	}
+}

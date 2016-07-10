@@ -1,0 +1,9 @@
+<md-card class="md-whitespace-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">{{ VM.Item.title[VM.defaultLang] || 'Create Page'}}</h2>
+        </div>
+
+    </md-toolbar>
+    <edit-page item="VM.Item" on-save="VM.onSave(item, isNew)"></edit-page>
+</md-card>

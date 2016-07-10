@@ -1,0 +1,35 @@
+<div class="md-dialog-content">
+<form action="" ng-submit="VM.save()" novalidate>
+    <div flex>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Name</label>
+            <input ng-model="VM.Permission.name" required>
+        </md-input-container>
+
+        <div>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Alias</label>
+                <input ng-model="VM.Permission.slug" required>
+            </md-input-container>
+
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Description</label>
+                <input ng-model="VM.Permission.description" required>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Model</label>
+                <input ng-model="VM.Permission.model" required>
+            </md-input-container>
+
+        </div>
+    </div>
+
+
+    <md-button type="submit" class="md-accent md-raised">
+        <md-icon class="material-icons">save</md-icon>
+        Save
+    </md-button>
+</form>
+</div>

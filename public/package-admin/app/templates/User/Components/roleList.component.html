@@ -1,0 +1,10 @@
+<md-list>
+    <md-list-item ng-repeat="item in VM.Roles | orderBy :'-level'"
+                  ng-click="VM.showActions($event, item)" aria-label="show actions">
+        <p>{{ item.name }}</p>
+    </md-list-item>
+</md-list>
+
+<md-button class="md-fab md-fab-bottom-right" aria-label="Add new" ng-click="VM.edit()">
+    <md-icon class="material-icons">add</md-icon>
+</md-button>

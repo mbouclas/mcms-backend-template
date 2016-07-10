@@ -1,0 +1,49 @@
+<!--<md-toolbar id="nav" class="md-hue-2 md-accent">
+    <div class="md-toolbar-tools" layout="row" layout-md="column" layout-align="center center" layout-wrap>
+        <a href="#/home">
+            <md-button class="md-button">
+                Home
+            </md-button>
+        </a>
+        <a href="#/about">
+            <md-button class="md-button">
+                About
+            </md-button>
+        </a>
+        <a href="#/resources">
+            <md-button class="md-button">
+                Resources
+            </md-button>
+        </a>
+        </a>
+        <a href="#/contact">
+            <md-button class="md-button">
+                Contact
+            </md-button>
+        </a>
+
+    </div>
+</md-toolbar>-->
+
+<md-tabs md-dynamic-height="" md-border-bottom="">
+    <md-tab label="Tab 1" ng-href="#/one" md-active="true">
+    </md-tab>
+    <md-tab label="Tab 2" data-href="two">
+    </md-tab>
+    <md-tab label="Tab 3" data-href="three">
+    </md-tab>
+</md-tabs>
+
+<h1>Dashboard</h1>
+    <widget-provider ng-repeat="widget in VM.widgets" item="widget"
+    append-to="($index%2)?'#right':'#left'"></widget-provider>
+<md-content layout-xs="column" layout="row">
+    <div flex-xs flex-gt-xs="50" layout="column" id="left">
+
+    </div>
+
+    <div flex-xs flex-gt-xs="50" layout="column" id="right">
+
+    </div>
+</md-content>
+

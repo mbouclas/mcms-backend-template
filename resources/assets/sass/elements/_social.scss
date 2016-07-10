@@ -1,0 +1,29 @@
+/******************************************************************************
+  Social
+*******************************************************************************/
+.social {
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  text-align: left;
+
+  li {
+    display: inline-block;
+    margin: 0 2px;
+
+    a {
+      border-radius: 50%;
+      color: #fff;
+      display: block;
+      height: 30px;
+      line-height: 30px;
+      text-align: center;
+      transition:	transform .1s ease-in-out;
+      width: 30px;
+
+      &:hover {
+        transform: scale(1.05);
+      }
+    }
+  }
+}

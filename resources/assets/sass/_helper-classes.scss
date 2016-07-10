@@ -1,0 +1,96 @@
+/******************************************************************************
+  Helper Classes
+*******************************************************************************/
+.accent-color {
+  color: $main-color !important;
+}
+.margin-xs {
+  @media (max-width: 767px) {
+    margin-bottom: $bottom-margin;
+  }
+}
+.margin-sm {
+  @media (max-width: 991px) {
+    margin-bottom: $bottom-margin;
+  }
+}
+.margin-md {
+  @media (max-width: 1199px) {
+    margin-bottom: $bottom-margin;
+  }
+}
+.margin {
+  margin-bottom: $bottom-margin;
+}
+.not-top-margin {
+  margin-top: 0 !important;
+}
+.not-bottom-margin {
+  margin-bottom: 0 !important;
+}
+.not-top-padding {
+  padding-top: 0 !important;
+}
+.not-bottom-padding {
+  padding-bottom: 0 !important;
+}
+.buttons-list {
+  .btn,
+  .btn-floating {
+    margin: 5px;
+  }
+}
+.bg {
+  background: #fff;
+}
+.accent-color {
+  color: $main-color;
+}
+.nowrap {
+  white-space: nowrap;
+}
+.all-caps {
+  text-transform: uppercase;
+}
+.twitter-bg {
+  background: #55acee;
+}
+.facebook-bg {
+  background: #3B5998;
+}
+.google-plus-bg {
+  background: #dd4b39;
+}
+.pinterest-bg {
+  background: #C92228;
+}
+
+$indents: 0 1 2 3 4 5 10 15 20 25 30 35 40 45 50 55 60 65 70 75 80;
+
+@each $indent in $indents {
+  .m-t-#{$indent} {
+    margin-top: #{$indent}px;
+  }
+  .m-r-#{$indent} {
+    margin-right: #{$indent}px;
+  }
+  .m-b-#{$indent} {
+    margin-bottom: #{$indent}px;
+  }
+  .m-l-#{$indent} {
+    margin-left: #{$indent}px;
+  }
+
+  .p-t-#{$indent} {
+    padding-top: #{$indent}px;
+  }
+  .p-r-#{$indent} {
+    padding-right: #{$indent}px;
+  }
+  .p-b-#{$indent} {
+    padding-bottom: #{$indent}px;
+  }
+  .p-l-#{$indent} {
+    padding-left: #{$indent}px;
+  }
+}

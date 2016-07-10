@@ -1,0 +1,58 @@
+/******************************************************************************
+  Structure
+*******************************************************************************/
+.page-box {
+  padding-top: $header-height;
+  @media only screen and (max-width: 767px) {
+    padding-top: $header-height - 42px;
+  }
+}
+#main {
+  padding: 3rem 0 6rem;
+  @media (max-width: 767px) {
+    padding: 2rem 0 4rem;
+
+    > .container:not(.indents) {
+      overflow-x: hidden;
+      padding-left: 0;
+      padding-right: 0;
+    }
+  }
+
+  .page-header {
+    color: $main-color;
+    margin-bottom: 4rem;
+    padding-left: 15px;
+    padding-right: 15px;
+    text-align: center;
+    @media (max-width: 767px) {
+      margin-bottom: 2rem;
+    }
+
+    h1, .h1, h2, .h2, h3, .h3, h4, .h4, h5, .h5, h6, .h6 {
+      font-family: 'Kaushan Script', cursive;
+      letter-spacing: 0;
+      margin: 0;
+    }
+    h1, .h1 {
+      @include fontSize(72px);
+      @media only screen and (max-width: 767px) {
+        @include fontSize($h1-font-size/1.5);
+      }
+    }
+  }
+  &.left-sidebar {
+    .posts-list {
+      float: right;
+      @media (max-width: 767px) {
+        float: none;
+      }
+    }
+  }
+}
+.section {
+  @media (max-width: 767px) {
+    padding-top: 1rem;
+    padding-bottom: 1rem;
+  }
+}

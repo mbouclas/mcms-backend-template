@@ -1,0 +1,226 @@
+// Colors
+$main-color: #da3021;
+$primary-color: $main-color !default;
+$primary-color-light: lighten($primary-color, 15%) !default;
+$primary-color-dark: darken($primary-color, 15%) !default;
+
+$secondary-color: #da3021;
+$success-color: #4CAF50;
+$error-color: #F44336;
+$link-color: #039be5;
+
+$primary:    #428bca;
+$success:    #5cb85c;
+$info:       #5bc0de;
+$warning:    #f0ad4e;
+$danger:     #f34d65;
+
+$main-font-family: 'Roboto', sans-serif;
+$main-font-size: 14px;
+$main-font-weight: 400;
+$main-line-height: 1.5;
+$main-text-color: #000;
+$bottom-margin: $main-line-height * 1rem;
+
+// Headers
+$h1-h6-font-weight: 500;
+$h1-h6-font-family: 'Oswald', sans-serif;
+$h1-h6-line-height: 1.3em;
+$h1-h6-letter-spacing: .075em;
+$h1-h6-margin-bottom: .65em;
+$h1-font-size: 58.26px;
+$h2-font-size: 43.8px;
+$h3-font-size: 32.9px;
+$h4-font-size: 24.76px;
+$h5-font-size: 18.62px;
+$h6-font-size: 14px;
+
+// Blockquote
+$blockquote-text-color: rgba(#000,.54);
+$blockquote-border-color: rgba(#000,.1);
+$blockquote-font-size: 16px;
+$blockquote-font-family: 'Oswald', sans-serif;
+
+// Table
+$table-border-color: rgba(#000,.1);
+$table-striped-bg: rgba(#000,.1);
+$table-padding: 15px 15px;
+
+// Forms
+
+// Header
+$header-height: 105px;
+
+// Buttons
+$button-color: $primary-color !default;
+$button-text-color: #fff;
+$button-height: 42px !default;
+$button-line-height: 42px !default;
+$button-font-size: 16px;
+$button-font-weight: 400;
+$button-floating-size: $button-height !default;
+$button-padding: 0 40px;
+$button-lg-height: 50px !default;
+$button-lg-font-size: 18px;
+$button-lg-padding: 0 50px;
+$button-sm-height: 30px !default;
+$button-sm-font-size: 14px;
+$button-sm-padding: 0 20px;
+$button-color-flat: #000 !default;
+$button-color-raised: #fff !default;
+$button-bg-color-disabled: #DFDFDF !default;
+$button-color-disabled: #9F9F9F !default;
+$button-font-size-shared: 1.3rem !default;
+$button-large-icon-font-size: 1.6rem !default;
+
+// Forms
+// Text Inputs + Textarea
+$input-border-color: color("grey", "base") !default;
+$input-bg-color: #fff !default;
+$input-error-color: $error-color !default;
+$input-success-color: $success-color !default;
+$input-focus-color: $secondary-color !default;
+$label-font-size: .8rem !default;
+$input-disabled-color: rgba(0,0,0, .26) !default;
+$input-disabled-solid-color: #BDBDBD !default;
+$input-top-margin: 1.5rem;
+$input-bottom-margin: 1.5rem;
+
+// Radio Buttons
+$radio-fill-color: $secondary-color !default;
+$radio-empty-color: #5a5a5a !default;
+
+// Switches
+$switch-bg-color: $secondary-color !default;
+$switch-checked-lever-bg: desaturate(lighten($secondary-color, 25%), 25%) !default;
+$switch-unchecked-bg: #F1F1F1 !default;
+$switch-unchecked-lever-bg: #818181 !default;
+
+@function calculateRem($size) {
+  $remSize: $size / $main-font-size;
+  @return #{$remSize}rem;
+}
+@mixin fontSize($size) {
+  font-size: $size;
+  font-size: calculateRem($size);
+}
+
+// Badges
+$badge-bg-color: $secondary-color !default;
+
+// Cards
+$card-padding: 20px !default;
+$card-bg-color: #fff !default;
+$card-link-color: #ffab40;
+$card-link-color-light: lighten($card-link-color, 20%) !default;
+
+// Collapsible
+$collapsible-height: 3rem !default;
+$collapsible-header-color: #fff !default;
+$collapsible-border-color: #ddd !default;
+
+// Chips
+$chip-bg-color: #e4e4e4 !default;
+
+// Date Picker
+$datepicker-weekday-bg: darken($secondary_color, 7%) !default;
+$datepicker-date-bg: $secondary_color !default;
+$datepicker-year: rgba(255, 255, 255, .4) !default;
+$datepicker-focus: rgba(0,0,0, .05) !default;
+$datepicker-selected: $secondary-color !default;
+$datepicker-selected-outfocus: desaturate(lighten($secondary-color, 35%), 15%) !default;
+
+// Dropdown
+$dropdown-bg-color: #fff !default;
+$dropdown-hover-bg-color: #eee !default;
+$dropdown-color: $secondary-color !default;
+$dropdown-item-height: 50px !default;
+
+// Fonts
+$roboto-font-path: "../font/roboto/" !default;
+$icons-font-path: "../font/material-design-icons/" !default;
+
+
+// Global
+// Media Query Ranges
+$small-screen-up: 601px !default;
+$medium-screen-up: 993px !default;
+$large-screen-up: 1201px !default;
+$small-screen: 600px !default;
+$medium-screen: 992px !default;
+$large-screen: 1200px !default;
+
+$medium-and-up: "only screen and (min-width : #{$small-screen-up})" !default;
+$large-and-up: "only screen and (min-width : #{$medium-screen-up})" !default;
+$small-and-down: "only screen and (max-width : #{$small-screen})" !default;
+$medium-and-down: "only screen and (max-width : #{$medium-screen})" !default;
+$medium-only: "only screen and (min-width : #{$small-screen-up}) and (max-width : #{$medium-screen})" !default;
+
+// Grid Variables
+$num-cols: 12 !default;
+$gutter-width: 1.5rem !default;
+$element-top-margin: $gutter-width/3 !default;
+$element-bottom-margin: ($gutter-width*2)/3 !default;
+
+// Navbar
+$navbar-height: 64px !default;
+$navbar-height-mobile: 56px !default;
+$navbar-font-color: #fff !default;
+$navbar-brand-font-size: 2.1rem !default;
+
+// SideNav
+$sidenav-bg-color: #fff !default;
+$sidenav-padding-right: 15px !default;
+$sidenav-item-height: 64px !default;
+
+// Photo Slider
+$slider-bg-color: color('grey', 'base') !default;
+$slider-bg-color-light: color('grey', 'lighten-2') !default;
+$slider-indicator-color: color('green', 'base') !default;
+
+// Spinners | Loaders
+$spinner-default-color: $secondary-color !default;
+
+// Tabs
+$tabs-underline-color: $primary-color-light !default;
+$tabs-text-color: $primary-color !default;
+$tabs-bg-color: #fff !default;
+
+// Tables
+$table-border-color: #d0d0d0 !default;
+$table-striped-color: #f2f2f2 !default;
+
+// Toasts
+$toast-height: 48px !default;
+$toast-color: #323232 !default;
+$toast-text-color: #fff !default;
+
+// Typography
+$off-black: rgba(0, 0, 0, 0.87) !default;
+
+// Header Styles
+$h1-fontsize: 4.2rem !default;
+$h2-fontsize: 3.56rem !default;
+$h3-fontsize: 2.92rem !default;
+$h4-fontsize: 2.28rem !default;
+$h5-fontsize: 1.64rem !default;
+$h6-fontsize: 1rem !default;
+
+// Footer
+$footer-bg-color: $primary-color !default;
+
+// Flowtext
+$range : $large-screen - $small-screen !default;
+$intervals: 20 !default;
+$interval-size: $range / $intervals !default;
+
+// Collections
+$collection-border-color: #e0e0e0 !default;
+$collection-bg-color: #fff !default;
+$collection-active-bg-color: $secondary-color !default;
+$collection-active-color: lighten($secondary-color, 55%) !default;
+$collection-hover-bg-color: #ddd !default;
+$collection-link-color: $secondary-color !default;
+
+// Progress Bar
+$progress-bar-color: $secondary-color !default;

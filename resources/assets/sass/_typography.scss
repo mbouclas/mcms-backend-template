@@ -1,0 +1,261 @@
+/******************************************************************************
+  Typography
+*******************************************************************************/
+html {
+  font-size: $main-font-size;
+}
+body {
+  background: #f9f9f9;
+  color: $main-text-color;
+  font-size: $main-font-size;
+  font-size: 1rem;
+  font-family: $main-font-family;
+  font-weight: $main-font-weight;
+  line-height: $main-line-height;
+  min-width: 300px;
+  -webkit-font-smoothing: antialiased;
+  word-wrap: break-word;
+  @media only screen and (max-width: 767px) {
+    @include fontSize(13px);
+    overflow-x: hidden;
+  }
+}
+
+h1, .h1,
+h2, .h2,
+h3, .h3,
+h4, .h4,
+h5, .h5,
+h6, .h6 {
+  font-family: $h1-h6-font-family;
+  font-weight: $h1-h6-font-weight;
+  line-height: $h1-h6-line-height;
+  letter-spacing: $h1-h6-letter-spacing;
+  margin: 0 0 $h1-h6-margin-bottom;
+}
+h1, .h1 {
+  @include fontSize($h1-font-size);
+  @media only screen and (max-width: 991px) {
+    @include fontSize($h1-font-size/1.1);
+  }
+  @media only screen and (max-width: 767px) {
+    @include fontSize($h1-font-size/1.5);
+  }
+}
+h2, .h2 {
+  @include fontSize($h2-font-size);
+  @media only screen and (max-width: 991px) {
+    @include fontSize($h2-font-size/1.1);
+  }
+  @media only screen and (max-width: 767px) {
+    @include fontSize($h2-font-size/1.3);
+  }
+}
+h3, .h3 {
+  @include fontSize($h3-font-size);
+  @media only screen and (max-width: 991px) {
+    @include fontSize($h3-font-size/1.1);
+  }
+  @media only screen and (max-width: 767px) {
+    @include fontSize($h3-font-size/1.2);
+  }
+}
+h4, .h4 {
+  @include fontSize($h4-font-size);
+  @media only screen and (max-width: 991px) {
+    @include fontSize($h4-font-size/1.1);
+  }
+  @media only screen and (max-width: 767px) {
+    @include fontSize($h4-font-size/1.2);
+  }
+}
+h5, .h5 {
+  @include fontSize($h5-font-size);
+  @media only screen and (max-width: 767px) {
+    @include fontSize($h5-font-size/1.2);
+  }
+}
+h6, .h6 {
+  @include fontSize($h6-font-size);
+}
+p {
+  margin: 0 0 $bottom-margin/2;
+}
+form {
+  margin: 0 0 $bottom-margin;
+}
+p:last-child {
+  margin-bottom: 0;
+}
+a {
+  color: $main-color;
+  text-decoration: none;
+  transition: color .2s ease-in-out;
+
+  &:hover,
+  &:focus {
+    color: rgba($main-color,.7);
+    outline: none;
+    text-decoration: none;
+  }
+}
+ul,
+ol {
+  line-height: 2;
+  margin: 0 0 $bottom-margin;
+  padding: 0 0 0 30px;
+
+  .no-markers {
+    letter-spacing: normal;
+    padding-left: 0;
+
+    > li {
+      list-style-type: none;
+    }
+  }
+}
+img {
+  height: auto;
+  max-width: 100%;
+}
+blockquote {
+  border-left-width: 2px;
+  border-color: $blockquote-border-color;
+  color: $blockquote-text-color;
+  @include fontSize($blockquote-font-size);
+  font-family: $blockquote-font-family;
+  line-height: 2;
+  margin: $bottom-margin 0;
+  padding: 0 0 0 20px;
+  @media only screen and (max-width: 767px) {
+    @include fontSize($blockquote-font-size/1.1);
+    line-height: 1.75;
+    margin: 1rem 0;
+  }
+}
+table {
+  margin: 0 0 $bottom-margin;
+
+  thead {
+    border-bottom-color: $table-border-color;
+  }
+  td,
+  th {
+    border-radius: 0;
+    padding: $table-padding;
+  }
+  &.bordered {
+    > thead,
+    > tbody {
+      tr {
+        border-bottom-color: $table-border-color;
+      }
+    }
+  }
+  &.striped {
+    > tbody {
+      > tr:nth-child(odd) {
+        background-color: $table-striped-bg;
+      }
+    }
+  }
+  &.responsive-table {
+    thead {
+      tr {
+        @media only screen and (max-width: 992px) {
+          padding: 0;
+        }
+      }
+    }
+    tr {
+      @media only screen and (max-width: 992px) {
+        padding: 0;
+      }
+    }
+  }
+}
+hr {
+  border-color: rgba(#000,.1);
+  margin-top: 1.5rem;
+  margin-bottom: 1.5rem;
+  @media only screen and (max-width: 767px) {
+    margin-top: 1rem;
+    margin-bottom: 1rem;
+  }
+}
+.date {
+  color: #9e9e9e;
+}
+.table {
+  margin-bottom: #{$main-line-height / 2}rem;
+
+  thead {
+    td,
+    th {
+      color: #000;
+    }
+  }
+  &.table-bordered,
+  &.table-bordered td,
+  &.table-bordered th {
+    border-color: #ccc;
+  }
+}
+.figure {
+  margin-bottom: #{$main-line-height / 2}rem;
+
+  .figure-caption {
+    color: #ccc;
+    @include fontSize(12px);
+    line-height: 1.5;
+    text-align: center;
+  }
+  &.pull-left,
+  &.pull-xs-left {
+    margin-right: 30px;
+  }
+  &.pull-sm-left {
+    @media only screen and (min-width: 544px) {
+      margin-right: 30px;
+    }
+  }
+  &.pull-md-left {
+    @media only screen and (min-width: 768px) {
+      margin-right: 30px;
+    }
+  }
+  &.pull-lg-left {
+    @media only screen and (min-width: 992px) {
+      margin-right: 30px;
+    }
+  }
+  &.pull-xl-left {
+    @media only screen and (min-width: 1200px) {
+      margin-right: 30px;
+    }
+  }
+  &.pull-right,
+  &.pull-xs-right {
+    margin-left: 30px;
+  }
+  &.pull-sm-right {
+    @media only screen and (min-width: 544px) {
+      margin-left: 30px;
+    }
+  }
+  &.pull-md-right {
+    @media only screen and (min-width: 768px) {
+      margin-left: 30px;
+    }
+  }
+  &.pull-lg-right {
+    @media only screen and (min-width: 992px) {
+      margin-left: 30px;
+    }
+  }
+  &.pull-xl-right {
+    @media only screen and (min-width: 1200px) {
+      margin-left: 30px;
+    }
+  }
+}
