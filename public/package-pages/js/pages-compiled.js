@@ -687,7 +687,7 @@ require('./editPageCategory.component');
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
     DirectiveController.$inject = [ '$scope','PageService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService'];
+        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService', 'lodashFactory'];
 
     function Directive(Config, $timeout) {
 
@@ -713,7 +713,7 @@ require('./editPageCategory.component');
         };
     }
 
-    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector) {
+    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector, lo) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
