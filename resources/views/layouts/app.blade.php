@@ -11,6 +11,7 @@
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
     <link rel="stylesheet" href="{{asset('css/styles.min.css')}}">
 </head>
+
 <body class="dynamic-header">
 <div class="preloader"><div class="loader"></div></div>
 
