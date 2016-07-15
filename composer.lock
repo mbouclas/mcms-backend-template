@@ -4,30 +4,30 @@
         "Read more about it at https://getcomposer.org/doc/01-basic-usage.md#composer-lock-the-lock-file",
         "This file is @generated automatically"
     ],
-    "hash": "977f6b813df7cb5eaadb40646ee8c7e7",
+    "hash": "95f5eb54eecb4686078a9b5d40503fa6",
     "content-hash": "84d22efb0586787c7a95339724d14f42",
     "packages": [
         {
             "name": "arrilot/laravel-widgets",
-            "version": "3.4.2",
+            "version": "3.5.0",
             "source": {
                 "type": "git",
                 "url": "https://github.com/arrilot/laravel-widgets.git",
-                "reference": "05dd03906e459c37710f12787174882631b0588b"
+                "reference": "596cad8762ba681a836e5256ec4b54a4ccfc10c4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/arrilot/laravel-widgets/zipball/05dd03906e459c37710f12787174882631b0588b",
-                "reference": "05dd03906e459c37710f12787174882631b0588b",
+                "url": "https://api.github.com/repos/arrilot/laravel-widgets/zipball/596cad8762ba681a836e5256ec4b54a4ccfc10c4",
+                "reference": "596cad8762ba681a836e5256ec4b54a4ccfc10c4",
                 "shasum": ""
             },
             "require": {
-                "illuminate/console": "5.*",
-                "illuminate/container": "5.*",
-                "illuminate/contracts": "5.*",
-                "illuminate/support": "5.*",
-                "illuminate/view": "5.*",
-                "php": ">=5.4.0"
+                "illuminate/console": ">=5.1",
+                "illuminate/container": ">=5.1",
+                "illuminate/contracts": ">=5.1",
+                "illuminate/support": ">=5.1",
+                "illuminate/view": ">=5.1",
+                "php": ">=5.5.9"
             },
             "require-dev": {
                 "phpunit/phpunit": "~4.0"
@@ -55,7 +55,7 @@
                 "laravel",
                 "widgets"
             ],
-            "time": "2016-06-14 07:06:33"
+            "time": "2016-07-10 14:07:48"
         },
         {
             "name": "barryvdh/elfinder-flysystem-driver",
@@ -537,16 +537,16 @@
         },
         {
             "name": "cocur/slugify",
-            "version": "v2.1.1",
+            "version": "v2.2",
             "source": {
                 "type": "git",
                 "url": "https://github.com/cocur/slugify.git",
-                "reference": "eee9879958875921082293dbdbf4866b641864f2"
+                "reference": "13c1d3b2e602822c47a7ac62f9d409e1a2b76113"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/cocur/slugify/zipball/eee9879958875921082293dbdbf4866b641864f2",
-                "reference": "eee9879958875921082293dbdbf4866b641864f2",
+                "url": "https://api.github.com/repos/cocur/slugify/zipball/13c1d3b2e602822c47a7ac62f9d409e1a2b76113",
+                "reference": "13c1d3b2e602822c47a7ac62f9d409e1a2b76113",
                 "shasum": ""
             },
             "require": {
@@ -555,6 +555,7 @@
             "require-dev": {
                 "laravel/framework": "~5.1",
                 "latte/latte": "~2.2",
+                "league/container": "^2.2.0",
                 "mikey179/vfsstream": "~1.6",
                 "mockery/mockery": "~0.9",
                 "nette/di": "~2.2",
@@ -596,7 +597,7 @@
                 "slug",
                 "slugify"
             ],
-            "time": "2016-04-08 18:57:21"
+            "time": "2016-07-10 13:06:05"
         },
         {
             "name": "dnoegel/php-xdg-base-dir",
@@ -762,7 +763,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:ideaseven/package-core.git",
-                "reference": "37ee876e37761f0bd0c8cbb55821fba7cc8595fe"
+                "reference": "e85a6392bc7417aa53beae57943d7c9215ec87be"
             },
             "dist": {
                 "type": "git",
@@ -783,6 +784,7 @@
                 "laracasts/utilities": "~2.0",
                 "mcamara/laravel-localization": "1.1.*",
                 "php": "~5.5|~7.0",
+                "rtconner/laravel-tagging": "~2.1",
                 "teepluss/theme": "^2.0",
                 "themsaid/laravel-multilingual": "^1.0"
             },
@@ -822,7 +824,7 @@
                 }
             ],
             "description": "The core of the CMS",
-            "time": "2016-07-07 12:29:36"
+            "time": "2016-07-15 10:05:34"
         },
         {
             "name": "idea-seven/front-end",
@@ -884,7 +886,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:ideaseven/package-admin.git",
-                "reference": "04eb511de95bd995c2d7bead78bafc22872baa82"
+                "reference": "ef3c2c9dac6d9d4bb5081e73783fbc9fa1b0970d"
             },
             "require": {
                 "barryvdh/laravel-elfinder": "^0.3.7",
@@ -928,7 +930,7 @@
                 }
             ],
             "description": "The admin interface",
-            "time": "2016-07-06 12:15:19"
+            "time": "2016-07-15 09:57:50"
         },
         {
             "name": "idea-seven/package-pages",
@@ -936,7 +938,7 @@
             "source": {
                 "type": "git",
                 "url": "git@bitbucket.org:ideaseven/package-pages.git",
-                "reference": "f75a116a5c514b8c1caadf3e7302fe9beee60dbd"
+                "reference": "0c34ce4f32e37da2ce3b19e1bdce1a91e372b2ba"
             },
             "require": {
                 "illuminate/support": "~5.1",
@@ -978,7 +980,7 @@
                 }
             ],
             "description": "The pages package",
-            "time": "2016-07-07 12:29:13"
+            "time": "2016-07-15 09:57:32"
         },
         {
             "name": "intervention/image",
@@ -1608,16 +1610,16 @@
         },
         {
             "name": "mcamara/laravel-localization",
-            "version": "1.1.3",
+            "version": "1.1.4",
             "source": {
                 "type": "git",
                 "url": "https://github.com/mcamara/laravel-localization.git",
-                "reference": "89b5d9de51b3ba7c02c5fd9b96a22f84eba2d135"
+                "reference": "239d711d1f861e333e6de73d98dabdf94500512e"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/89b5d9de51b3ba7c02c5fd9b96a22f84eba2d135",
-                "reference": "89b5d9de51b3ba7c02c5fd9b96a22f84eba2d135",
+                "url": "https://api.github.com/repos/mcamara/laravel-localization/zipball/239d711d1f861e333e6de73d98dabdf94500512e",
+                "reference": "239d711d1f861e333e6de73d98dabdf94500512e",
                 "shasum": ""
             },
             "require": {
@@ -1652,7 +1654,7 @@
                 "localization",
                 "php"
             ],
-            "time": "2016-06-23 13:34:39"
+            "time": "2016-07-11 12:59:33"
         },
         {
             "name": "monolog/monolog",
@@ -2128,17 +2130,72 @@
             "time": "2016-03-09 05:03:14"
         },
         {
-            "name": "studio-42/elfinder",
-            "version": "2.1.12",
+            "name": "rtconner/laravel-tagging",
+            "version": "2.1.0",
             "source": {
                 "type": "git",
-                "url": "https://github.com/Studio-42/elFinder.git",
-                "reference": "249ef036eaacd1a5d31a6b1516e1c183afd5ff8e"
+                "url": "https://github.com/rtconner/laravel-tagging.git",
+                "reference": "4c93b555dd3b3f804c779a30367040c224ca9ad4"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/249ef036eaacd1a5d31a6b1516e1c183afd5ff8e",
-                "reference": "249ef036eaacd1a5d31a6b1516e1c183afd5ff8e",
+                "url": "https://api.github.com/repos/rtconner/laravel-tagging/zipball/4c93b555dd3b3f804c779a30367040c224ca9ad4",
+                "reference": "4c93b555dd3b3f804c779a30367040c224ca9ad4",
+                "shasum": ""
+            },
+            "require": {
+                "illuminate/database": ">= 5.0",
+                "illuminate/support": ">= 5.0",
+                "php": ">=5.5.0"
+            },
+            "require-dev": {
+                "mockery/mockery": "~0.9",
+                "orchestra/testbench": "~3.0",
+                "phpunit/phpunit": "~4.0",
+                "vlucas/phpdotenv": "~2.0"
+            },
+            "type": "library",
+            "autoload": {
+                "psr-4": {
+                    "Conner\\Tagging\\": "src/"
+                }
+            },
+            "notification-url": "https://packagist.org/downloads/",
+            "license": [
+                "MIT"
+            ],
+            "authors": [
+                {
+                    "name": "Robert Conner",
+                    "email": "rtconner@smarter.bz"
+                }
+            ],
+            "description": "Use PHP traits to extend Laravel Eloquent Models to allow Tags. Models can be marked as Taggable.",
+            "homepage": "https://smartersoftware.net/packages/laravel-tagging-taggable",
+            "keywords": [
+                "Taggable",
+                "eloquent",
+                "laravel",
+                "laravel5",
+                "tag",
+                "tagged",
+                "tagging",
+                "tags"
+            ],
+            "time": "2016-04-07 05:36:25"
+        },
+        {
+            "name": "studio-42/elfinder",
+            "version": "2.1.13",
+            "source": {
+                "type": "git",
+                "url": "https://github.com/Studio-42/elFinder.git",
+                "reference": "0fdd17e79be892ba807fc38127339372cb1b7c30"
+            },
+            "dist": {
+                "type": "zip",
+                "url": "https://api.github.com/repos/Studio-42/elFinder/zipball/0fdd17e79be892ba807fc38127339372cb1b7c30",
+                "reference": "0fdd17e79be892ba807fc38127339372cb1b7c30",
                 "shasum": ""
             },
             "require": {
@@ -2183,27 +2240,27 @@
             ],
             "description": "File manager for web",
             "homepage": "http://elfinder.org",
-            "time": "2016-05-30 13:46:36"
+            "time": "2016-07-11 02:16:04"
         },
         {
             "name": "swiftmailer/swiftmailer",
-            "version": "v5.4.2",
+            "version": "v5.4.3",
             "source": {
                 "type": "git",
                 "url": "https://github.com/swiftmailer/swiftmailer.git",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8"
+                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/d8db871a54619458a805229a057ea2af33c753e8",
-                "reference": "d8db871a54619458a805229a057ea2af33c753e8",
+                "url": "https://api.github.com/repos/swiftmailer/swiftmailer/zipball/4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
+                "reference": "4cc92842069c2bbc1f28daaaf1d2576ec4dfe153",
                 "shasum": ""
             },
             "require": {
                 "php": ">=5.3.3"
             },
             "require-dev": {
-                "mockery/mockery": "~0.9.1,<0.9.4"
+                "mockery/mockery": "~0.9.1"
             },
             "type": "library",
             "extra": {
@@ -2236,7 +2293,7 @@
                 "mail",
                 "mailer"
             ],
-            "time": "2016-05-01 08:45:47"
+            "time": "2016-07-08 11:51:25"
         },
         {
             "name": "symfony/class-loader",
@@ -3130,16 +3187,16 @@
         },
         {
             "name": "themsaid/laravel-multilingual",
-            "version": "1.0.0",
+            "version": "v1.0.1",
             "source": {
                 "type": "git",
                 "url": "https://github.com/themsaid/laravel-multilingual.git",
-                "reference": "fcebd1e6b87bd25586eb288444ab3da85a33d847"
+                "reference": "5d1db39ef303d3ed89f56c7d74ef2e9193ca5bd1"
             },
             "dist": {
                 "type": "zip",
-                "url": "https://api.github.com/repos/themsaid/laravel-multilingual/zipball/fcebd1e6b87bd25586eb288444ab3da85a33d847",
-                "reference": "fcebd1e6b87bd25586eb288444ab3da85a33d847",
+                "url": "https://api.github.com/repos/themsaid/laravel-multilingual/zipball/5d1db39ef303d3ed89f56c7d74ef2e9193ca5bd1",
+                "reference": "5d1db39ef303d3ed89f56c7d74ef2e9193ca5bd1",
                 "shasum": ""
             },
             "require": {
@@ -3176,7 +3233,7 @@
                 "multilingual",
                 "translation"
             ],
-            "time": "2016-02-18 18:46:20"
+            "time": "2016-07-09 11:11:45"
         },
         {
             "name": "twig/twig",

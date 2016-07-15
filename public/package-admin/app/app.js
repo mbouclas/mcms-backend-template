@@ -18,7 +18,8 @@
         'mcms.widgets',
         'mcms.menu',
         'mcms.user',
-        'mcms.settingsManager'
+        'mcms.settingsManager',
+        'mcms.itemSelector'
     ];
 
     if (typeof window.Injectables != 'undefined'){
@@ -79,3 +80,4 @@ require('./User');
 require('./SettingsManager');
 require('./ExtraField');
 require('./MediaFiles');
+require('./ItemSelector');

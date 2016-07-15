@@ -1,8 +1,8 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function (global){
 /**
  * @license
- * lodash 4.11.2 (Custom Build) <https://lodash.com/>
+ * lodash 4.11.1 (Custom Build) <https://lodash.com/>
  * Build: `lodash -d -o ./foo/lodash.js`
  * Copyright jQuery Foundation and other contributors <https://jquery.org/>
  * Released under MIT license <https://lodash.com/license>
@@ -15,7 +15,7 @@
   var undefined;
 
   /** Used as the semantic version number. */
-  var VERSION = '4.11.2';
+  var VERSION = '4.11.1';
 
   /** Used as the size to enable large array optimizations. */
   var LARGE_ARRAY_SIZE = 200;
@@ -183,11 +183,11 @@
       rsLowerRange = 'a-z\\xdf-\\xf6\\xf8-\\xff',
       rsMathOpRange = '\\xac\\xb1\\xd7\\xf7',
       rsNonCharRange = '\\x00-\\x2f\\x3a-\\x40\\x5b-\\x60\\x7b-\\xbf',
-      rsPunctuationRange = '\\u2000-\\u206f',
+      rsQuoteRange = '\\u2018\\u2019\\u201c\\u201d',
       rsSpaceRange = ' \\t\\x0b\\f\\xa0\\ufeff\\n\\r\\u2028\\u2029\\u1680\\u180e\\u2000\\u2001\\u2002\\u2003\\u2004\\u2005\\u2006\\u2007\\u2008\\u2009\\u200a\\u202f\\u205f\\u3000',
       rsUpperRange = 'A-Z\\xc0-\\xd6\\xd8-\\xde',
       rsVarRange = '\\ufe0e\\ufe0f',
-      rsBreakRange = rsMathOpRange + rsNonCharRange + rsPunctuationRange + rsSpaceRange;
+      rsBreakRange = rsMathOpRange + rsNonCharRange + rsQuoteRange + rsSpaceRange;
 
   /** Used to compose unicode capture groups. */
   var rsApos = "['\u2019]",
@@ -714,6 +714,35 @@
   }
 
   /**
+   * The base implementation of methods like `_.max` and `_.min` which accepts a
+   * `comparator` to determine the extremum value.
+   *
+   * @private
+   * @param {Array} array The array to iterate over.
+   * @param {Function} iteratee The iteratee invoked per iteration.
+   * @param {Function} comparator The comparator used to compare values.
+   * @returns {*} Returns the extremum value.
+   */
+  function baseExtremum(array, iteratee, comparator) {
+    var index = -1,
+        length = array.length;
+
+    while (++index < length) {
+      var value = array[index],
+          current = iteratee(value);
+
+      if (current != null && (computed === undefined
+            ? current === current
+            : comparator(current, computed)
+          )) {
+        var computed = current,
+            result = value;
+      }
+    }
+    return result;
+  }
+
+  /**
    * The base implementation of methods like `_.find` and `_.findKey`, without
    * support for iteratee shorthands, which iterates over `collection` using
    * `eachFunc`.
@@ -992,6 +1021,79 @@
   }
 
   /**
+   * Compares values to sort them in ascending order.
+   *
+   * @private
+   * @param {*} value The value to compare.
+   * @param {*} other The other value to compare.
+   * @returns {number} Returns the sort order indicator for `value`.
+   */
+  function compareAscending(value, other) {
+    if (value !== other) {
+      var valIsNull = value === null,
+          valIsUndef = value === undefined,
+          valIsReflexive = value === value;
+
+      var othIsNull = other === null,
+          othIsUndef = other === undefined,
+          othIsReflexive = other === other;
+
+      if ((value > other && !othIsNull) || !valIsReflexive ||
+          (valIsNull && !othIsUndef && othIsReflexive) ||
+          (valIsUndef && othIsReflexive)) {
+        return 1;
+      }
+      if ((value < other && !valIsNull) || !othIsReflexive ||
+          (othIsNull && !valIsUndef && valIsReflexive) ||
+          (othIsUndef && valIsReflexive)) {
+        return -1;
+      }
+    }
+    return 0;
+  }
+
+  /**
+   * Used by `_.orderBy` to compare multiple properties of a value to another
+   * and stable sort them.
+   *
+   * If `orders` is unspecified, all values are sorted in ascending order. Otherwise,
+   * specify an order of "desc" for descending or "asc" for ascending sort order
+   * of corresponding values.
+   *
+   * @private
+   * @param {Object} object The object to compare.
+   * @param {Object} other The other object to compare.
+   * @param {boolean[]|string[]} orders The order to sort by for each property.
+   * @returns {number} Returns the sort order indicator for `object`.
+   */
+  function compareMultiple(object, other, orders) {
+    var index = -1,
+        objCriteria = object.criteria,
+        othCriteria = other.criteria,
+        length = objCriteria.length,
+        ordersLength = orders.length;
+
+    while (++index < length) {
+      var result = compareAscending(objCriteria[index], othCriteria[index]);
+      if (result) {
+        if (index >= ordersLength) {
+          return result;
+        }
+        var order = orders[index];
+        return result * (order == 'desc' ? -1 : 1);
+      }
+    }
+    // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
+    // that causes it, under certain circumstances, to provide the same value for
+    // `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247
+    // for more details.
+    //
+    // This also ensures a stable sort in V8 and other engines.
+    // See https://bugs.chromium.org/p/v8/issues/detail?id=90 for more details.
+    return object.index - other.index;
+  }
+
+  /**
    * Gets the number of `placeholder` occurrences in `array`.
    *
    * @private
@@ -1009,6 +1111,29 @@
       }
     }
     return result;
+  }
+
+  /**
+   * Creates a function that performs a mathematical operation on two values.
+   *
+   * @private
+   * @param {Function} operator The function to perform the operation.
+   * @returns {Function} Returns the new mathematical operation function.
+   */
+  function createMathOperation(operator) {
+    return function(value, other) {
+      var result;
+      if (value === undefined && other === undefined) {
+        return 0;
+      }
+      if (value !== undefined) {
+        result = value;
+      }
+      if (other !== undefined) {
+        result = result === undefined ? other : operator(result, other);
+      }
+      return result;
+    };
   }
 
   /**
@@ -1083,6 +1208,20 @@
       } catch (e) {}
     }
     return result;
+  }
+
+  /**
+   * Checks if `value` is a valid array-like index.
+   *
+   * @private
+   * @param {*} value The value to check.
+   * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
+   * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
+   */
+  function isIndex(value, length) {
+    value = (typeof value == 'number' || reIsUint.test(value)) ? +value : -1;
+    length = length == null ? MAX_SAFE_INTEGER : length;
+    return value > -1 && value % 1 == 0 && value < length;
   }
 
   /**
@@ -2423,7 +2562,6 @@
         var value = array[index],
             computed = iteratee ? iteratee(value) : value;
 
-        value = (comparator || value !== 0) ? value : 0;
         if (isCommon && computed === computed) {
           var valuesIndex = valuesLength;
           while (valuesIndex--) {
@@ -2475,35 +2613,6 @@
         result = !!predicate(value, index, collection);
         return result;
       });
-      return result;
-    }
-
-    /**
-     * The base implementation of methods like `_.max` and `_.min` which accepts a
-     * `comparator` to determine the extremum value.
-     *
-     * @private
-     * @param {Array} array The array to iterate over.
-     * @param {Function} iteratee The iteratee invoked per iteration.
-     * @param {Function} comparator The comparator used to compare values.
-     * @returns {*} Returns the extremum value.
-     */
-    function baseExtremum(array, iteratee, comparator) {
-      var index = -1,
-          length = array.length;
-
-      while (++index < length) {
-        var value = array[index],
-            current = iteratee(value);
-
-        if (current != null && (computed === undefined
-              ? (current === current && !isSymbol(current))
-              : comparator(current, computed)
-            )) {
-          var computed = current,
-              result = value;
-        }
-      }
       return result;
     }
 
@@ -2666,7 +2775,7 @@
           length = path.length;
 
       while (object != null && index < length) {
-        object = object[toKey(path[index++])];
+        object = object[path[index++]];
       }
       return (index && index == length) ? object : undefined;
     }
@@ -2687,19 +2796,6 @@
       return isArray(object)
         ? result
         : arrayPush(result, symbolsFunc(object));
-    }
-
-    /**
-     * The base implementation of `_.gt` which doesn't coerce arguments to numbers.
-     *
-     * @private
-     * @param {*} value The value to compare.
-     * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if `value` is greater than `other`,
-     *  else `false`.
-     */
-    function baseGt(value, other) {
-      return value > other;
     }
 
     /**
@@ -2782,7 +2878,6 @@
         var value = array[index],
             computed = iteratee ? iteratee(value) : value;
 
-        value = (comparator || value !== 0) ? value : 0;
         if (!(seen
               ? cacheHas(seen, computed)
               : includes(result, computed, comparator)
@@ -2840,7 +2935,7 @@
         object = parent(object, path);
         path = last(path);
       }
-      var func = object == null ? object : object[toKey(path)];
+      var func = object == null ? object : object[path];
       return func == null ? undefined : apply(func, object, args);
     }
 
@@ -3043,19 +3138,6 @@
     }
 
     /**
-     * The base implementation of `_.lt` which doesn't coerce arguments to numbers.
-     *
-     * @private
-     * @param {*} value The value to compare.
-     * @param {*} other The other value to compare.
-     * @returns {boolean} Returns `true` if `value` is less than `other`,
-     *  else `false`.
-     */
-    function baseLt(value, other) {
-      return value < other;
-    }
-
-    /**
      * The base implementation of `_.map` without support for iteratee shorthands.
      *
      * @private
@@ -3100,7 +3182,7 @@
      */
     function baseMatchesProperty(path, srcValue) {
       if (isKey(path) && isStrictComparable(srcValue)) {
-        return matchesStrictComparable(toKey(path), srcValue);
+        return matchesStrictComparable(path, srcValue);
       }
       return function(object) {
         var objValue = get(object, path);
@@ -3382,7 +3464,7 @@
 
       while (length--) {
         var index = indexes[length];
-        if (length == lastIndex || index !== previous) {
+        if (lastIndex == length || index != previous) {
           var previous = index;
           if (isIndex(index)) {
             splice.call(array, index, 1);
@@ -3392,11 +3474,11 @@
                 object = parent(array, path);
 
             if (object != null) {
-              delete object[toKey(last(path))];
+              delete object[last(path)];
             }
           }
           else {
-            delete array[toKey(index)];
+            delete array[index];
           }
         }
       }
@@ -3486,7 +3568,7 @@
           nested = object;
 
       while (nested != null && ++index < length) {
-        var key = toKey(path[index]);
+        var key = path[index];
         if (isObject(nested)) {
           var newValue = value;
           if (index != lastIndex) {
@@ -3588,8 +3670,7 @@
           var mid = (low + high) >>> 1,
               computed = array[mid];
 
-          if (computed !== null && !isSymbol(computed) &&
-              (retHighest ? (computed <= value) : (computed < value))) {
+          if ((retHighest ? (computed <= value) : (computed < value)) && computed !== null) {
             low = mid + 1;
           } else {
             high = mid;
@@ -3620,26 +3701,21 @@
           high = array ? array.length : 0,
           valIsNaN = value !== value,
           valIsNull = value === null,
-          valIsSymbol = isSymbol(value),
-          valIsUndefined = value === undefined;
+          valIsUndef = value === undefined;
 
       while (low < high) {
         var mid = nativeFloor((low + high) / 2),
             computed = iteratee(array[mid]),
-            othIsDefined = computed !== undefined,
-            othIsNull = computed === null,
-            othIsReflexive = computed === computed,
-            othIsSymbol = isSymbol(computed);
+            isDef = computed !== undefined,
+            isReflexive = computed === computed;
 
         if (valIsNaN) {
-          var setLow = retHighest || othIsReflexive;
-        } else if (valIsUndefined) {
-          setLow = othIsReflexive && (retHighest || othIsDefined);
+          var setLow = isReflexive || retHighest;
         } else if (valIsNull) {
-          setLow = othIsReflexive && othIsDefined && (retHighest || !othIsNull);
-        } else if (valIsSymbol) {
-          setLow = othIsReflexive && othIsDefined && !othIsNull && (retHighest || !othIsSymbol);
-        } else if (othIsNull || othIsSymbol) {
+          setLow = isReflexive && isDef && (retHighest || computed != null);
+        } else if (valIsUndef) {
+          setLow = isReflexive && (retHighest || isDef);
+        } else if (computed == null) {
           setLow = false;
         } else {
           setLow = retHighest ? (computed <= value) : (computed < value);
@@ -3654,68 +3730,44 @@
     }
 
     /**
-     * The base implementation of `_.sortedUniq` and `_.sortedUniqBy` without
-     * support for iteratee shorthands.
+     * The base implementation of `_.sortedUniq`.
+     *
+     * @private
+     * @param {Array} array The array to inspect.
+     * @returns {Array} Returns the new duplicate free array.
+     */
+    function baseSortedUniq(array) {
+      return baseSortedUniqBy(array);
+    }
+
+    /**
+     * The base implementation of `_.sortedUniqBy` without support for iteratee
+     * shorthands.
      *
      * @private
      * @param {Array} array The array to inspect.
      * @param {Function} [iteratee] The iteratee invoked per element.
      * @returns {Array} Returns the new duplicate free array.
      */
-    function baseSortedUniq(array, iteratee) {
-      var index = -1,
+    function baseSortedUniqBy(array, iteratee) {
+      var index = 0,
           length = array.length,
-          resIndex = 0,
-          result = [];
+          value = array[0],
+          computed = iteratee ? iteratee(value) : value,
+          seen = computed,
+          resIndex = 1,
+          result = [value];
 
       while (++index < length) {
-        var value = array[index],
-            computed = iteratee ? iteratee(value) : value;
+        value = array[index],
+        computed = iteratee ? iteratee(value) : value;
 
-        if (!index || !eq(computed, seen)) {
-          var seen = computed;
-          result[resIndex++] = value === 0 ? 0 : value;
+        if (!eq(computed, seen)) {
+          seen = computed;
+          result[resIndex++] = value;
         }
       }
       return result;
-    }
-
-    /**
-     * The base implementation of `_.toNumber` which doesn't ensure correct
-     * conversions of binary, hexadecimal, or octal string values.
-     *
-     * @private
-     * @param {*} value The value to process.
-     * @returns {number} Returns the number.
-     */
-    function baseToNumber(value) {
-      if (typeof value == 'number') {
-        return value;
-      }
-      if (isSymbol(value)) {
-        return NAN;
-      }
-      return +value;
-    }
-
-    /**
-     * The base implementation of `_.toString` which doesn't convert nullish
-     * values to empty strings.
-     *
-     * @private
-     * @param {*} value The value to process.
-     * @returns {string} Returns the string.
-     */
-    function baseToString(value) {
-      // Exit early for strings to avoid a performance hit in some environments.
-      if (typeof value == 'string') {
-        return value;
-      }
-      if (isSymbol(value)) {
-        return symbolToString ? symbolToString.call(value) : '';
-      }
-      var result = (value + '');
-      return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
     }
 
     /**
@@ -3756,7 +3808,6 @@
         var value = array[index],
             computed = iteratee ? iteratee(value) : value;
 
-        value = (comparator || value !== 0) ? value : 0;
         if (isCommon && computed === computed) {
           var seenIndex = seen.length;
           while (seenIndex--) {
@@ -3790,9 +3841,8 @@
     function baseUnset(object, path) {
       path = isKey(path, object) ? [path] : castPath(path);
       object = parent(object, path);
-
-      var key = toKey(last(path));
-      return !(object != null && baseHas(object, key)) || delete object[key];
+      var key = last(path);
+      return (object != null && has(object, key)) ? delete object[key] : true;
     }
 
     /**
@@ -4053,85 +4103,6 @@
     function cloneTypedArray(typedArray, isDeep) {
       var buffer = isDeep ? cloneArrayBuffer(typedArray.buffer) : typedArray.buffer;
       return new typedArray.constructor(buffer, typedArray.byteOffset, typedArray.length);
-    }
-
-    /**
-     * Compares values to sort them in ascending order.
-     *
-     * @private
-     * @param {*} value The value to compare.
-     * @param {*} other The other value to compare.
-     * @returns {number} Returns the sort order indicator for `value`.
-     */
-    function compareAscending(value, other) {
-      if (value !== other) {
-        var valIsDefined = value !== undefined,
-            valIsNull = value === null,
-            valIsReflexive = value === value,
-            valIsSymbol = isSymbol(value);
-
-        var othIsDefined = other !== undefined,
-            othIsNull = other === null,
-            othIsReflexive = other === other,
-            othIsSymbol = isSymbol(other);
-
-        if ((!othIsNull && !othIsSymbol && !valIsSymbol && value > other) ||
-            (valIsSymbol && othIsDefined && othIsReflexive && !othIsNull && !othIsSymbol) ||
-            (valIsNull && othIsDefined && othIsReflexive) ||
-            (!valIsDefined && othIsReflexive) ||
-            !valIsReflexive) {
-          return 1;
-        }
-        if ((!valIsNull && !valIsSymbol && !othIsSymbol && value < other) ||
-            (othIsSymbol && valIsDefined && valIsReflexive && !valIsNull && !valIsSymbol) ||
-            (othIsNull && valIsDefined && valIsReflexive) ||
-            (!othIsDefined && valIsReflexive) ||
-            !othIsReflexive) {
-          return -1;
-        }
-      }
-      return 0;
-    }
-
-    /**
-     * Used by `_.orderBy` to compare multiple properties of a value to another
-     * and stable sort them.
-     *
-     * If `orders` is unspecified, all values are sorted in ascending order. Otherwise,
-     * specify an order of "desc" for descending or "asc" for ascending sort order
-     * of corresponding values.
-     *
-     * @private
-     * @param {Object} object The object to compare.
-     * @param {Object} other The other object to compare.
-     * @param {boolean[]|string[]} orders The order to sort by for each property.
-     * @returns {number} Returns the sort order indicator for `object`.
-     */
-    function compareMultiple(object, other, orders) {
-      var index = -1,
-          objCriteria = object.criteria,
-          othCriteria = other.criteria,
-          length = objCriteria.length,
-          ordersLength = orders.length;
-
-      while (++index < length) {
-        var result = compareAscending(objCriteria[index], othCriteria[index]);
-        if (result) {
-          if (index >= ordersLength) {
-            return result;
-          }
-          var order = orders[index];
-          return result * (order == 'desc' ? -1 : 1);
-        }
-      }
-      // Fixes an `Array#sort` bug in the JS engine embedded in Adobe applications
-      // that causes it, under certain circumstances, to provide the same value for
-      // `object` and `other`. See https://github.com/jashkenas/underscore/pull/1247
-      // for more details.
-      //
-      // This also ensures a stable sort in V8 and other engines.
-      // See https://bugs.chromium.org/p/v8/issues/detail?id=90 for more details.
-      return object.index - other.index;
     }
 
     /**
@@ -4654,39 +4625,6 @@
     }
 
     /**
-     * Creates a function that performs a mathematical operation on two values.
-     *
-     * @private
-     * @param {Function} operator The function to perform the operation.
-     * @returns {Function} Returns the new mathematical operation function.
-     */
-    function createMathOperation(operator) {
-      return function(value, other) {
-        var result;
-        if (value === undefined && other === undefined) {
-          return 0;
-        }
-        if (value !== undefined) {
-          result = value;
-        }
-        if (other !== undefined) {
-          if (result === undefined) {
-            return other;
-          }
-          if (typeof value == 'string' || typeof other == 'string') {
-            value = baseToString(value);
-            other = baseToString(other);
-          } else {
-            value = baseToNumber(value);
-            other = baseToNumber(other);
-          }
-          result = operator(value, other);
-        }
-        return result;
-      };
-    }
-
-    /**
      * Creates a function like `_.over`.
      *
      * @private
@@ -4718,7 +4656,7 @@
      * @returns {string} Returns the padding for `string`.
      */
     function createPadding(length, chars) {
-      chars = chars === undefined ? ' ' : baseToString(chars);
+      chars = chars === undefined ? ' ' : (chars + '');
 
       var charsLength = chars.length;
       if (charsLength < 2) {
@@ -4789,23 +4727,6 @@
         }
         step = step === undefined ? (start < end ? 1 : -1) : (toNumber(step) || 0);
         return baseRange(start, end, step, fromRight);
-      };
-    }
-
-    /**
-     * Creates a function that performs a relational operation on two values.
-     *
-     * @private
-     * @param {Function} operator The function to perform the operation.
-     * @returns {Function} Returns the new relational operation function.
-     */
-    function createRelationalOperation(operator) {
-      return function(value, other) {
-        if (!(typeof value == 'string' && typeof other == 'string')) {
-          value = toNumber(value);
-          other = toNumber(other);
-        }
-        return operator(value, other);
       };
     }
 
@@ -4885,7 +4806,7 @@
      * @param {Array} values The values to add to the set.
      * @returns {Object} Returns the new set.
      */
-    var createSet = !(Set && (1 / setToArray(new Set([,-0]))[1]) == INFINITY) ? noop : function(values) {
+    var createSet = !(Set && new Set([1, 2]).size === 2) ? noop : function(values) {
       return new Set(values);
     };
 
@@ -5457,7 +5378,7 @@
           length = path.length;
 
       while (++index < length) {
-        var key = toKey(path[index]);
+        var key = path[index];
         if (!(result = object != null && hasFunc(object, key))) {
           break;
         }
@@ -5593,21 +5514,6 @@
     }
 
     /**
-     * Checks if `value` is a valid array-like index.
-     *
-     * @private
-     * @param {*} value The value to check.
-     * @param {number} [length=MAX_SAFE_INTEGER] The upper bounds of a valid index.
-     * @returns {boolean} Returns `true` if `value` is a valid index, else `false`.
-     */
-    function isIndex(value, length) {
-      length = length == null ? MAX_SAFE_INTEGER : length;
-      return !!length &&
-        (typeof value == 'number' || reIsUint.test(value)) &&
-        (value > -1 && value % 1 == 0 && value < length);
-    }
-
-    /**
      * Checks if the given arguments are from an iteratee call.
      *
      * @private
@@ -5640,16 +5546,13 @@
      * @returns {boolean} Returns `true` if `value` is a property name, else `false`.
      */
     function isKey(value, object) {
-      if (isArray(value)) {
-        return false;
-      }
       var type = typeof value;
-      if (type == 'number' || type == 'symbol' || type == 'boolean' ||
-          value == null || isSymbol(value)) {
+      if (type == 'number' || type == 'symbol') {
         return true;
       }
-      return reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
-        (object != null && value in Object(object));
+      return !isArray(value) &&
+        (isSymbol(value) || reIsPlainProp.test(value) || !reIsDeepProp.test(value) ||
+          (object != null && value in Object(object)));
     }
 
     /**
@@ -5661,9 +5564,8 @@
      */
     function isKeyable(value) {
       var type = typeof value;
-      return (type == 'string' || type == 'number' || type == 'symbol' || type == 'boolean')
-        ? (value !== '__proto__')
-        : (value === null);
+      return type == 'number' || type == 'boolean' ||
+        (type == 'string' && value != '__proto__') || value == null;
     }
 
     /**
@@ -5914,12 +5816,8 @@
      * @param {*} value The value to inspect.
      * @returns {string|symbol} Returns the key.
      */
-    function toKey(value) {
-      if (typeof value == 'string' || isSymbol(value)) {
-        return value;
-      }
-      var result = (value + '');
-      return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
+    function toKey(key) {
+      return (typeof key == 'string' || isSymbol(key)) ? key : (key + '');
     }
 
     /**
@@ -6081,7 +5979,6 @@
      * @param {Array} array The array to inspect.
      * @param {...Array} [values] The values to exclude.
      * @returns {Array} Returns the new array of filtered values.
-     * @see _.without, _.xor
      * @example
      *
      * _.difference([3, 2, 1], [4, 2]);
@@ -6943,15 +6840,10 @@
      * // => [10, 20]
      */
     var pullAt = rest(function(array, indexes) {
-      indexes = baseFlatten(indexes, 1);
+      indexes = arrayMap(baseFlatten(indexes, 1), String);
 
-      var length = array ? array.length : 0,
-          result = baseAt(array, indexes);
-
-      basePullAt(array, arrayMap(indexes, function(index) {
-        return isIndex(index, length) ? +index : index;
-      }).sort(compareAscending));
-
+      var result = baseAt(array, indexes);
+      basePullAt(array, indexes.sort(compareAscending));
       return result;
     });
 
@@ -7258,7 +7150,7 @@
      */
     function sortedUniqBy(array, iteratee) {
       return (array && array.length)
-        ? baseSortedUniq(array, getIteratee(iteratee))
+        ? baseSortedUniqBy(array, getIteratee(iteratee))
         : [];
     }
 
@@ -7668,7 +7560,6 @@
      * @param {Array} array The array to filter.
      * @param {...*} [values] The values to exclude.
      * @returns {Array} Returns the new array of filtered values.
-     * @see _.difference, _.xor
      * @example
      *
      * _.without([1, 2, 1, 3], 1, 2);
@@ -7692,7 +7583,6 @@
      * @category Array
      * @param {...Array} [arrays] The arrays to inspect.
      * @returns {Array} Returns the new array of values.
-     * @see _.difference, _.without
      * @example
      *
      * _.xor([2, 1], [4, 2]);
@@ -8282,7 +8172,6 @@
      * @param {Array|Function|Object|string} [predicate=_.identity]
      *  The function invoked per iteration.
      * @returns {Array} Returns the new filtered array.
-     * @see _.reject
      * @example
      *
      * var users = [
@@ -8478,7 +8367,6 @@
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @returns {Array|Object} Returns `collection`.
-     * @see _.forEachRight
      * @example
      *
      * _([1, 2]).forEach(function(value) {
@@ -8509,7 +8397,6 @@
      * @param {Array|Object} collection The collection to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @returns {Array|Object} Returns `collection`.
-     * @see _.forEach
      * @example
      *
      * _.forEachRight([1, 2], function(value) {
@@ -8822,7 +8709,6 @@
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @param {*} [accumulator] The initial value.
      * @returns {*} Returns the accumulated value.
-     * @see _.reduceRight
      * @example
      *
      * _.reduce([1, 2], function(sum, n) {
@@ -8855,7 +8741,6 @@
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @param {*} [accumulator] The initial value.
      * @returns {*} Returns the accumulated value.
-     * @see _.reduce
      * @example
      *
      * var array = [[0, 1], [2, 3], [4, 5]];
@@ -8884,7 +8769,6 @@
      * @param {Array|Function|Object|string} [predicate=_.identity]
      *  The function invoked per iteration.
      * @returns {Array} Returns the new filtered array.
-     * @see _.filter
      * @example
      *
      * var users = [
@@ -10216,7 +10100,6 @@
      * @category Lang
      * @param {*} value The value to clone.
      * @returns {*} Returns the cloned value.
-     * @see _.cloneDeep
      * @example
      *
      * var objects = [{ 'a': 1 }, { 'b': 2 }];
@@ -10242,7 +10125,6 @@
      * @param {*} value The value to clone.
      * @param {Function} [customizer] The function to customize cloning.
      * @returns {*} Returns the cloned value.
-     * @see _.cloneDeepWith
      * @example
      *
      * function customizer(value) {
@@ -10273,7 +10155,6 @@
      * @category Lang
      * @param {*} value The value to recursively clone.
      * @returns {*} Returns the deep cloned value.
-     * @see _.clone
      * @example
      *
      * var objects = [{ 'a': 1 }, { 'b': 2 }];
@@ -10296,7 +10177,6 @@
      * @param {*} value The value to recursively clone.
      * @param {Function} [customizer] The function to customize cloning.
      * @returns {*} Returns the deep cloned value.
-     * @see _.cloneWith
      * @example
      *
      * function customizer(value) {
@@ -10365,7 +10245,6 @@
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is greater than `other`,
      *  else `false`.
-     * @see _.lt
      * @example
      *
      * _.gt(3, 1);
@@ -10377,7 +10256,9 @@
      * _.gt(1, 3);
      * // => false
      */
-    var gt = createRelationalOperation(baseGt);
+    function gt(value, other) {
+      return value > other;
+    }
 
     /**
      * Checks if `value` is greater than or equal to `other`.
@@ -10390,7 +10271,6 @@
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is greater than or equal to
      *  `other`, else `false`.
-     * @see _.lte
      * @example
      *
      * _.gte(3, 1);
@@ -10402,9 +10282,9 @@
      * _.gte(1, 3);
      * // => false
      */
-    var gte = createRelationalOperation(function(value, other) {
+    function gte(value, other) {
       return value >= other;
-    });
+    }
 
     /**
      * Checks if `value` is likely an `arguments` object.
@@ -11443,7 +11323,6 @@
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is less than `other`,
      *  else `false`.
-     * @see _.gt
      * @example
      *
      * _.lt(1, 3);
@@ -11455,7 +11334,9 @@
      * _.lt(3, 1);
      * // => false
      */
-    var lt = createRelationalOperation(baseLt);
+    function lt(value, other) {
+      return value < other;
+    }
 
     /**
      * Checks if `value` is less than or equal to `other`.
@@ -11468,7 +11349,6 @@
      * @param {*} other The other value to compare.
      * @returns {boolean} Returns `true` if `value` is less than or equal to
      *  `other`, else `false`.
-     * @see _.gte
      * @example
      *
      * _.lte(1, 3);
@@ -11480,9 +11360,9 @@
      * _.lte(3, 1);
      * // => false
      */
-    var lte = createRelationalOperation(function(value, other) {
+    function lte(value, other) {
       return value <= other;
-    });
+    }
 
     /**
      * Converts `value` to an array.
@@ -11715,7 +11595,18 @@
      * // => '1,2,3'
      */
     function toString(value) {
-      return value == null ? '' : baseToString(value);
+      // Exit early for strings to avoid a performance hit in some environments.
+      if (typeof value == 'string') {
+        return value;
+      }
+      if (value == null) {
+        return '';
+      }
+      if (isSymbol(value)) {
+        return symbolToString ? symbolToString.call(value) : '';
+      }
+      var result = (value + '');
+      return (result == '0' && (1 / value) == -INFINITY) ? '-0' : result;
     }
 
     /*------------------------------------------------------------------------*/
@@ -11735,7 +11626,6 @@
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
      * @returns {Object} Returns `object`.
-     * @see _.assignIn
      * @example
      *
      * function Foo() {
@@ -11778,7 +11668,6 @@
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
      * @returns {Object} Returns `object`.
-     * @see _.assign
      * @example
      *
      * function Foo() {
@@ -11822,7 +11711,6 @@
      * @param {...Object} sources The source objects.
      * @param {Function} [customizer] The function to customize assigned values.
      * @returns {Object} Returns `object`.
-     * @see _.assignWith
      * @example
      *
      * function customizer(objValue, srcValue) {
@@ -11854,7 +11742,6 @@
      * @param {...Object} sources The source objects.
      * @param {Function} [customizer] The function to customize assigned values.
      * @returns {Object} Returns `object`.
-     * @see _.assignInWith
      * @example
      *
      * function customizer(objValue, srcValue) {
@@ -11948,7 +11835,6 @@
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
      * @returns {Object} Returns `object`.
-     * @see _.defaultsDeep
      * @example
      *
      * _.defaults({ 'user': 'barney' }, { 'age': 36 }, { 'user': 'fred' });
@@ -11972,7 +11858,6 @@
      * @param {Object} object The destination object.
      * @param {...Object} [sources] The source objects.
      * @returns {Object} Returns `object`.
-     * @see _.defaults
      * @example
      *
      * _.defaultsDeep({ 'user': { 'name': 'barney' } }, { 'user': { 'name': 'fred', 'age': 36 } });
@@ -12077,7 +11962,6 @@
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @returns {Object} Returns `object`.
-     * @see _.forInRight
      * @example
      *
      * function Foo() {
@@ -12109,7 +11993,6 @@
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @returns {Object} Returns `object`.
-     * @see _.forIn
      * @example
      *
      * function Foo() {
@@ -12143,7 +12026,6 @@
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @returns {Object} Returns `object`.
-     * @see _.forOwnRight
      * @example
      *
      * function Foo() {
@@ -12173,7 +12055,6 @@
      * @param {Object} object The object to iterate over.
      * @param {Function} [iteratee=_.identity] The function invoked per iteration.
      * @returns {Object} Returns `object`.
-     * @see _.forOwn
      * @example
      *
      * function Foo() {
@@ -12202,7 +12083,6 @@
      * @category Object
      * @param {Object} object The object to inspect.
      * @returns {Array} Returns the new array of property names.
-     * @see _.functionsIn
      * @example
      *
      * function Foo() {
@@ -12229,7 +12109,6 @@
      * @category Object
      * @param {Object} object The object to inspect.
      * @returns {Array} Returns the new array of property names.
-     * @see _.functions
      * @example
      *
      * function Foo() {
@@ -12519,7 +12398,6 @@
      * @param {Array|Function|Object|string} [iteratee=_.identity]
      *  The function invoked per iteration.
      * @returns {Object} Returns the new mapped object.
-     * @see _.mapValues
      * @example
      *
      * _.mapKeys({ 'a': 1, 'b': 2 }, function(value, key) {
@@ -12551,7 +12429,6 @@
      * @param {Array|Function|Object|string} [iteratee=_.identity]
      *  The function invoked per iteration.
      * @returns {Object} Returns the new mapped object.
-     * @see _.mapKeys
      * @example
      *
      * var users = {
@@ -12726,7 +12603,7 @@
      * // => { 'a': 1, 'c': 3 }
      */
     var pick = rest(function(object, props) {
-      return object == null ? {} : basePick(object, arrayMap(baseFlatten(props, 1), toKey));
+      return object == null ? {} : basePick(object, baseFlatten(props, 1));
     });
 
     /**
@@ -12793,7 +12670,7 @@
         length = 1;
       }
       while (++index < length) {
-        var value = object == null ? undefined : object[toKey(path[index])];
+        var value = object == null ? undefined : object[path[index]];
         if (value === undefined) {
           index = length;
           value = defaultValue;
@@ -13156,7 +13033,7 @@
     }
 
     /**
-     * Checks if `n` is between `start` and up to, but not including, `end`. If
+     * Checks if `n` is between `start` and up to but not including, `end`. If
      * `end` is not specified, it's set to `start` with `start` then set to `0`.
      * If `start` is greater than `end` the params are swapped to support
      * negative ranges.
@@ -13169,7 +13046,6 @@
      * @param {number} [start=0] The start of the range.
      * @param {number} end The end of the range.
      * @returns {boolean} Returns `true` if `number` is in the range, else `false`.
-     * @see _.range, _.rangeRight
      * @example
      *
      * _.inRange(3, 2, 4);
@@ -13368,7 +13244,7 @@
      */
     function endsWith(string, target, position) {
       string = toString(string);
-      target = baseToString(target);
+      target = typeof target == 'string' ? target : (target + '');
 
       var length = string.length;
       position = position === undefined
@@ -13765,7 +13641,7 @@
             typeof separator == 'string' ||
             (separator != null && !isRegExp(separator))
           )) {
-        separator = baseToString(separator);
+        separator += '';
         if (separator == '' && reHasComplexSymbol.test(string)) {
           return castSlice(stringToArray(string), 0, limit);
         }
@@ -13824,7 +13700,7 @@
     function startsWith(string, target, position) {
       string = toString(string);
       position = baseClamp(toInteger(position), 0, string.length);
-      return string.lastIndexOf(baseToString(target), position) == position;
+      return string.lastIndexOf(target, position) == position;
     }
 
     /**
@@ -14112,10 +13988,13 @@
      */
     function trim(string, chars, guard) {
       string = toString(string);
-      if (string && (guard || chars === undefined)) {
+      if (!string) {
+        return string;
+      }
+      if (guard || chars === undefined) {
         return string.replace(reTrim, '');
       }
-      if (!string || !(chars = baseToString(chars))) {
+      if (!(chars += '')) {
         return string;
       }
       var strSymbols = stringToArray(string),
@@ -14147,10 +14026,13 @@
      */
     function trimEnd(string, chars, guard) {
       string = toString(string);
-      if (string && (guard || chars === undefined)) {
+      if (!string) {
+        return string;
+      }
+      if (guard || chars === undefined) {
         return string.replace(reTrimEnd, '');
       }
-      if (!string || !(chars = baseToString(chars))) {
+      if (!(chars += '')) {
         return string;
       }
       var strSymbols = stringToArray(string),
@@ -14180,10 +14062,13 @@
      */
     function trimStart(string, chars, guard) {
       string = toString(string);
-      if (string && (guard || chars === undefined)) {
+      if (!string) {
+        return string;
+      }
+      if (guard || chars === undefined) {
         return string.replace(reTrimStart, '');
       }
-      if (!string || !(chars = baseToString(chars))) {
+      if (!(chars += '')) {
         return string;
       }
       var strSymbols = stringToArray(string),
@@ -14236,7 +14121,7 @@
       if (isObject(options)) {
         var separator = 'separator' in options ? options.separator : separator;
         length = 'length' in options ? toInteger(options.length) : length;
-        omission = 'omission' in options ? baseToString(options.omission) : omission;
+        omission = 'omission' in options ? toString(options.omission) : omission;
       }
       string = toString(string);
 
@@ -14276,7 +14161,7 @@
           }
           result = result.slice(0, newEnd === undefined ? end : newEnd);
         }
-      } else if (string.indexOf(baseToString(separator), end) != end) {
+      } else if (string.indexOf(separator, end) != end) {
         var index = result.lastIndexOf(separator);
         if (index > -1) {
           result = result.slice(0, index);
@@ -14443,7 +14328,6 @@
      */
     var bindAll = rest(function(object, methodNames) {
       arrayEach(baseFlatten(methodNames, 1), function(key) {
-        key = toKey(key);
         object[key] = bind(object[key], object);
       });
       return object;
@@ -14559,7 +14443,6 @@
      * @category Util
      * @param {...(Function|Function[])} [funcs] Functions to invoke.
      * @returns {Function} Returns the new function.
-     * @see _.flowRight
      * @example
      *
      * function square(n) {
@@ -14577,12 +14460,11 @@
      * invokes the given functions from right to left.
      *
      * @static
-     * @since 3.0.0
+     * @since 0.1.0
      * @memberOf _
      * @category Util
      * @param {...(Function|Function[])} [funcs] Functions to invoke.
      * @returns {Function} Returns the new function.
-     * @see _.flow
      * @example
      *
      * function square(n) {
@@ -15009,7 +14891,7 @@
      * // => [1, 2]
      */
     function property(path) {
-      return isKey(path) ? baseProperty(toKey(path)) : basePropertyDeep(path);
+      return isKey(path) ? baseProperty(path) : basePropertyDeep(path);
     }
 
     /**
@@ -15056,7 +14938,6 @@
      * @param {number} end The end of the range.
      * @param {number} [step=1] The value to increment or decrement by.
      * @returns {Array} Returns the new array of numbers.
-     * @see _.inRange, _.rangeRight
      * @example
      *
      * _.range(4);
@@ -15094,7 +14975,6 @@
      * @param {number} end The end of the range.
      * @param {number} [step=1] The value to increment or decrement by.
      * @returns {Array} Returns the new array of numbers.
-     * @see _.inRange, _.range
      * @example
      *
      * _.rangeRight(4);
@@ -15318,7 +15198,7 @@
      */
     function max(array) {
       return (array && array.length)
-        ? baseExtremum(array, identity, baseGt)
+        ? baseExtremum(array, identity, gt)
         : undefined;
     }
 
@@ -15348,7 +15228,7 @@
      */
     function maxBy(array, iteratee) {
       return (array && array.length)
-        ? baseExtremum(array, getIteratee(iteratee), baseGt)
+        ? baseExtremum(array, getIteratee(iteratee), gt)
         : undefined;
     }
 
@@ -15418,7 +15298,7 @@
      */
     function min(array) {
       return (array && array.length)
-        ? baseExtremum(array, identity, baseLt)
+        ? baseExtremum(array, identity, lt)
         : undefined;
     }
 
@@ -15448,7 +15328,7 @@
      */
     function minBy(array, iteratee) {
       return (array && array.length)
-        ? baseExtremum(array, getIteratee(iteratee), baseLt)
+        ? baseExtremum(array, getIteratee(iteratee), lt)
         : undefined;
     }
 
@@ -16120,11 +16000,9 @@
   // Export lodash.
   var _ = runInContext();
 
-  // Expose Lodash on the free variable `window` or `self` when available so it's
-  // globally accessible, even when bundled with Browserify, Webpack, etc. This
-  // also prevents errors in cases where Lodash is loaded by a script tag in the
-  // presence of an AMD loader. See http://requirejs.org/docs/errors.html#mismatch
-  // for more details. Use `_.noConflict` to remove Lodash from the global object.
+  // Expose lodash on the free variable `window` or `self` when available. This
+  // prevents errors in cases where lodash is loaded by a script tag in the presence
+  // of an AMD loader. See http://requirejs.org/docs/errors.html#mismatch for more details.
   (freeWindow || freeSelf || {})._ = _;
 
   // Some AMD build optimizers like r.js check for condition patterns like the following:
@@ -16150,7 +16028,7 @@
   }
 }.call(this));
 
-}).call(this,typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
+}).call(this,typeof global !== "undefined" ? global : typeof self !== "undefined" ? self : typeof window !== "undefined" ? window : {})
 },{}],2:[function(require,module,exports){
 //! moment.js
 //! version : 2.13.0
@@ -22701,6 +22579,266 @@ require('./DashBoardController');
 })();
 },{}],42:[function(require,module,exports){
 (function () {
+    'use strict';
+
+    angular.module('mcms.itemSelector', [
+        'ui.tree'
+    ]);
+
+})();
+
+
+require('./itemSelector.component');
+require('./itemConnectorFilter.component');
+require('./itemConnector.component');
+require('./service');
+},{"./itemConnector.component":43,"./itemConnectorFilter.component":44,"./itemSelector.component":45,"./service":46}],43:[function(require,module,exports){
+(function () {
+    angular.module('mcms.itemSelector')
+        .directive('itemConnector', Directive);
+
+    Directive.$inject = ['configuration'];
+    DirectiveController.$inject = ['$scope', 'core.services'];
+
+    function Directive(Config) {
+
+        return {
+            templateUrl: Config.templatesDir + "ItemSelector/itemConnectors.component.html",
+            controller: DirectiveController,
+            controllerAs: 'VM',
+            require : ['itemConnector'],
+            scope: {
+                options: '=?options',
+                connector : '=connector',
+                onResult : '&onResult'
+            },
+            restrict: 'E',
+            link: function (scope, element, attrs, controllers) {
+                var defaults = {
+                    hasFilters: true
+                };
+
+
+                controllers[0].set(scope.connector);
+
+                scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
+            }
+        };
+    }
+
+    function DirectiveController($scope, Core) {
+        var vm = this;
+        vm.Connector = {};
+        vm.Sections = [];
+
+        this.set = function (connector) {
+            vm.Connector = connector;
+            vm.Sections = connector.connector.sections;
+        };
+
+        vm.onSelect = function (result) {
+            //pass it down to the caller
+            $scope.onResult({result : result});
+        };
+    }
+})();
+
+},{}],44:[function(require,module,exports){
+(function () {
+    angular.module('mcms.itemSelector')
+        .directive('itemConnectorFilter', Directive);
+
+    Directive.$inject = ['configuration'];
+    DirectiveController.$inject = ['$scope', 'ItemSelectorService', 'core.services', '$timeout', 'lodashFactory'];
+
+    function Directive(Config) {
+
+        return {
+            templateUrl: Config.templatesDir + "ItemSelector/itemConnectorFilter.component.html",
+            controller: DirectiveController,
+            controllerAs: 'VM',
+            require : ['itemConnectorFilter'],
+            scope: {
+                options: '=?options',
+                connector : '=connector',
+                section : '=section',
+                onSelect : '&onSelect'
+            },
+            restrict: 'E',
+            link: function (scope, element, attrs, controllers) {
+                var defaults = {
+                    hasFilters: true
+                };
+
+
+                controllers[0].set(scope.connector, scope.section);
+
+                scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
+            }
+        };
+    }
+
+    function DirectiveController($scope, ItemSelector, Core, $timeout, lo) {
+        var vm = this;
+        var delay = 500,
+            timer = false;
+        vm.Connector = {};
+        vm.filter = '';
+        vm.Results = [];
+
+        vm.Section = {};
+        this.set = function (connector, section) {
+            vm.Connector = connector;
+            vm.Section = section;
+            var keyFound = lo.find(vm.Section.filters, {default : true});
+            vm.filterKey = (keyFound) ? keyFound.key  : vm.Section.filters[0].key;
+            if (typeof section.settings.preload != 'undefined' && section.settings.preload){
+                $timeout(function () {
+                    vm.applyFilter();
+                });
+            }
+        };
+        
+        vm.get = function (query) {
+            vm.Loading = true;
+            return ItemSelector.filter(query, vm.Connector.name, vm.Section.name)
+                .then(function (res) {
+                    vm.Loading = false;
+                    return (!query) ? res : res.data.filter( Core.createFilterFor('title',query) );
+                });
+        };
+
+        vm.applyFilter = function () {
+            if(timer){
+                $timeout.cancel(timer)
+            }
+
+            timer = $timeout(function(){
+                query = {};
+                query[vm.filterKey] = vm.filter;
+                vm.get(query).then(function (results) {
+                    vm.Results = results;
+                });
+            },delay);
+        };
+
+        vm.onSelected = function (item) {
+            console.log(item);
+        };
+
+        vm.selectResult = function (result) {
+            //pass it down to your parent component
+            $scope.onSelect({result : result});
+        }
+    }
+})();
+
+},{}],45:[function(require,module,exports){
+(function () {
+    angular.module('mcms.itemSelector')
+        .directive('itemSelector', Directive);
+
+    Directive.$inject = ['configuration'];
+    DirectiveController.$inject = ['$scope','core.services', 'LangService'];
+
+    function Directive(Config) {
+
+        return {
+            templateUrl: Config.templatesDir + "ItemSelector/itemSelector.component.html",
+            controller: DirectiveController,
+            controllerAs: 'VM',
+            require : ['itemSelector'],
+            scope: {
+                items: '=items',
+                connector : '=connector',
+                onResult : '&onResult'
+            },
+            restrict: 'E',
+            link: function (scope, element, attrs, controllers) {
+                var defaults = {
+                    hasFilters: true
+                };
+                scope.Title = attrs.title || null;
+
+                scope.$watch('items', function (val) {
+                    if (val){
+                        controllers[0].set(val);
+                    }
+                });
+
+                scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
+            }
+        };
+    }
+
+    function DirectiveController($scope, Core, Lang) {
+        var vm = this;
+        vm.Lang = Lang;
+        vm.defaultLang = Lang.defaultLang();
+        vm.Connectors = [];
+        vm.Items = [];
+
+        vm.set = function (items) {
+            vm.Connectors = $scope.connector;
+            vm.Items = items;
+        };
+
+        vm.removeItem = function (item) {
+          vm.Items.splice(vm.Items.indexOf(item), 1);
+        };
+
+        vm.onResult = function (result) {
+            $scope.onResult({result : result});
+        }
+    }
+})();
+
+},{}],46:[function(require,module,exports){
+(function () {
+    'use strict';
+
+    angular.module('mcms.itemSelector')
+        .service('ItemSelectorService',Service);
+
+    Service.$inject = ['core.services', 'lodashFactory', '$http'];
+
+    function Service(Helpers, lo, $http) {
+        var _this = this;
+        var Connectors = [];
+        var baseUrl = '/admin/api/itemSelector/filter'
+        this.register = register;
+        this.connectors = connectors;
+        this.filter = filter;
+
+        function register(connector) {
+            if (lo.isArray(connector)){
+                Connectors = connector;
+                return this;
+
+            }
+            Connectors.push(connector);
+            return this;
+        }
+
+        function connectors() {
+            return Connectors;
+        }
+
+        function filter(query, connector, section) {
+            return $http.post(baseUrl, angular.extend({
+                connector : connector,
+                section : section
+            },query))
+                .then(function (response) {
+                    return response.data;
+                });
+        }
+
+    }
+})();
+
+},{}],47:[function(require,module,exports){
+(function () {
     angular.module('mcms.lang')
         .directive('localeComponent', Directive);
 
@@ -22760,7 +22898,7 @@ require('./DashBoardController');
     }
 })();
 
-},{}],43:[function(require,module,exports){
+},{}],48:[function(require,module,exports){
 (function () {
     angular.module('mcms.lang')
         .directive('translationComponent', Directive);
@@ -22824,7 +22962,7 @@ require('./DashBoardController');
     }
 })();
 
-},{}],44:[function(require,module,exports){
+},{}],49:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -22975,7 +23113,7 @@ require('./DashBoardController');
 
 })();
 
-},{}],45:[function(require,module,exports){
+},{}],50:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23004,6 +23142,7 @@ require('./DashBoardController');
 
         function init() {
             return Lang.init().then(function (bootData) {
+                console.log(bootData    )
                 Groups = bootData.groups;
                 Locales = bootData.locales;
                 DefaultLang = bootData.defaultLang;
@@ -23103,7 +23242,7 @@ require('./DashBoardController');
 })();
 
 
-},{}],46:[function(require,module,exports){
+},{}],51:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23200,7 +23339,7 @@ require('./DashBoardController');
 })();
 
 
-},{}],47:[function(require,module,exports){
+},{}],52:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -23279,7 +23418,7 @@ require('./DashBoardController');
 
 })();
 
-},{}],48:[function(require,module,exports){
+},{}],53:[function(require,module,exports){
 (function() {
   'use strict';
 
@@ -23353,7 +23492,7 @@ require('./Components/translationComponent');
 require('./Components/localeComponent');
 
 
-},{"./Components/localeComponent":42,"./Components/translationComponent":43,"./LangController":44,"./LangService":45,"./LocaleService":46,"./LocalesController":47,"./langDataService":49,"./localesDataService":50,"./routes":51}],49:[function(require,module,exports){
+},{"./Components/localeComponent":47,"./Components/translationComponent":48,"./LangController":49,"./LangService":50,"./LocaleService":51,"./LocalesController":52,"./langDataService":54,"./localesDataService":55,"./routes":56}],54:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23404,7 +23543,7 @@ require('./Components/localeComponent');
     }
 })();
 
-},{}],50:[function(require,module,exports){
+},{}],55:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23465,7 +23604,7 @@ require('./Components/localeComponent');
     }
 })();
 
-},{}],51:[function(require,module,exports){
+},{}],56:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -23504,7 +23643,7 @@ require('./Components/localeComponent');
 
 })();
 
-},{}],52:[function(require,module,exports){
+},{}],57:[function(require,module,exports){
 (function () {
     angular.module('mcms.mediaFiles')
         .directive('editImage', Directive);
@@ -23558,7 +23697,7 @@ require('./Components/localeComponent');
     }
 })();
 
-},{}],53:[function(require,module,exports){
+},{}],58:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23613,7 +23752,7 @@ require('./Components/localeComponent');
     }
 })();
 
-},{}],54:[function(require,module,exports){
+},{}],59:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23634,7 +23773,7 @@ require('./imageDataService');
 require('./mediaFiles.component');
 require('./editImage.component');
 require('./service');
-},{"./editImage.component":52,"./imageDataService":53,"./mediaFiles.component":55,"./service":56}],55:[function(require,module,exports){
+},{"./editImage.component":57,"./imageDataService":58,"./mediaFiles.component":60,"./service":61}],60:[function(require,module,exports){
 (function () {
     angular.module('mcms.mediaFiles')
         .directive('mediaFiles', Directive);
@@ -23763,7 +23902,7 @@ require('./service');
     }
 })();
 
-},{}],56:[function(require,module,exports){
+},{}],61:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -23802,7 +23941,7 @@ require('./service');
         }
     }
 })();
-},{}],57:[function(require,module,exports){
+},{}],62:[function(require,module,exports){
 (function () {
     angular.module('mcms.menu')
         .directive('addNode', Directive);
@@ -23852,7 +23991,7 @@ require('./service');
     }
 })();
 
-},{}],58:[function(require,module,exports){
+},{}],63:[function(require,module,exports){
 (function () {
     angular.module('mcms.menu')
         .directive('customLinkConnector', Directive);
@@ -23907,7 +24046,7 @@ require('./service');
     }
 })();
 
-},{}],59:[function(require,module,exports){
+},{}],64:[function(require,module,exports){
 (function () {
     angular.module('mcms.menu')
         .directive('editMenu', Directive);
@@ -23967,7 +24106,7 @@ require('./service');
     }
 })();
 
-},{}],60:[function(require,module,exports){
+},{}],65:[function(require,module,exports){
 (function () {
     angular.module('mcms.menu')
         .directive('menuConnector', Directive);
@@ -24018,7 +24157,7 @@ require('./service');
     }
 })();
 
-},{}],61:[function(require,module,exports){
+},{}],66:[function(require,module,exports){
 (function () {
     angular.module('mcms.menu')
         .directive('menuConnectorFilter', Directive);
@@ -24110,7 +24249,7 @@ require('./service');
     }
 })();
 
-},{}],62:[function(require,module,exports){
+},{}],67:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -24175,7 +24314,7 @@ require('./service');
 
 })();
 
-},{}],63:[function(require,module,exports){
+},{}],68:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24253,7 +24392,7 @@ require('./service');
     }
 })();
 
-},{}],64:[function(require,module,exports){
+},{}],69:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24350,7 +24489,7 @@ require('./service');
 
 })();
 
-},{}],65:[function(require,module,exports){
+},{}],70:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24512,7 +24651,7 @@ require('./service');
     }
 })();
 
-},{}],66:[function(require,module,exports){
+},{}],71:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24557,7 +24696,7 @@ require('./Components/menuConnectorFilter.component');
 require('./Components/addNode.component');
 require('./Components/customLinkConnector.component');
 
-},{"./Components/addNode.component":57,"./Components/customLinkConnector.component":58,"./Components/editMenu.component":59,"./Components/menuConnector.component":60,"./Components/menuConnectorFilter.component":61,"./MenuController":62,"./MenuDataService":63,"./MenuItemController":64,"./MenuService":65,"./routes":67,"./services":68}],67:[function(require,module,exports){
+},{"./Components/addNode.component":62,"./Components/customLinkConnector.component":63,"./Components/editMenu.component":64,"./Components/menuConnector.component":65,"./Components/menuConnectorFilter.component":66,"./MenuController":67,"./MenuDataService":68,"./MenuItemController":69,"./MenuService":70,"./routes":72,"./services":73}],72:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -24595,7 +24734,7 @@ require('./Components/customLinkConnector.component');
 
 })();
 
-},{}],68:[function(require,module,exports){
+},{}],73:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24709,7 +24848,7 @@ require('./Components/customLinkConnector.component');
     }
 })();
 
-},{}],69:[function(require,module,exports){
+},{}],74:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -24725,7 +24864,7 @@ require('./Components/customLinkConnector.component');
 
 })();
 
-},{}],70:[function(require,module,exports){
+},{}],75:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24755,7 +24894,7 @@ require('./renderSettings.component');
 require('./SettingsManagerController');
 require('./routes');
 
-},{"./SettingsManagerController":69,"./renderSettings.component":71,"./routes":72,"./services":73}],71:[function(require,module,exports){
+},{"./SettingsManagerController":74,"./renderSettings.component":76,"./routes":77,"./services":78}],76:[function(require,module,exports){
 (function () {
     angular.module('mcms.settingsManager')
         .directive('renderSettings', Directive);
@@ -24829,7 +24968,7 @@ require('./routes');
     }
 })();
 
-},{}],72:[function(require,module,exports){
+},{}],77:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -24853,7 +24992,7 @@ require('./routes');
 
 })();
 
-},{}],73:[function(require,module,exports){
+},{}],78:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -24919,7 +25058,7 @@ require('./routes');
     }
 })();
 
-},{}],74:[function(require,module,exports){
+},{}],79:[function(require,module,exports){
 (function () {
     angular.module('mcms.user')
         .directive('editPermission', Directive);
@@ -24968,7 +25107,7 @@ require('./routes');
     }
 })();
 
-},{}],75:[function(require,module,exports){
+},{}],80:[function(require,module,exports){
 (function () {
     angular.module('mcms.user')
         .directive('editRole', Directive);
@@ -25017,7 +25156,7 @@ require('./routes');
     }
 })();
 
-},{}],76:[function(require,module,exports){
+},{}],81:[function(require,module,exports){
 (function () {
     angular.module('mcms.user')
         .directive('editUser', Directive);
@@ -25110,7 +25249,7 @@ require('./routes');
     }
 })();
 
-},{}],77:[function(require,module,exports){
+},{}],82:[function(require,module,exports){
 (function () {
     angular.module('mcms.user')
         .directive('permissionList', Directive);
@@ -25182,7 +25321,7 @@ require('./routes');
 
 })();
 
-},{}],78:[function(require,module,exports){
+},{}],83:[function(require,module,exports){
 (function () {
     angular.module('mcms.user')
         .directive('roleList', Directive);
@@ -25256,7 +25395,7 @@ require('./routes');
 
 })();
 
-},{}],79:[function(require,module,exports){
+},{}],84:[function(require,module,exports){
 (function () {
     angular.module('mcms.user')
         .directive('userList', Directive);
@@ -25366,7 +25505,7 @@ require('./routes');
     }
 })();
 
-},{}],80:[function(require,module,exports){
+},{}],85:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -25385,7 +25524,7 @@ require('./routes');
 
 })();
 
-},{}],81:[function(require,module,exports){
+},{}],86:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -25433,7 +25572,7 @@ require('./routes');
     }
 })();
 
-},{}],82:[function(require,module,exports){
+},{}],87:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -25486,7 +25625,7 @@ require('./routes');
     }
 })();
 
-},{}],83:[function(require,module,exports){
+},{}],88:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -25529,7 +25668,7 @@ require('./routes');
 
 })();
 
-},{}],84:[function(require,module,exports){
+},{}],89:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -25568,7 +25707,7 @@ require('./Components/editPermission.component');
 require('./Components/permissionList.component');
 require('./Components/roleList.component');
 
-},{"./Components/editPermission.component":74,"./Components/editRole.component":75,"./Components/editUser.component":76,"./Components/permissionList.component":77,"./Components/roleList.component":78,"./Components/userList.component":79,"./UserActionsController":80,"./UserDataService":81,"./UserService":82,"./UsersController":83,"./routes":85}],85:[function(require,module,exports){
+},{"./Components/editPermission.component":79,"./Components/editRole.component":80,"./Components/editUser.component":81,"./Components/permissionList.component":82,"./Components/roleList.component":83,"./Components/userList.component":84,"./UserActionsController":85,"./UserDataService":86,"./UserService":87,"./UsersController":88,"./routes":90}],90:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -25596,7 +25735,7 @@ require('./Components/roleList.component');
 
 })();
 
-},{}],86:[function(require,module,exports){
+},{}],91:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -25609,7 +25748,7 @@ require('./widgetProvider');
 
 
 
-},{"./services":87,"./widgetProvider":88}],87:[function(require,module,exports){
+},{"./services":92,"./widgetProvider":93}],92:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -25660,7 +25799,7 @@ require('./widgetProvider');
 
 })();
 
-},{}],88:[function(require,module,exports){
+},{}],93:[function(require,module,exports){
 (function() {
     angular.module('mcms.core')
         .directive('widgetProvider', widgetProvider);
@@ -25701,7 +25840,7 @@ require('./widgetProvider');
     }
 })();
 
-},{}],89:[function(require,module,exports){
+},{}],94:[function(require,module,exports){
 (function(){
     'use strict';
     var angularModules = [
@@ -25722,7 +25861,8 @@ require('./widgetProvider');
         'mcms.widgets',
         'mcms.menu',
         'mcms.user',
-        'mcms.settingsManager'
+        'mcms.settingsManager',
+        'mcms.itemSelector'
     ];
 
     if (typeof window.Injectables != 'undefined'){
@@ -25783,5 +25923,6 @@ require('./User');
 require('./SettingsManager');
 require('./ExtraField');
 require('./MediaFiles');
+require('./ItemSelector');
 
-},{"./Auth":10,"./Components":18,"./Core":33,"./DashBoard":39,"./ExtraField":41,"./Lang":48,"./MediaFiles":54,"./Menu":66,"./SettingsManager":70,"./User":84,"./Widgets":86}]},{},[89])
+},{"./Auth":10,"./Components":18,"./Core":33,"./DashBoard":39,"./ExtraField":41,"./ItemSelector":42,"./Lang":53,"./MediaFiles":59,"./Menu":71,"./SettingsManager":75,"./User":89,"./Widgets":91}]},{},[94]);

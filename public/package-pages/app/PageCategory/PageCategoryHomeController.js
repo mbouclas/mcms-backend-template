@@ -4,9 +4,9 @@
     angular.module('mcms.pages.pageCategory')
         .controller('PageCategoryHomeController',Controller);
 
-    Controller.$inject = ['init', 'LangService', 'Dialog', 'PageCategoryService', 'core.services'];
+    Controller.$inject = ['init', 'LangService', 'Dialog', 'PageCategoryService', 'core.services', 'ItemSelectorService'];
 
-    function Controller(Categories, Lang, Dialog, PageCategoryService, Helpers) {
+    function Controller(Categories, Lang, Dialog, PageCategoryService, Helpers, ItemSelector) {
         var vm = this;
         vm.Categories = Categories;
         vm.Lang = Lang;
@@ -15,6 +15,21 @@
             dragStop: function (ev) {
 
             }
+        };
+
+        PageCategoryService.find(3)
+            .then(function (res) {
+                vm.Item = res;
+                vm.Connectors = ItemSelector.connectors();
+
+            });
+
+        vm.onResult = function (result) {
+            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
+                vm.Item.featured = [];
+            }
+
+            vm.Item.featured.push(result);
         };
 
         vm.onSave =function (item, isNew, parent) {

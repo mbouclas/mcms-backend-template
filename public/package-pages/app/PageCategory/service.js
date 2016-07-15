@@ -4,14 +4,15 @@
     angular.module('mcms.pages.pageCategory')
         .service('PageCategoryService',Service);
 
-    Service.$inject = ['PageCategoryDataService'];
+    Service.$inject = ['PageCategoryDataService', 'ItemSelectorService'];
     /**
      * The PageCategory service
      *
      * @param {object} DS
+     * @param ItemSelector
      * @constructor
      */
-    function Service(DS) {
+    function Service(DS, ItemSelector) {
         var _this = this;
         var Categories = [];
         this.get = get;
@@ -34,6 +35,7 @@
         function find(id) {
             return DS.show(id)
                 .then(function (response) {
+                    ItemSelector.register(response.connectors);
                     return response.item;
                 });
         }

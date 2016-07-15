@@ -26,6 +26,7 @@
 
         function init() {
             return Lang.init().then(function (bootData) {
+                console.log(bootData    )
                 Groups = bootData.groups;
                 Locales = bootData.locales;
                 DefaultLang = bootData.defaultLang;

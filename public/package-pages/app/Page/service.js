@@ -4,9 +4,10 @@
     angular.module('mcms.pages.page')
         .service('PageService',Service);
 
-    Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService', '$q', 'PageCategoryService'];
+    Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService',
+        '$q', 'PageCategoryService', 'ItemSelectorService'];
 
-    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService) {
+    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector) {
         var _this = this;
         var Pages = [];
         this.get = get;
@@ -40,6 +41,7 @@
         function find(id) {
             return DS.show(id)
                 .then(function (response) {
+                    ItemSelector.register(response.connectors);
                     MediaFiles.setImageCategories(response.imageCategories);
                     return response.item || newPage();
                 });

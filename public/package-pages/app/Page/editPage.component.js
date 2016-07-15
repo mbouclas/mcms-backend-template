@@ -5,7 +5,7 @@
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
     DirectiveController.$inject = [ '$scope','PageService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-        'PageCategoryService',  'PAGES_CONFIG'];
+        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService'];
 
     function Directive(Config, $timeout) {
 
@@ -31,7 +31,7 @@
         };
     }
 
-    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig) {
+    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -133,6 +133,16 @@
                 });
         };
 
+        vm.onResult = function (result) {
+            if (typeof vm.Item.related == 'undefined' || !vm.Item.related){
+                vm.Item.related = [];
+            }
+
+            result.source_item_id = vm.Item.id;
+
+            vm.Item.related.push(result);
+        };
+
         vm.removeCategory = function (cat) {
             vm.Item.categories.splice(lo.findIndex(vm.Item.categories, {id : cat.id}), 1);
         };
@@ -166,6 +176,7 @@
 
         function init(item) {
             vm.Item = item;
+            vm.Connectors = ItemSelector.connectors();
             vm.thumbUploadOptions.uploadConfig.fields.item_id = item.id;
             vm.thumbUploadOptions.uploadConfig.fields.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
             vm.thumbUploadOptions.uploadConfig.fields.type = 'thumb';

@@ -72,6 +72,13 @@
                 ></thumb-upload-box>
 
             </md-content>
+            
+            <md-chips ng-model="VM.Item.tagged" name="tags" placeholder="Tags">
+                <md-chip-template>
+                    <strong>{{$chip}}</strong>
+                    <em>(fruit)</em>
+                </md-chip-template>
+            </md-chips>
 
             <render-settings items="VM.Settings" ng-model="VM.Item.settings"></render-settings>
 

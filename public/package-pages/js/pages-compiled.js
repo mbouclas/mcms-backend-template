@@ -1,13 +1,13 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function() {
     'use strict';
 
     angular.module('mcms.pages.pageCategory')
         .controller('PageCategoryHomeController',Controller);
 
-    Controller.$inject = ['init', 'LangService', 'Dialog', 'PageCategoryService', 'core.services'];
+    Controller.$inject = ['init', 'LangService', 'Dialog', 'PageCategoryService', 'core.services', 'ItemSelectorService'];
 
-    function Controller(Categories, Lang, Dialog, PageCategoryService, Helpers) {
+    function Controller(Categories, Lang, Dialog, PageCategoryService, Helpers, ItemSelector) {
         var vm = this;
         vm.Categories = Categories;
         vm.Lang = Lang;
@@ -16,6 +16,21 @@
             dragStop: function (ev) {
 
             }
+        };
+
+        PageCategoryService.find(3)
+            .then(function (res) {
+                vm.Item = res;
+                vm.Connectors = ItemSelector.connectors();
+
+            });
+
+        vm.onResult = function (result) {
+            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
+                vm.Item.featured = [];
+            }
+
+            vm.Item.featured.push(result);
         };
 
         vm.onSave =function (item, isNew, parent) {
@@ -162,9 +177,9 @@
         .directive('editPageCategory', Directive);
 
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
-    DirectiveController.$inject = [ '$scope','PageCategoryService',
+    DirectiveController.$inject = ['$scope', 'PageCategoryService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-         'PAGES_CONFIG'];
+        'PAGES_CONFIG', 'ItemSelectorService'];
 
     function Directive(Config, $timeout) {
 
@@ -172,26 +187,26 @@
             templateUrl: Config.templatesDir + "PageCategory/editPageCategory.component.html",
             controller: DirectiveController,
             controllerAs: 'VM',
-            require : ['editPageCategory'],
+            require: ['editPageCategory'],
             scope: {
                 options: '=?options',
                 addTo: '=?addTo',
                 item: '=?item',
-                onSave : '&?onSave'
+                onSave: '&?onSave'
             },
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
                     hasFilters: true
                 };
-                
+
                 controllers[0].init(scope.item);
                 scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
             }
         };
     }
 
-    function DirectiveController($scope, PageCategory, Helpers, Config, ACL, Lang, PagesConfig) {
+    function DirectiveController($scope, PageCategory, Helpers, Config, ACL, Lang, PagesConfig, ItemSelector) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -206,47 +221,47 @@
         vm.isAdmin = ACL.role('admin');//more efficient check
         vm.tabs = [
             {
-                label : 'General',
-                file : PagesConfig.templatesDir + 'PageCategory/Components/tab-general-info.html',
-                active : true,
-                default : true,
-                alias : 'general'
+                label: 'General',
+                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-general-info.html',
+                active: true,
+                default: true,
+                alias: 'general'
             },
             {
-                label : 'Translations',
-                file : PagesConfig.templatesDir + 'PageCategory/Components/tab-translations.html',
-                active : false,
-                alias : 'translations',
+                label: 'Translations',
+                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-translations.html',
+                active: false,
+                alias: 'translations',
             },
             {
-                label : 'Extra Fields',
-                file : PagesConfig.templatesDir + 'Page/Components/tab-extra-fields.html',
-                active : false,
-                alias : 'extraFields',
+                label: 'Extra Fields',
+                file: PagesConfig.templatesDir + 'Page/Components/tab-extra-fields.html',
+                active: false,
+                alias: 'extraFields',
             },
             {
-                label : 'Featured',
-                file : PagesConfig.templatesDir + 'PageCategory/Components/tab-featured.html',
-                active : false,
-                alias : 'featured',
+                label: 'Featured',
+                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-featured.html',
+                active: false,
+                alias: 'featured',
             },
         ];
 
         vm.thumbUploadOptions = {
-            uploadConfig : {
-                url : Config.imageUploadUrl,
-                fields : {
-                    container : 'Item'
+            uploadConfig: {
+                url: Config.imageUploadUrl,
+                fields: {
+                    container: 'Item'
                 }
             }
         };
         vm.UploadConfig = {
-            file : {},
-            image : vm.imagesUploadOptions
+            file: {},
+            image: vm.imagesUploadOptions
         };
 
         vm.init = function (item) {
-            if (typeof item == 'number'){
+            if (typeof item == 'number') {
                 //call for data from the server
                 PageCategory.find(item)
                     .then(init);
@@ -256,24 +271,36 @@
 
         };
 
+        vm.onResult = function (result) {
+            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
+                vm.Item.featured = [];
+            }
+
+            result.category_id = vm.Item.id;
+            console.log(result);
+            vm.Item.featured.push(result);
+        };
+
 
         vm.save = function () {
             PageCategory.save(vm.Item)
                 .then(function (result) {
                     var isNew = (!vm.Item.id && result.id);
-                    if (isNew){
+                    if (isNew) {
                         vm.Item = result;
                         vm.Item.children = [];
                     }
 
-                   Helpers.toast('Saved!');
-                    if (typeof $scope.onSave == 'function'){
-                        $scope.onSave({item : vm.Item, isNew : isNew, parent : vm.Parent});
+                    Helpers.toast('Saved!');
+
+                    if (typeof $scope.onSave == 'function') {
+                        $scope.onSave({item: vm.Item, isNew: isNew, parent: vm.Parent});
                     }
                 });
         };
 
         function init(item) {
+            vm.Connectors = ItemSelector.connectors();
             vm.Item = item;
             vm.Parent = $scope.addTo || null;
             vm.thumbUploadOptions.uploadConfig.fields.item_id = item.id;
@@ -341,14 +368,15 @@ require('./editPageCategory.component');
     angular.module('mcms.pages.pageCategory')
         .service('PageCategoryService',Service);
 
-    Service.$inject = ['PageCategoryDataService'];
+    Service.$inject = ['PageCategoryDataService', 'ItemSelectorService'];
     /**
      * The PageCategory service
      *
      * @param {object} DS
+     * @param ItemSelector
      * @constructor
      */
-    function Service(DS) {
+    function Service(DS, ItemSelector) {
         var _this = this;
         var Categories = [];
         this.get = get;
@@ -371,6 +399,7 @@ require('./editPageCategory.component');
         function find(id) {
             return DS.show(id)
                 .then(function (response) {
+                    ItemSelector.register(response.connectors);
                     return response.item;
                 });
         }
@@ -658,7 +687,7 @@ require('./editPageCategory.component');
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
     DirectiveController.$inject = [ '$scope','PageService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-        'PageCategoryService',  'PAGES_CONFIG'];
+        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService'];
 
     function Directive(Config, $timeout) {
 
@@ -684,7 +713,7 @@ require('./editPageCategory.component');
         };
     }
 
-    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig) {
+    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -786,6 +815,16 @@ require('./editPageCategory.component');
                 });
         };
 
+        vm.onResult = function (result) {
+            if (typeof vm.Item.related == 'undefined' || !vm.Item.related){
+                vm.Item.related = [];
+            }
+
+            result.source_item_id = vm.Item.id;
+
+            vm.Item.related.push(result);
+        };
+
         vm.removeCategory = function (cat) {
             vm.Item.categories.splice(lo.findIndex(vm.Item.categories, {id : cat.id}), 1);
         };
@@ -819,6 +858,7 @@ require('./editPageCategory.component');
 
         function init(item) {
             vm.Item = item;
+            vm.Connectors = ItemSelector.connectors();
             vm.thumbUploadOptions.uploadConfig.fields.item_id = item.id;
             vm.thumbUploadOptions.uploadConfig.fields.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
             vm.thumbUploadOptions.uploadConfig.fields.type = 'thumb';
@@ -898,9 +938,10 @@ require('./editPage.component');
     angular.module('mcms.pages.page')
         .service('PageService',Service);
 
-    Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService', '$q', 'PageCategoryService'];
+    Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService',
+        '$q', 'PageCategoryService', 'ItemSelectorService'];
 
-    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService) {
+    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector) {
         var _this = this;
         var Pages = [];
         this.get = get;
@@ -934,6 +975,7 @@ require('./editPage.component');
         function find(id) {
             return DS.show(id)
                 .then(function (response) {
+                    ItemSelector.register(response.connectors);
                     MediaFiles.setImageCategories(response.imageCategories);
                     return response.item || newPage();
                 });
@@ -973,46 +1015,6 @@ require('./editPage.component');
 })();
 
 },{}],14:[function(require,module,exports){
-(function(){
-    'use strict';
-    var assetsUrl = '/assets/',
-        appUrl = '/app/',
-        componentsUrl = appUrl + 'Components/',
-        templatesDir = '/package-pages/app/templates/';
-
-    var config = {
-        apiUrl : '/api/',
-        prefixUrl : '/admin',
-        templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
-        imageBasePath: assetsUrl + 'img',
-        validationMessages : templatesDir + 'Components/validationMessages.html',
-        appUrl : appUrl,
-        componentsUrl : componentsUrl,
-        fileTypes : {
-            image : {
-                accept : 'image/*',
-                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
-            },
-            document : {
-                accept : 'application/pdf,application/doc,application/docx',
-                acceptSelect : 'application/pdf,application/doc,application/docx'
-            },
-            file : {
-                accept : 'application/*',
-                acceptSelect : 'application/*'
-            },
-            audio : {
-                accept : 'audio/*',
-                acceptSelect : 'audio/*'
-            }
-        }
-    };
-
-    angular.module('mcms.core')
-        .constant('PAGES_CONFIG',config);
-})();
-},{}],15:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1070,4 +1072,44 @@ require('./editPage.component');
 require('./config');
 require('./Page');
 require('./PageCategory');
-},{"./Page":11,"./PageCategory":4,"./config":14}]},{},[15])
+},{"./Page":11,"./PageCategory":4,"./config":15}],15:[function(require,module,exports){
+(function(){
+    'use strict';
+    var assetsUrl = '/assets/',
+        appUrl = '/app/',
+        componentsUrl = appUrl + 'Components/',
+        templatesDir = '/package-pages/app/templates/';
+
+    var config = {
+        apiUrl : '/api/',
+        prefixUrl : '/admin',
+        templatesDir : templatesDir,
+        imageUploadUrl: '/admin/api/upload/image',
+        imageBasePath: assetsUrl + 'img',
+        validationMessages : templatesDir + 'Components/validationMessages.html',
+        appUrl : appUrl,
+        componentsUrl : componentsUrl,
+        fileTypes : {
+            image : {
+                accept : 'image/*',
+                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
+            },
+            document : {
+                accept : 'application/pdf,application/doc,application/docx',
+                acceptSelect : 'application/pdf,application/doc,application/docx'
+            },
+            file : {
+                accept : 'application/*',
+                acceptSelect : 'application/*'
+            },
+            audio : {
+                accept : 'audio/*',
+                acceptSelect : 'audio/*'
+            }
+        }
+    };
+
+    angular.module('mcms.core')
+        .constant('PAGES_CONFIG',config);
+})();
+},{}]},{},[14]);
