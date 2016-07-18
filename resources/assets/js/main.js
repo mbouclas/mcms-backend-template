@@ -246,11 +246,12 @@
 		headerOptions();
 		headerActions();
 
-		$(window).load(function(){
+		$(document).ready(function(){
 			loaderOut();
 			carousels();
 			slider();
 			mainPost();
+
 			//Masonry initial
 			if ($.isFunction($.fn.masonry)) {
 				$('.grid-layout').masonry({

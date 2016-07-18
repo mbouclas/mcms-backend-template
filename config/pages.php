@@ -15,14 +15,6 @@ return [
                     'settings' => [
                         'default' => true
                     ]
-                ],
-                [
-                    'name' => 'floor_plans',
-                    'title' => 'Floor Plans',
-                    'uploadAs' => 'image',
-                    'settings' => [
-                        'default' => false
-                    ]
                 ]
             ],
             'copies' => [
@@ -52,7 +44,8 @@ return [
                     'dir' => '/',
                 ],
             ]
-        ]
+        ],
+        'per_page' => 10
     ],
     'categories' => [
         'slug_pattern' => '/pages/%slug$s',

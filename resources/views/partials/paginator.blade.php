@@ -1,0 +1,1 @@
+{!! with(new \FrontEnd\Presenters\Pagination($items))->render() !!}

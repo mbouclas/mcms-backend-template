@@ -8,12 +8,13 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
+
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
     <link rel="stylesheet" href="{{asset('css/styles.min.css')}}">
 </head>
 
 <body class="dynamic-header">
-<div class="preloader"><div class="loader"></div></div>
+{{--<div class="preloader"><div class="loader"></div></div>--}}
 
 <div class="page-box">
     @include('partials.header')

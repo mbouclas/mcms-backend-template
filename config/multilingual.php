@@ -4,7 +4,7 @@ return [
 
 
     'locales'         => ['el'],
-    'fallback_locale' => 'en',
+    'fallback_locale' => 'el',
 
 
 ];
