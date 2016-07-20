@@ -271,7 +271,7 @@
 
 			$.ajax({
 				type: 'POST',
-				url : 'php/contact.php',
+				url : '/contact',
 				data: form.serialize(),
 				success: function(data){
 					form.find('.form-message').html(data).fadeIn();

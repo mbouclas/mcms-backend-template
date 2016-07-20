@@ -687,7 +687,8 @@ require('./editPageCategory.component');
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
     DirectiveController.$inject = [ '$scope','PageService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService', 'lodashFactory'];
+        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService', 'lodashFactory',
+        'mcms.settingsManagerService'];
 
     function Directive(Config, $timeout) {
 
@@ -713,7 +714,7 @@ require('./editPageCategory.component');
         };
     }
 
-    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector, lo) {
+    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector, lo, SM) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -725,6 +726,7 @@ require('./editPageCategory.component');
         vm.Permissions = ACL.permissions();
         vm.isSu = ACL.role('su');//more efficient check
         vm.isAdmin = ACL.role('admin');//more efficient check
+        vm.Settings = SM.get({name : 'pages'});
         vm.tabs = [
             {
                 label : 'General',
@@ -939,9 +941,9 @@ require('./editPage.component');
         .service('PageService',Service);
 
     Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService',
-        '$q', 'PageCategoryService', 'ItemSelectorService'];
+        '$q', 'PageCategoryService', 'ItemSelectorService', 'mcms.settingsManagerService'];
 
-    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector) {
+    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector, SM) {
         var _this = this;
         var Pages = [];
         this.get = get;
@@ -977,6 +979,7 @@ require('./editPage.component');
                 .then(function (response) {
                     ItemSelector.register(response.connectors);
                     MediaFiles.setImageCategories(response.imageCategories);
+                    SM.addSettingsItem(response.settings);
                     return response.item || newPage();
                 });
         }

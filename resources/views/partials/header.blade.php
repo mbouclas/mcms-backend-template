@@ -10,30 +10,16 @@
                     <a href="#" class="menu-btn"><span></span><span></span><span></span></a>
                     <nav class="menu-list-wrap">
                         <ul class="menu-list">
-                            @foreach($HeaderMenu->items as $item)
-                            <li><a href="{{$item->link}}" title="{{$item->title}}">{{$item->title}}</a></li>
-                            @endforeach
-                            <li class="parent">
-                                <a href="post.html">Single Post</a>
-                                <div class="sub-menu-wrap">
-                                    <ul class="sub-menu">
-                                        <li><a href="post.html">Standard Post</a></li>
-                                        <li><a href="post-video.html">Video Post</a></li>
-                                        <li><a href="post-music.html">Music Post</a></li>
-                                        <li><a href="post-gallery.html">Gallery Post</a></li>
-                                        <li><a href="post-quote.html">Quote Post</a></li>
-                                    </ul>
-                                </div>
-                            </li>
-                            <li><a href="about-me.html">About Me</a></li>
-                            <li><a href="contacts.html">Contacts</a></li>
-                            </ul>
-                        </nav>
+                            @each('partials.menuWrapper', $HeaderMenu, 'item')
+                        </ul>
+                    </nav>
                 </div><!-- END MENU -->
                 <div class="action-box">
                     <a href="#" class="header-btn">
-                        <svg fill="#9e9e9e" width="20" height="20" viewBox="0 0 17 17" enable-background="new 0 0 17 17" xml:space="preserve">
-								<path fill="inherit" d="M16.604 15.868l-5.173-5.173c0.975-1.137 1.569-2.611 1.569-4.223 0-3.584-2.916-6.5-6.5-6.5-1.736 0-3.369 0.676-4.598 1.903-1.227 1.228-1.903 2.861-1.902 4.597 0 3.584 2.916 6.5 6.5 6.5 1.612 0 3.087-0.594 4.224-1.569l5.173 5.173 0.707-0.708zM6.5 11.972c-3.032 0-5.5-2.467-5.5-5.5-0.001-1.47 0.571-2.851 1.61-3.889 1.038-1.039 2.42-1.611 3.89-1.611 3.032 0 5.5 2.467 5.5 5.5 0 3.032-2.468 5.5-5.5 5.5z"/>
+                        <svg fill="#9e9e9e" width="20" height="20" viewBox="0 0 17 17" enable-background="new 0 0 17 17"
+                             xml:space="preserve">
+								<path fill="inherit"
+                                      d="M16.604 15.868l-5.173-5.173c0.975-1.137 1.569-2.611 1.569-4.223 0-3.584-2.916-6.5-6.5-6.5-1.736 0-3.369 0.676-4.598 1.903-1.227 1.228-1.903 2.861-1.902 4.597 0 3.584 2.916 6.5 6.5 6.5 1.612 0 3.087-0.594 4.224-1.569l5.173 5.173 0.707-0.708zM6.5 11.972c-3.032 0-5.5-2.467-5.5-5.5-0.001-1.47 0.571-2.851 1.61-3.889 1.038-1.039 2.42-1.611 3.89-1.611 3.032 0 5.5 2.467 5.5 5.5 0 3.032-2.468 5.5-5.5 5.5z"/>
 							</svg>
                     </a>
                     <div class="action-content">
@@ -41,8 +27,10 @@
                             <form class="header-search">
                                 <div class="input-field">
 										<span class="icon">
-											<svg fill="#000" width="20" height="20" viewBox="0 0 17 17" enable-background="new 0 0 17 17" xml:space="preserve">
-												<path fill="inherit" d="M16.604 15.868l-5.173-5.173c0.975-1.137 1.569-2.611 1.569-4.223 0-3.584-2.916-6.5-6.5-6.5-1.736 0-3.369 0.676-4.598 1.903-1.227 1.228-1.903 2.861-1.902 4.597 0 3.584 2.916 6.5 6.5 6.5 1.612 0 3.087-0.594 4.224-1.569l5.173 5.173 0.707-0.708zM6.5 11.972c-3.032 0-5.5-2.467-5.5-5.5-0.001-1.47 0.571-2.851 1.61-3.889 1.038-1.039 2.42-1.611 3.89-1.611 3.032 0 5.5 2.467 5.5 5.5 0 3.032-2.468 5.5-5.5 5.5z"/>
+											<svg fill="#000" width="20" height="20" viewBox="0 0 17 17"
+                                                 enable-background="new 0 0 17 17" xml:space="preserve">
+												<path fill="inherit"
+                                                      d="M16.604 15.868l-5.173-5.173c0.975-1.137 1.569-2.611 1.569-4.223 0-3.584-2.916-6.5-6.5-6.5-1.736 0-3.369 0.676-4.598 1.903-1.227 1.228-1.903 2.861-1.902 4.597 0 3.584 2.916 6.5 6.5 6.5 1.612 0 3.087-0.594 4.224-1.569l5.173 5.173 0.707-0.708zM6.5 11.972c-3.032 0-5.5-2.467-5.5-5.5-0.001-1.47 0.571-2.851 1.61-3.889 1.038-1.039 2.42-1.611 3.89-1.611 3.032 0 5.5 2.467 5.5 5.5 0 3.032-2.468 5.5-5.5 5.5z"/>
 											</svg>
 										</span>
                                     <input class="search-input" type="search" name="search" placeholder="Search ...">

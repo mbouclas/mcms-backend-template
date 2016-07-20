@@ -5,7 +5,8 @@
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
     DirectiveController.$inject = [ '$scope','PageService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService'];
+        'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService', 'lodashFactory',
+        'mcms.settingsManagerService'];
 
     function Directive(Config, $timeout) {
 
@@ -31,7 +32,7 @@
         };
     }
 
-    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector) {
+    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector, lo, SM) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -43,6 +44,7 @@
         vm.Permissions = ACL.permissions();
         vm.isSu = ACL.role('su');//more efficient check
         vm.isAdmin = ACL.role('admin');//more efficient check
+        vm.Settings = SM.get({name : 'pages'});
         vm.tabs = [
             {
                 label : 'General',

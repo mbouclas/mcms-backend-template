@@ -7,8 +7,9 @@ use IdeaSeven\FrontEnd\FrontEndServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Routing\Router;
+use Illuminate\Support\ServiceProvider;
 
-class CustomServiceProvider extends FrontEndServiceProvider
+class CustomServiceProvider extends ServiceProvider
 {
     protected $policies = [];
     protected $listeners = [];

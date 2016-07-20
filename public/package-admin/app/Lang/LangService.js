@@ -26,7 +26,6 @@
 
         function init() {
             return Lang.init().then(function (bootData) {
-                console.log(bootData    )
                 Groups = bootData.groups;
                 Locales = bootData.locales;
                 DefaultLang = bootData.defaultLang;
@@ -43,8 +42,16 @@
         }
 
         function locales(locales) {
+            var allLocales = [];
             if (locales){
                 Locales = locales;
+                for (var i in locales){
+                    allLocales.push(locales[i]);
+
+                    if (typeof locales[i].default != 'undefined' && locales[i].default){
+                        DefaultLang = i;
+                    }
+                }
             }
             
             return Locales;

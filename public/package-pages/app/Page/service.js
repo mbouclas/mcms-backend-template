@@ -5,9 +5,9 @@
         .service('PageService',Service);
 
     Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService',
-        '$q', 'PageCategoryService', 'ItemSelectorService'];
+        '$q', 'PageCategoryService', 'ItemSelectorService', 'mcms.settingsManagerService'];
 
-    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector) {
+    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector, SM) {
         var _this = this;
         var Pages = [];
         this.get = get;
@@ -43,6 +43,7 @@
                 .then(function (response) {
                     ItemSelector.register(response.connectors);
                     MediaFiles.setImageCategories(response.imageCategories);
+                    SM.addSettingsItem(response.settings);
                     return response.item || newPage();
                 });
         }

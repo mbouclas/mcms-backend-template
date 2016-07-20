@@ -1,12 +1,19 @@
 <?php
 
 namespace FrontEnd\Http\ViewComposers;
-use IdeaSeven\FrontEnd\Http\ViewComposers\MenuComposer as BaseMenuComposer;
+use IdeaSeven\Core\Services\Menu\MenuService;
 use Illuminate\Contracts\View\View;
+use Illuminate\Support\Collection;
 
 
-class MenuComposer extends BaseMenuComposer
+class MenuComposer
 {
+    protected $menu;
+
+    public function __construct(MenuService $menuService)
+    {
+        $this->menu = $menuService;
+    }
 
     /**
      * Bind data to the view.
@@ -16,26 +23,32 @@ class MenuComposer extends BaseMenuComposer
      */
     public function compose(View $view)
     {
-        $menus = $this->menu->all(['items']);
-        $this->composerHeaderMenu($view, $menus);
-        $this->composerFooterMenu($view, $menus);
+        $view->with('HeaderMenu', $this->tree('header-menu'));
+
     }
+
 
     /**
      * @param View $view
      * @param $menus
      */
-    private function composerHeaderMenu(View $view, $menus)
+    private function composerFooterMenu(View $view)
     {
-        $view->with('HeaderMenu', $menus->where('slug', 'header-menu')->first());
+        $view->with('HeaderMenu', $this->tree('footer-menu'));
     }
 
-    /**
-     * @param View $view
-     * @param $menus
-     */
-    private function composerFooterMenu(View $view, $menus)
-    {
-        $view->with('FooterMenu', $menus->where('slug', 'footer-menu')->first());
+    private function tree($slug){
+
+        $menu = $this->menu->menuModel->where('slug', $slug)->select('id')->first();
+        if ( ! $menu){
+            return new Collection();
+        }
+
+        return $this->menu
+            ->menuItemModel->
+            scoped(['menu_id' => $menu->id])
+            ->defaultOrder()
+            ->get()
+            ->toTree();
     }
 }

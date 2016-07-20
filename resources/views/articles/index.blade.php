@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('meta-title')
+    {!! $category->title !!}
+@endsection
 @section('content')
     <header class="page-header">
         <h1><span class="grey-text">Galastyle</span> {!! $category->title !!}</h1>

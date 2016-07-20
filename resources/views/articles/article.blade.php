@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('meta-title')
+    {!! $article->title !!}
+@endsection
 @section('content')
     <header class="page-header">
         <h1>{!! $article->title !!}</h1>
@@ -17,7 +19,7 @@
                 @endif
                 @foreach($article->images as $image)
                     <div class="slider-item">
-                        <img src="{{ $image['copies']['main']['url'] }}" width="1140" height="700" alt="{!! $image->alt !!}">
+                        <img src="{{ $image['copies']['originals']['url'] }}" width="1140" height="700" alt="{!! $image->alt !!}">
                     </div><!-- .slider-item -->
                 @endforeach
             </div><!-- .slider -->

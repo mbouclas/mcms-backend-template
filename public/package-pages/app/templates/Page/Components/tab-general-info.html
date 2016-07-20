@@ -28,10 +28,6 @@
                           redactor></textarea>
 
                 </md-input-container>
-
-
-
-
         </div><!-- eND LEFT -->
         <div flex="30" flex-xs="100" layout-padding="">
             <md-switch ng-model="VM.Item.active" aria-label="Active">
@@ -72,7 +68,7 @@
                 ></thumb-upload-box>
 
             </md-content>
-            
+            {{VM.defaultLang}}-+-
             <md-chips ng-model="VM.Item.tagged" name="tags" placeholder="Tags">
                 <md-chip-template>
                     <strong>{{$chip}}</strong>

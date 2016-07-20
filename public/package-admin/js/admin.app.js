@@ -24928,13 +24928,14 @@ require('./routes');
                 };
 
                 scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
-                scope.$watch('items',function (val) {
+                controllers[1].assignItems(scope.items,scope.model);
+/*                scope.$watch('items',function (val) {
                     if (!val){
                         return;
                     }
                     controllers[1].assignItems(scope.items,scope.model);
-
-                },true);
+                    // unregister();
+                },true);*/
 
             }
         };
@@ -24946,6 +24947,7 @@ require('./routes');
 
 
         vm.assignItems = function(items,ngModel){
+            console.log('running');
             if (lo.isArray(items)){
                 //direct assignment
                 vm.Items = items;
@@ -24953,19 +24955,46 @@ require('./routes');
                 //search first
                 vm.Items = Settings.get(items);
             }
+
             //now merge items with the given ngModel
+            fillValues(ngModel);
 
-/*            for (var i in vm.Items){
-                if (ngModel[vm.Items[i].varName]){
-                    vm.Items[i].value = ngModel[vm.Items[i].varName];
-                }
 
-                ngModel[vm.Items[i].varName] = vm.Items[i].value;
-
-            }*/
 
 
         };
+
+        function fillValues(ngModel) {
+            var values = [];
+
+            vm.Items.forEach(function (field) {
+
+                var found = null;
+                if (typeof ngModel[field.varName] != 'undefined') {
+                    console.log('found ', ngModel[field.varName])
+                    field.value = ngModel[field.varName];
+                }
+
+                if (!found){
+                    var newField = angular.copy(field);
+                    if (field.type == 'boolean'){
+                        newField.value = false;
+                    } else {
+                        newField.value = '';
+                    }
+
+                    ngModel[field.varName] = newField.value;
+                    field.value = ngModel[field.varName];
+                    values.push(newField);
+
+                    return;
+                }
+
+                values.push(found);
+            });
+
+            return values;
+        }
 
         vm.changed = function (field) {
             $timeout(function () {
@@ -25032,7 +25061,12 @@ require('./routes');
         }
 
         function get(where) {
-            return lo.filter(Settings,where);
+            var found = lo.find(Settings,where);
+            if (!found){
+                return null;
+            }
+
+            return found.config;
         }
 
         function addSettings(settings) {

@@ -30,7 +30,12 @@
         }
 
         function get(where) {
-            return lo.filter(Settings,where);
+            var found = lo.find(Settings,where);
+            if (!found){
+                return null;
+            }
+
+            return found.config;
         }
 
         function addSettings(settings) {
