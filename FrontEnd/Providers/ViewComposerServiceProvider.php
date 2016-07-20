@@ -14,9 +14,8 @@ class ViewComposerServiceProvider extends BaseViewComposerServiceProvider
     public function boot()
     {
         // Using class based composers...
-        view()->composer(
-            'partials.header', 'FrontEnd\Http\ViewComposers\MenuComposer'
-        );
+        view()->composer('partials.header', 'FrontEnd\Http\ViewComposers\MenuComposer');
+        view()->composer(['partials.categories-sideBar'], 'FrontEnd\Http\ViewComposers\Categories');
 
     }
 

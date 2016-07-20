@@ -11,20 +11,7 @@
         <div class="col-xs-12 col-lg-3 sidebar">
             <aside class="widget bg z-depth-1 widget_categories">
                 <h4 class="widget-title">Categories</h4>
-                <ul class="menu">
-                    <li class="cat-item">
-                        <a href="#">Lifestyle</a> (5)
-                    </li>
-                    <li class="cat-item">
-                        <a href="#">Travel</a> (6)
-                    </li>
-                    <li class="cat-item">
-                        <a href="#">Margery</a> (10)
-                    </li>
-                    <li class="cat-item">
-                        <a href="#">Weekend</a> (5)
-                    </li>
-                </ul>
+                @include('partials.categories-sideBar')
             </aside><!-- .widget_categories -->
 
             <aside class="widget bg z-depth-1">
