@@ -22,7 +22,8 @@
 
         <div class="post-footer">
             <div class="post-footer-item">
-                <a href="{{ route('article', ['slug' => $article->slug]) }}" class="link"><span class="text">Read Article</span> <i class="fa fa-arrow-circle-right"></i></a>
+                <a href="{{ route('article', ['slug' => $article->slug]) }}" class="link" title="{!!  $article->title !!}">
+                    <span class="text">Διαβάστε το άρθρο</span> <i class="fa fa-arrow-circle-right"></i></a>
             </div>
 
             <div class="post-footer-item post-sharing">
@@ -37,7 +38,8 @@
                 </div>
             </div>
             <div class="post-footer-item">
-                <a href="#" class="link"><i class="fa fa-comments-o"></i> <span class="text">Post a Comment</span></a>
+                <a href="{{ route('article', ['slug' => $article->slug]) }}#comments" class="link" title="σχόλια για {!!  $article->title !!}">
+                    <i class="fa fa-comments-o"></i> <span class="text">Σχολιάστε</span></a>
             </div>
         </div>
     </div><!-- .post-content -->
