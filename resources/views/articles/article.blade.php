@@ -81,7 +81,12 @@
             </div>
         </div><!-- .post-content -->
     </article>
+        <div class="post-comments bg z-depth-1">
+            <a name="comments"></a>
+            <h4 class="h5">Σχόλια</h4>
+            @include('partials.disqus', ['slug' => $article->slug])
 
+        </div>
         <div class="related-posts bg z-depth-1">
             <h4 class="h5">Παρόμοια άρθρα</h4>
 
