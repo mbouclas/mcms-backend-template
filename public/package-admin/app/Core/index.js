@@ -44,5 +44,6 @@ require('./core.alertMessage.directive');
 require('./toSlug.directive');
 require('./tabSelector');
 require('./compareTo.directive');
+require('./moduleExtender');
 
 

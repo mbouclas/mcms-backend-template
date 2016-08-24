@@ -8,16 +8,21 @@
             </md-button>
         </div>
     </md-toolbar>
-<div class="md-dialog-content">
+<div class="md-dialog-content" style="min-height: 400px">
 
-    <div layout="row" layout-align="center center">
-        <upload-box
+<!--    <div layout="row" layout-align="center center">
+       <upload-box
                 ng-model="VM.model" config="VM.UploadConfig"
                 callback="VM.onUploadDone(file, response, model)"
                 auto-start="true" progress-bar="true" multiple="true"
                 accept-select="{{ VM.UploadConfig.acceptSelect }}"
                 accept="{{ VM.UploadConfig.accept }}"></upload-box>
-    </div>
+
+    </div>-->
+    <upload  ng-model="VM.model"
+             options="VM.UploadConfig"
+             instance="VM.dzInstance(instance)"
+             callbacks="VM.Callbacks"></upload>
 
 </div>
 

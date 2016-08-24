@@ -1,11 +1,11 @@
 <md-sidenav class="md-sidenav-left md-whiteframe-z2" md-component-id="mainSideNav"
-            md-is-locked-open="$mdMedia('gt-sm')" flex
+            md-is-locked-open="isLocked && $mdMedia('gt-sm')" flex
             style="width: 100px">
 
     <header style="background-image: url('/package-admin/img/user-bg.jpg'); color: #fff;">
         <md-list>
             <md-list-item>
-                <img ng-src="/package-admin/img/avatar.png" class="md-avatar"  />
+                <canvas id="user-avatar" width="100" height="100" class="md-avatar" draw-canvas="VM.User.firstName[0]"></canvas>
                 {{ VM.User.email }}
             </md-list-item>
         </md-list>

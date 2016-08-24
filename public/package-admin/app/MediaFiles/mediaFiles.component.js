@@ -39,10 +39,29 @@
     }
 
     function DirectiveController($scope, Helpers, Config, ACL, Media, Dialog, Lang) {
-        var vm = this;
+        var vm = this,
+            currentModel, //tracks current model (images, floorplans etc)
+            DZ = {};
         vm.Item = {};
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
+        vm.dzInstance = function (instance) {
+            console.log(instance)
+            DZ = instance;
+        };
+        vm.Callbacks = {
+            addedfile : function(file){
+                $scope.lastFile = file;
+            },
+            success : function (file, xhr) {
+                if (typeof currentModel == 'undefined'){
+                    currentModel = [];
+                }
+                // DZ.dzMethods.removeFile(file);
+                currentModel.push(xhr);
+            }
+        };
+
 
         vm.init = function (item) {
             vm.Item = item;
@@ -52,10 +71,10 @@
 
         vm.add = function (event, type, model) {
             var uploadAs = type.uploadAs || 'file';
-
+            currentModel = model;
             if (uploadAs == 'image'){
                 //set the image type to the correct one (images,floor plans...)
-                $scope.uploadConfig[uploadAs].fields.type = type.name;
+                $scope.uploadConfig[uploadAs].params.type = type.name;
             }
 
             Dialog.show({
@@ -63,7 +82,8 @@
                 locals : {
                     model : model,
                     UploadConfig : $scope.uploadConfig[uploadAs],
-                    onUploadDone : onUploadDone
+                    onUploadDone : onUploadDone,
+                    Callbacks : vm.Callbacks
                 }
             });
         };

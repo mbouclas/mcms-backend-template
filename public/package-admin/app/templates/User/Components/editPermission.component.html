@@ -1,26 +1,38 @@
 <div class="md-dialog-content">
-<form action="" ng-submit="VM.save()" novalidate>
+<form name="ItemsForm" ng-submit="ItemsForm.$valid && VM.save()" novalidate>
     <div flex>
         <md-input-container class="md-block" flex-gt-sm>
             <label>Name</label>
-            <input ng-model="VM.Permission.name" required>
+            <input ng-model="VM.Permission.name" name="label" required>
+            <div ng-messages="ItemsForm.label.$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
         </md-input-container>
 
         <div>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Alias</label>
-                <input ng-model="VM.Permission.slug" required>
+                <input ng-model="VM.Permission.slug" name="slug" required>
+                <div ng-messages="ItemsForm.slug.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
             </md-input-container>
 
 
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Description</label>
-                <input ng-model="VM.Permission.description" required>
+                <input ng-model="VM.Permission.description" name="description" required>
+                <div ng-messages="ItemsForm.description.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
             </md-input-container>
 
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Model</label>
-                <input ng-model="VM.Permission.model" required>
+                <input ng-model="VM.Permission.model" name="model" required>
+                <div ng-messages="ItemsForm.model.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
             </md-input-container>
 
         </div>

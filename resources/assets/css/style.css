@@ -2637,9 +2637,10 @@ textarea.materialize-textarea {
     .sidebar .widget.latest-posts ul li .post-img {
       background: #ec007e;
       display: block;
-      height: 72px;
       float: left;
-      width: 72px; }
+      width: 72px;
+      height: 43px;
+     }
       @media (max-width: 1199px) and (min-width: 992px) {
         .sidebar .widget.latest-posts ul li .post-img {
           height: 52px;

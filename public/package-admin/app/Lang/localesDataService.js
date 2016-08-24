@@ -16,7 +16,7 @@
         this.delete = deleteItem;
         this.enable = enable;
         this.disable = disable;
-
+        this.setDefault = setDefault;
 
         function init() {
             return $http.get(baseUrl + 'init')
@@ -46,6 +46,10 @@
 
         function enable(code) {
             return $http.post(baseUrl + 'enable', {code : code}).then(returnData);
+        }
+
+        function setDefault(locale) {
+            return $http.post(baseUrl + 'setDefault', {code : locale.code}).then(returnData);
         }
 
         function disable(code) {

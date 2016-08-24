@@ -32,7 +32,7 @@
             vm.Item.featured.push(result);
         };
 
-        vm.onSave =function (item, isNew, parent) {
+        vm.onSave = function (item, isNew, parent) {
             if (isNew){
                 if (parent){
                     if (!parent.children){
@@ -43,9 +43,15 @@
                 } else {
                     vm.Categories.push(item);
                 }
+                PageCategoryService.toFlat();
 
                 Dialog.close();
                 vm.edit(item);
+            }
+            var found = PageCategoryService.where({id : item.id});
+
+            if (found){
+                found.title= item.title;
             }
         };
 

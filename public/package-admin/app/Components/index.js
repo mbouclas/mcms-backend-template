@@ -2,18 +2,8 @@
   'use strict';
 
   angular.module('mcms.components', [
-      'thatisuday.dropzone'
-  ])
-      .config(config);
+  ]);
 
-    config.$inject = ['dropzoneOpsProvider', 'configuration'];
-
-    function config(DZOps, Config) {
-        DZOps.setOptions({
-            url : Config.imageUploadUrl,
-            maxFilesize : '10'
-    });
-    }
 })();
 
 require('./modal');
@@ -27,5 +17,11 @@ require('./thumbUploadBox.component');
 require('./imageUploader.component');
 require('./dialog.component');
 require('./bottomSheet.component');
+require('./image.component');
+require('./file.component');
+require('./dropzone.component');
+require('./upload.component');
+require('./paginator.component');
+require('./drawCanvas');
 
 

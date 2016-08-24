@@ -13,6 +13,9 @@
             id : '',
             title : '',
             template : '',
+            icon : '',
+            acl : null,
+            order : 0,
             settings : {}
         };
 

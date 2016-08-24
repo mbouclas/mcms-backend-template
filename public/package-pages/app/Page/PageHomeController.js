@@ -5,9 +5,12 @@
         .controller('PageHomeController',Controller);
 
     Controller.$inject = ['init', 'PageService', '$mdBottomSheet', 'LangService',
-        '$mdSidenav', 'BottomSheet', 'Dialog', '$filter', '$location', 'core.services'];
+        '$mdSidenav', 'BottomSheet', 'Dialog', '$filter', '$location', 'core.services', '$rootScope', '$scope'];
 
-    function Controller(Init, PageService, $mdBottomSheet, Lang, $mdSidenav, BottomSheet, Dialog, $filter, $location, Helpers) {
+    function Controller(Init, PageService, $mdBottomSheet, Lang, $mdSidenav, BottomSheet, Dialog,
+                        $filter, $location, Helpers, $rootScope, $scope) {
+
+        Helpers.clearLocation($scope);
         var vm = this;
         vm.filters = {
             title: null,
@@ -55,9 +58,11 @@
             vm.Items = [];
             return PageService.get(vm.filters)
                 .then(function (res) {
+                    $location.search({page : vm.filters.page});
                     vm.Loading = false;
                     vm.Pagination = res;
                     vm.Items = res.data;
+                    $rootScope.$broadcast('scroll.to.top');
                 });
         }
 

@@ -22,6 +22,7 @@
 
 })();
 
+require('./dataService');
 require('./services');
 require('./renderSettings.component');
 require('./SettingsManagerController');

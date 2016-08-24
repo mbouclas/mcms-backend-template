@@ -14,6 +14,7 @@
         this.create = create;
         this.update = update;
         this.delete = deleteItem;
+        this.sync = sync;
 
 
         function init() {
@@ -40,6 +41,10 @@
 
         function deleteItem(items) {
             return $http.post(baseUrl + 'translation', {data : items}).then(returnData);
+        }
+
+        function sync() {
+            return $http.post(baseUrl + 'translations/sync', {}).then(returnData);
         }
 
         function returnData(response) {

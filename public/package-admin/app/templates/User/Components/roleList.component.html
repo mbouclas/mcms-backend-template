@@ -1,3 +1,19 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <h2 class="md-title">{{ VM.Roles.length }} Roles</h2>
+        <div flex=""></div>
+
+
+        <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                   ng-click="VM.edit()">
+            <md-icon class="material-icons">add</md-icon>
+            <md-tooltip md-direction="top">
+                Create new
+            </md-tooltip>
+        </md-button>
+    </div>
+
+</md-toolbar>
 <md-list>
     <md-list-item ng-repeat="item in VM.Roles | orderBy :'-level'"
                   ng-click="VM.showActions($event, item)" aria-label="show actions">
@@ -5,6 +21,3 @@
     </md-list-item>
 </md-list>
 
-<md-button class="md-fab md-fab-bottom-right" aria-label="Add new" ng-click="VM.edit()">
-    <md-icon class="material-icons">add</md-icon>
-</md-button>

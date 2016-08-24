@@ -1,6 +1,7 @@
 @extends('layouts.app')
 
 @section('content')
+    @include('components.slider', ['Items' => $sliderItems])
     <div class="row">
         <div class="col-xs-12 col-lg-9 posts-list">
             @foreach($latestArticles as $article)
@@ -30,59 +31,35 @@
             <aside class="widget bg z-depth-1 latest-posts">
                 <h4 class="widget-title">Latest Posts</h4>
                 <ul>
+                    @foreach($latestBlogPosts as $item)
                     <li>
-                        <a href="#" class="post-img">
-                            <img class="retina" src="content/img/post-widget-1.jpg" width="72" height="72" alt="">
+                        <a href="{{ route('article', ['slug' => $item->slug]) }}" class="post-img">
+                            <img class="retina" src="{{ $item->thumb['copies']['thumb']['url'] }}" alt="">
                         </a>
                         <div class="post-content">
-                            <h5 class="post-title"><a href="#">Fashion in the Country</a></h5>
-                            <div class="date">February 4, 2016</div>
+                            <h5 class="post-title"><a href="{{ route('article', ['slug' => $item->slug]) }}">{!! $item->title !!}</a></h5>
+                            <div class="date">{{ $item->published_at->format('d/m/Y') }}</div>
                         </div>
                     </li>
-                    <li>
-                        <a href="#" class="post-img">
-                            <img class="retina" src="content/img/post-widget-2.jpg" width="72" height="72" alt="">
-                        </a>
-                        <div class="post-content">
-                            <h5 class="post-title"><a href="#">Fashion in the Country</a></h5>
-                            <div class="date">February 4, 2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="post-img">
-                            <img class="retina" src="content/img/post-widget-3.jpg" width="72" height="72" alt="">
-                        </a>
-                        <div class="post-content">
-                            <h5 class="post-title"><a href="#">Fashion in the Country</a></h5>
-                            <div class="date">February 4, 2016</div>
-                        </div>
-                    </li>
-                    <li>
-                        <a href="#" class="post-img">
-                            <img class="retina" src="content/img/post-widget-4.jpg" width="72" height="72" alt="">
-                        </a>
-                        <div class="post-content">
-                            <h5 class="post-title"><a href="#">Fashion in the Country</a></h5>
-                            <div class="date">February 4, 2016</div>
-                        </div>
-                    </li>
+                    @endforeach
                 </ul>
             </aside><!-- .latest-posts -->
 
-
+            @foreach($banners as $item)
             <aside class="widget bg z-depth-1 banner">
-                <a href="#" class="banner-link"></a>
-                <img class="retina banner-img" src="content/img/banner-widget.jpg" width="270" height="270" alt="banner">
+                <a href="{{ route('article', ['slug' => $item->slug]) }}" class="banner-link"></a>
+                <img class="retina banner-img" src="{{ $item->thumb['copies']['big_thumb']['url'] }}" width="270" height="270" alt="{!! $item->title !!}">
 
                 <div class="overlay">
                     <div class="cell-vertical-wrapper">
                         <div class="cell-middle">
-                            <h4>Banner</h4>
-                            <p><i>270 x 270</i></p>
+                            <h4>{!! $item->title !!}</h4>
+
                         </div>
                     </div>
                 </div>
             </aside>
+            @endforeach
         </div><!-- .sidebar -->
 
     </div>

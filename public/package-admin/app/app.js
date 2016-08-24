@@ -19,6 +19,8 @@
         'mcms.menu',
         'mcms.user',
         'mcms.settingsManager',
+        'mcms.tags',
+        'mcms.mailLog',
         'mcms.itemSelector'
     ];
 
@@ -30,17 +32,28 @@
         .config(config)
         .run(startUp);
 
-    startUp.$inject = [];
-    config.$inject = ['$compileProvider','$routeProvider', '$locationProvider', '$mdThemingProvider'];
+    startUp.$inject = ['$rootScope', 'configuration'];
+    config.$inject = ['$compileProvider','$routeProvider', '$locationProvider',
+        '$mdThemingProvider', 'redactorOptions', 'configuration', '$mdDateLocaleProvider'];
 
-    function startUp(){
-
+    function startUp($rootScope, Config){
+        $rootScope.Config = Config;
     }
 
-    function config($compileProvider,$routeProvider, $locationProvider, $mdThemingProvider){
+    function config($compileProvider,$routeProvider, $locationProvider, $mdThemingProvider, redactorOptions, Config, $mdDateLocaleProvider){
+        Config.CSRF = window.CSRF || '';
+        Config.Settings = window.Settings || {};
         $compileProvider.debugInfoEnabled(true);
         $locationProvider.html5Mode(false);
         $routeProvider.otherwise('/');
+
+        var moment = require('moment');
+
+        $mdDateLocaleProvider.formatDate = function(date) {
+            return moment(date).format(Config.defaultDateFormat);
+        };
+
+
         $mdThemingProvider.definePalette('amazingPaletteName', {
 
             '50': 'ffebee',
@@ -65,6 +78,10 @@
         });
         $mdThemingProvider.theme('default')
             .primaryPalette('amazingPaletteName');
+        for (var i in Config.redactor){
+            redactorOptions[i] = Config.redactor[i];
+        }
+
     }
 
 })();
@@ -81,3 +98,5 @@ require('./SettingsManager');
 require('./ExtraField');
 require('./MediaFiles');
 require('./ItemSelector');
+require('./Tags');
+require('./MailLog');

@@ -4,17 +4,13 @@
     angular.module('mcms.pages.pageCategory')
         .service('PageCategoryService',Service);
 
-    Service.$inject = ['PageCategoryDataService', 'ItemSelectorService'];
-    /**
-     * The PageCategory service
-     *
-     * @param {object} DS
-     * @param ItemSelector
-     * @constructor
-     */
-    function Service(DS, ItemSelector) {
+    Service.$inject = ['PageCategoryDataService', 'ItemSelectorService', 'SeoService', 'LangService',
+        'core.services', 'lodashFactory','mcms.settingsManagerService'];
+
+    function Service(DS, ItemSelector, SEO, Lang, Helpers, lo, SM) {
         var _this = this;
         var Categories = [];
+        var CategoriesFlat = [];
         this.get = get;
         this.find = find;
         this.newCategory = newCategory;
@@ -23,11 +19,14 @@
         this.rebuild = rebuild;
         this.tree = tree;
         this.categories = categories;
+        this.toFlat = flattenCategories;
+        this.where = where;
 
         function get() {
             return DS.index()
                 .then(function (response) {
                     Categories = response;
+                    CategoriesFlat = flattenCategories();
                     return response;
                 });
         }
@@ -36,6 +35,8 @@
             return DS.show(id)
                 .then(function (response) {
                     ItemSelector.register(response.connectors);
+                    SEO.init(response.seoFields);
+                    SM.addSettingsItem(response.settings);
                     return response.item;
                 });
         }
@@ -54,12 +55,18 @@
          * @returns {{title: string, description: string, slug: string, children: Array, settings: {}, active: boolean, orderBy: number}}
          */
         function newCategory() {
+            var Locales = Lang.locales();
+            var settings = {seo : {}};
+            for (var key in Locales){
+                settings.seo[key] = {};
+            }
+
             return {
                 title : '',
                 description : '',
                 slug : '',
                 children : [],
-                settings : {},
+                settings : settings,
                 active : false,
                 orderBy : 0,
             };
@@ -87,6 +94,15 @@
 
         function categories() {
             return Categories;
+        }
+
+        function flattenCategories() {
+            CategoriesFlat = Helpers.flattenTree(Categories);
+            return CategoriesFlat;
+        }
+
+        function where(search) {
+            return lo.find(CategoriesFlat, search);
         }
 
     }

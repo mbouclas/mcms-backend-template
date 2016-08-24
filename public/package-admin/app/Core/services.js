@@ -4,20 +4,27 @@
   angular.module('mcms.core')
     .service('core.services', Service);
 
-  Service.$inject = ['$mdToast', '$mdDialog'];
+  Service.$inject = ['$mdToast', '$mdDialog', '$location', '$route', 'momentFactory'];
 
-  function Service($mdToast, $mdDialog){
+  function Service($mdToast, $mdDialog, $location, $route, moment){
       this.createFilterFor = createFilterFor;
       this.flattenTree = flattenTree;
       this.toast = toast;
       this.confirmDialog = confirmDialog;
+      this.clearLocation = clearLocation;
+      this.composeDate = composeDate;
+      this.deComposeDate = deComposeDate;
 
       function createFilterFor(prop,query) {
           var lowercaseQuery = angular.lowercase(query);
 
           return function filterFn(item) {
-              var regex = new RegExp(lowercaseQuery, 'gi' );
 
+              if (typeof query != 'string'){
+                  return item[prop];
+              }
+
+              var regex = new RegExp(lowercaseQuery, 'gi' );
               return item[prop].match(regex);
           };
       }
@@ -79,6 +86,46 @@
                   .hideDelay(delay)
           );
 
+      }
+
+      function clearLocation($scope) {
+          $scope.$on('$locationChangeStart', function (event, next, current) {
+              if ($route.current && $route.current.regexp) {
+                  if ($route.current.regexp.test($location.path())){// if current route is our route (paging) do nothing
+                      return;
+                  }
+
+              }
+
+              $location.search({});
+          });
+      }
+
+      function composeDate(date) {
+          if (typeof date == 'undefined'){
+              var now = moment();
+              return {
+                  date : now.toDate(),
+                  hours : now.hours(),
+                  minutes: now.minutes()
+              };
+          }
+
+          var d = moment(date);
+          return {
+              date : d.toDate(),
+              hours : d.hours(),
+              minutes: d.minutes()
+          };
+      }
+
+      function deComposeDate(obj) {
+          if (typeof obj == 'undefined'){
+              obj = composeDate();
+          }
+          return moment(obj.date)
+              .hours(obj.hours)
+              .minutes(obj.minutes);
       }
   }
 

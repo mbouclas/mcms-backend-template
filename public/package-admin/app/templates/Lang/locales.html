@@ -1,13 +1,14 @@
-<h1>Locales</h1>
-<md-button>
-    <image-uploader click-area="parent" load-in="parent:parent"></image-uploader>
-    <md-icon class="material-icons">file_upload</md-icon>
-    Upload
-</md-button>
 <md-card class="md-whiteframe-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Enabled Locales</h2>
+        </div>
+    </md-toolbar>
 <md-list>
-    <md-subheader class="md-no-sticky">Enabled locales</md-subheader>
-    <md-list-item class="secondary-button-padding" ng-repeat="(code, locale) in VM.Locales">
+    <md-list-item class="secondary-button-padding"
+                  ng-repeat="(code, locale) in VM.Locales"
+                  ng-click="VM.itemClick($event)"
+    >
         <p>{{ locale.name }}</p>
         <md-button  ng-click="VM.edit($event, code)">
             <md-icon class="material-icons">edit</md-icon>
@@ -18,12 +19,20 @@
             <md-icon class="material-icons">delete</md-icon>
             <md-tooltip>Delete locale</md-tooltip>
         </md-button>
+        <md-switch ng-model="locale.default" aria-label="Active" ng-change="VM.setDefault(locale)">
+
+        </md-switch>
     </md-list-item>
 </md-list>
 </md-card>
 
 
 <md-card class="md-whiteframe-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Add new locale</h2>
+        </div>
+    </md-toolbar>
     <md-autocomplete
         md-select-on-focus="true"
         md-no-cache="false"

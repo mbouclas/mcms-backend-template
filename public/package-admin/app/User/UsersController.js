@@ -4,9 +4,9 @@
     angular.module('mcms.user')
         .controller('UsersController',Controller);
 
-    Controller.$inject = ['AuthService', 'configuration', 'tabs.selector'];
+    Controller.$inject = ['AuthService', 'configuration', 'tabs.selector', '$scope', 'core.services'];
 
-    function Controller(ACL, Config, TabSelector) {
+    function Controller(ACL, Config, TabSelector, $scope, Helpers) {
         var vm = this;
         vm.isSu = ACL.role('su');//more efficient check
         vm.tabs = [
@@ -34,6 +34,7 @@
         ];
         var Tabs = new TabSelector('section',vm.tabs).set();
         vm.onTabChange = Tabs.change;
+        Helpers.clearLocation($scope);
 
     }
 

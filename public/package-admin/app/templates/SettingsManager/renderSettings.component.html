@@ -1,28 +1,101 @@
+
 <div ng-repeat="field in VM.Items">
+    <div ng-if="field.type=='text'">
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
 
-    <md-input-container class="md-block" flex-gt-sm ng-if="field.type=='text'">
         <label>{{ field.label }}</label>
-        <input ng-model="field.value" ng-change="VM.changed(field)">
+        <input ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)">
     </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
 
-    <md-input-container class="md-block" flex-gt-sm ng-if="field.type=='textarea'">
-        <label>{{ field.label }}</label>
-        <textarea ng-model="field.value" ng-change="VM.changed(field)"></textarea>
-    </md-input-container>
+                <label>{{ field.label }}</label>
+                <input ng-model="VM.models[field.varName][key]" ng-change="VM.changed(field.varName[key])">
+            </md-input-container>
+            </div>
+    </div>
+    <div ng-if="field.type=='textarea'">
+        <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
+            <label>{{ field.label }}</label>
+            <textarea ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)"></textarea>
+        </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
+                <label>{{ field.label }}</label>
+                <textarea ng-model="VM.models[field.varName][key]" ng-change="VM.changed(field.varName[key])"></textarea>
+            </md-input-container>
+        </div>
+    </div>
 
-    <md-input-container class="md-block" flex-gt-sm ng-if="field.type=='richtext'">
-        <label>{{ field.label }}</label>
-        <textarea ng-model="field.value" redactor></textarea>
-    </md-input-container>
 
-    <md-switch ng-model="field.value" aria-label="{{ field.label }}" ng-if="field.type=='boolean'" ng-change="VM.changed(field)">
+    <div ng-if="field.type=='richtext'">
+        <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
+            <label>{{ field.label }}</label>
+            <textarea ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)"
+                      placeholder="{{ field.label }}"
+                      redactor></textarea>
+        </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
+                <label>{{ field.label }}</label>
+                <textarea ng-model="VM.models[field.varName][key]" ng-change="VM.changed(field.varName[key])"
+                          placeholder="{{ field.label }}"
+                          redactor></textarea>
+            </md-input-container>
+        </div>
+    </div>
+
+    <md-switch aria-label="{{ field.label }}" ng-if="field.type=='boolean'"
+               ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)">
         {{ field.label }}
     </md-switch>
 
-    <md-input-container class="md-block" flex-gt-sm ng-if="field.type=='select'">
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="field.type=='select'">
         <label>{{ field.label }}</label>
-        <md-select ng-model="field.value" aria-label="{{ field.label }}" placeholder="{{ field.label }}" ng-change="VM.changed(field)">
-            <md-option ng-value="item.varName" ng-repeat="item in field.options">{{ item.label }}</md-option>
+        <md-select aria-label="{{ field.label }}" placeholder="{{ field.label }}"
+                   ng-change="VM.changed(field.varName)"
+                   ng-model="VM.models[field.varName]" >
+            <md-option value="{{ item.value }}" ng-repeat="item in field.options">{{ item.label }}</md-option>
         </md-select>
     </md-input-container>
+
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="field.type=='selectMultiple'">
+        <label>{{ field.label }}</label>
+        <md-select aria-label="{{ field.label }}" placeholder="{{ field.label }}"
+                   multiple
+                   ng-change="VM.changed(field.varName)"
+                   ng-model="VM.models[field.varName]" >
+            <md-option value="{{ item.value }}" ng-repeat="item in field.options">{{ item.label }}</md-option>
+        </md-select>
+    </md-input-container>
+    <div ng-if="field.type=='image'">
+        <label>{{ field.label }}</label>
+
+    <image-component ng-model="VM.models[field.varName]" layout-type="column"
+                     name="{{ field.varName }}"
+                     on-change="VM.changed(field, value)"
+                     options="VM.imageOptions" ></image-component>
+    </div>
+    <div ng-if="field.type=='file'">
+        <label>{{ field.label }}</label>
+    <file-component ng-model="VM.models[field.varName]" layout-type="column"
+                     name="{{ field.varName }}"
+                     on-change="VM.changed(field, value)"
+                     options="VM.fileOptions" ></file-component>
+    </div>
 </div>

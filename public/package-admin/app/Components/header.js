@@ -15,6 +15,7 @@
             scope: {},
             restrict : 'E',
             link : function(scope, element, attrs, controllers){
+                scope.siteName = Config.Settings.core.siteName || '';
             }
         };
     }

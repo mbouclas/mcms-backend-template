@@ -1,0 +1,17 @@
+<md-card class="md-whitespace-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Mail Log</h2>
+            <div flex=""></div>
+            <md-button class="md-icon-button" ng-click="VM.toggleFilters()">
+                <md-icon class="material-icons">filter_list</md-icon>
+                <md-tooltip md-direction="top">
+                    Filter results
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+<mail-log items="VM.Log" toggle-filters="VM.fireToggle"></mail-log>
+
+    </md-card>

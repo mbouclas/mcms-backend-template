@@ -62,7 +62,12 @@
             return DS.show(id)
                 .then(function (result) {
                     Menu = result.menu;
-                    Connectors = Connectors.concat(result.connectors);
+                    lo.forEach(result.connectors, function (connector) {
+                        if (!lo.find(Connectors, {name : connector.name})){
+                            Connectors.push(connector);
+                        }
+                    });
+
                     toFlat();
 
                     return Menu;
@@ -135,6 +140,7 @@
             return DS.rebuild(Menu)
                 .then(function (newMenu) {
                     Menu = newMenu;
+                    return newMenu;
                 });
         }
 

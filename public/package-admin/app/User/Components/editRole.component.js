@@ -32,6 +32,7 @@
     function DirectiveController(Helpers, Config, ACL) {
         var vm = this;
         vm.Role = {};
+        vm.ValidationMessagesTemplate = Config.validationMessages;
 
         vm.init = function (role) {
             vm.Role = role;

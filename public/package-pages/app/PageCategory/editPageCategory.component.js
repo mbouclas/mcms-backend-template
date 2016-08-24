@@ -5,7 +5,8 @@
     Directive.$inject = ['PAGES_CONFIG', '$timeout'];
     DirectiveController.$inject = ['$scope', 'PageCategoryService',
         'core.services', 'configuration', 'AuthService', 'LangService',
-        'PAGES_CONFIG', 'ItemSelectorService'];
+        'PAGES_CONFIG', 'ItemSelectorService', 'SeoService', 'mcms.settingsManagerService',
+        'LayoutManagerService', 'ModuleExtender'];
 
     function Directive(Config, $timeout) {
 
@@ -32,7 +33,7 @@
         };
     }
 
-    function DirectiveController($scope, PageCategory, Helpers, Config, ACL, Lang, PagesConfig, ItemSelector) {
+    function DirectiveController($scope, PageCategory, Helpers, Config, ACL, Lang, PagesConfig, ItemSelector, SEO, SM, LMS, ModuleExtender) {
         var vm = this;
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
@@ -51,34 +52,49 @@
                 file: PagesConfig.templatesDir + 'PageCategory/Components/tab-general-info.html',
                 active: true,
                 default: true,
-                alias: 'general'
+                id: 'general',
+                order : 1
             },
             {
                 label: 'Translations',
                 file: PagesConfig.templatesDir + 'PageCategory/Components/tab-translations.html',
                 active: false,
-                alias: 'translations',
+                id: 'translations',
+                order : 10
             },
             {
                 label: 'Extra Fields',
                 file: PagesConfig.templatesDir + 'Page/Components/tab-extra-fields.html',
                 active: false,
-                alias: 'extraFields',
+                id: 'extraFields',
+                order : 20
             },
             {
                 label: 'Featured',
                 file: PagesConfig.templatesDir + 'PageCategory/Components/tab-featured.html',
                 active: false,
-                alias: 'featured',
+                id: 'featured',
+                order : 30
             },
+            {
+                label : 'SEO',
+                file : PagesConfig.templatesDir + 'PageCategory/Components/tab-seo.html',
+                active : false,
+                id : 'seo',
+                order : 40
+            }
         ];
 
+        vm.tabs = ModuleExtender.extend('pages', vm.tabs);
+        vm.Layouts = LMS.layouts('pages.categories');
+        vm.LayoutsObj = LMS.toObj();
+
         vm.thumbUploadOptions = {
-            uploadConfig: {
-                url: Config.imageUploadUrl,
-                fields: {
-                    container: 'Item'
-                }
+            url : Config.imageUploadUrl,
+            acceptSelect : PagesConfig.fileTypes.image.acceptSelect,
+            maxFiles : 1,
+            params : {
+                container : 'Item'
             }
         };
         vm.UploadConfig = {
@@ -89,7 +105,7 @@
         vm.init = function (item) {
             if (typeof item == 'number') {
                 //call for data from the server
-                PageCategory.find(item)
+                return PageCategory.find(item)
                     .then(init);
             }
 
@@ -103,7 +119,6 @@
             }
 
             result.category_id = vm.Item.id;
-            console.log(result);
             vm.Item.featured.push(result);
         };
 
@@ -128,10 +143,18 @@
         function init(item) {
             vm.Connectors = ItemSelector.connectors();
             vm.Item = item;
+
+            SEO.fillFields(vm.Item.settings, function (model, key) {
+                SEO.prefill(model, vm.Item, key);
+            });
+
+            vm.SEO = SEO.fields();
             vm.Parent = $scope.addTo || null;
-            vm.thumbUploadOptions.uploadConfig.fields.item_id = item.id;
-            vm.thumbUploadOptions.uploadConfig.fields.configurator = '\\IdeaSeven\\Pages\\Services\\PageCategory\\ImageConfigurator';
-            vm.thumbUploadOptions.uploadConfig.fields.type = 'thumb';
+            vm.thumbUploadOptions.params.item_id = item.id;
+            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\PageCategory\\ImageConfigurator';
+            vm.thumbUploadOptions.params.type = 'thumb';
+            vm.Settings = SM.get({name : 'pageCategories'});
+            LMS.setModel(vm.Item);
         }
     }
 })();

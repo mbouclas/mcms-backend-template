@@ -15,7 +15,7 @@
             scope: {
                 options: '=?options',
                 item: '=?item',
-                mode : '=?action',
+                action : '=?action',
                 onSave: '&?onSave'
             },
             restrict: 'E',
@@ -23,7 +23,6 @@
                 var defaults = {
                     hasFilters: true
                 };
-
 
                 scope.action = scope.action || 'update';
                 controllers[0].set(scope.item);

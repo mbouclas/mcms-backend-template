@@ -1,9 +1,9 @@
 <md-content class="md-padding" flex>
     <div layout-sm="row" ng-hide="!VM.Section.settings.filter">
-        <md-input-container class="md-block" flex-sm flex="30">
+        <md-input-container class="md-block" >
             <label>Filter by:</label>
 
-            <md-select ng-model="VM.filterKey">
+            <md-select ng-model="VM.filterKey" ng-change="VM.setCurrentFilter()">
                 <md-option
                         ng-repeat="filter in VM.Section.filters"
                         value="{{ filter.key }}">
@@ -12,9 +12,22 @@
             </md-select>
         </md-input-container>
 
-        <md-input-container class="md-block" flex-sm>
+        <md-input-container class="md-block" flex-sm ng-if="VM.CurrentFilter.type != 'select'">
+        <label>Filter</label>
+        <input ng-model="VM.filter" ng-keyup="VM.applyFilter()" >
+        <md-select ng-model="VM.filter" ng-if="VM.CurrentFilter.type == 'select'">
+            <md-option ng-repeat="value in filter.values" value="{{value.id}}">
+                {{value.title}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+        <md-input-container class="md-block" flex-sm ng-if="VM.CurrentFilter.type == 'select'">
             <label>Filter</label>
-            <input ng-model="VM.filter" ng-keyup="VM.applyFilter()">
+            <md-select ng-model="VM.filter" ng-change="VM.applyFilter()">
+                <md-option ng-repeat="value in VM.CurrentFilter.values" value="{{value.item_id}}">
+                    <span ng-bind-html="value.title"></span>
+                </md-option>
+            </md-select>
         </md-input-container>
     </div>
     <md-progress-circular md-mode="indeterminate" ng-if="VM.Loading"></md-progress-circular>

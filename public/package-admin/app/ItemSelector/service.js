@@ -20,6 +20,11 @@
                 return this;
 
             }
+
+            if (Connectors.indexOf(connector) != -1){
+                return this;
+            }
+
             Connectors.push(connector);
             return this;
         }
@@ -34,6 +39,7 @@
                 section : section
             },query))
                 .then(function (response) {
+                    
                     return response.data;
                 });
         }

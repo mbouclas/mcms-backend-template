@@ -54,7 +54,7 @@
         };
 
         vm.disable = function (item) {
-            console.log('disabling: ',item);
+
         };
 
         vm.delete = function(item){

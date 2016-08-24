@@ -7,16 +7,61 @@
         componentsUrl = appUrl + 'Components/',
         templatesDir = '/package-admin/app/templates/';
 
+    var imageUploadUrl = '/admin/api/upload/image',
+        fileUploadUrl = '/admin/api/upload/file',
+        _csrf = window.CSRF || '';
     var config = {
+        CSRF : _csrf,
+        defaultDateFormat : 'DD/MM/YYYY',
         apiUrl : '/api/',
         prefixUrl : '/admin',
+        Settings : {},
         templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
+        imageUploadUrl: imageUploadUrl,
         imageBasePath: assetsUrl + 'img',
+        fileUploadUrl: fileUploadUrl,
         validationMessages : templatesDir + 'Components/validationMessages.html',
         appUrl : appUrl,
         componentsUrl : componentsUrl,
-        VAT : 0,
+        redactor : {
+            fileUpload: fileUploadUrl,
+            // fileManagerJson: '/files/files.json',
+            // imageManagerJson: '/files/files.json',
+            imageResizable : true,
+            cleanStyleOnEnter : true,
+            paragraphize : false,
+            replaceDivs : false,
+            removeAttr: false,
+            deniedTags:['script', 'style'],
+            dragImageUpload : true,
+            imageEditable : true,
+            imageUploadParam : 'file',
+            uploadImageFields : {
+                container: 'Item',
+                configurator: '\\IdeaSeven\\Core\\Services\\Image\\BaseImageConfigurator',
+                resize: false,
+                type: 'thumb',
+                _token : _csrf,
+                expect : 'redactor'
+            },
+            uploadFileFields : {
+                container: 'Item',
+                configurator: '\\IdeaSeven\\Core\\Services\\File\\BaseFileConfigurator',
+                resize: false,
+                type: 'thumb',
+                _token : _csrf,
+                expect : 'redactor'
+            },
+            imageUpload: imageUploadUrl,
+            clipboardUploadUrl: imageUploadUrl,
+            clipsJson : '/admin/api/redactor/clips.json',
+            plugins : ['fontfamily','fontsize','fontcolor','fullscreen','elfinder', 'table',
+                'video', 'imagemanager', 'filemanager', 'clips'],
+            buttons : ['html','formatting','bold','italic','deleted',
+                'unorderedlist','orderedlist','outdent','indent', 'table',
+                'image', 'video', 'elfinder', 'file','link','alignment','horizontalrule'],
+            observeLinks : true
+        },
       fileTypes : {
         image : {
           accept : 'image/*',

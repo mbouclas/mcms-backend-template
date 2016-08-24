@@ -4,6 +4,7 @@
 
     Service.$inject = ['$mdBottomSheet', 'configuration'];
 
+
     function Service($mdBottomSheet, Config) {
         var _this = this;
         this.show = show;

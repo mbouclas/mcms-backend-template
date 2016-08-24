@@ -4,6 +4,7 @@
 
 
     Service.$inject = ['$mdDialog'];
+    DialogController.$inject = ['$scope', '$mdDialog'];
 
 
     function Service($mdDialog) {
@@ -39,7 +40,6 @@
                     '</md-dialog-content>' +
                     '</md-dialog>';
             }
-
 
             return $mdDialog.show(dialog);
         }

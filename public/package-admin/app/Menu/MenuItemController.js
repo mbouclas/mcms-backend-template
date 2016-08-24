@@ -26,8 +26,15 @@
                 .then(function (savedNode) {
                     //add it to the tree
                     if (parent) {
+                        if (typeof parent.children == 'undefined'){
+                            parent.children = [];
+                        }
                         parent.children.push(savedNode);
                         return;
+                    }
+
+                    if (typeof vm.Menu.items == 'undefined'){
+                        vm.Menu.items = [];
                     }
 
                     vm.Menu.items.push(savedNode);
@@ -79,7 +86,8 @@
 
         vm.save = function () {
             MenuService.rebuild()
-                .then(function () {
+                .then(function (newMenu) {
+                    vm.Menu = newMenu;
                     Helpers.toast('Saved!');
                 });
         };

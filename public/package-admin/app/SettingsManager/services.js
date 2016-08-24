@@ -4,9 +4,9 @@
     angular.module('mcms.settingsManager')
         .service('mcms.settingsManagerService',Service);
 
-    Service.$inject = ['lodashFactory'];
+    Service.$inject = ['lodashFactory', 'LangService', 'SettingsManagerDataService'];
 
-    function Service(lo) {
+    function Service(lo, Lang, DS) {
         var _this = this;
         var Settings = [];
         this.types = [
@@ -18,12 +18,16 @@
                 'file'
             ];
 
+        this.init = init;
         this.addSettings = addSettings;
         this.addSettingsItem = addSettingsItem;
         this.newItem = newItem;
         this.all = all;
         this.get = get;
 
+        function init() {
+            return DS.index();
+        }
 
         function all() {
             return Settings;

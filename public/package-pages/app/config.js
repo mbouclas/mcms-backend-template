@@ -8,6 +8,7 @@
     var config = {
         apiUrl : '/api/',
         prefixUrl : '/admin',
+        previewUrl : '/admin/api/page/preview/',
         templatesDir : templatesDir,
         imageUploadUrl: '/admin/api/upload/image',
         imageBasePath: assetsUrl + 'img',

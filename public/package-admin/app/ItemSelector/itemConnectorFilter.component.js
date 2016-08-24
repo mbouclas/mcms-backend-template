@@ -21,13 +21,15 @@
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
-                    hasFilters: true
+                    hasFilters: true,
+                    searchOn : false
                 };
 
 
                 controllers[0].set(scope.connector, scope.section);
 
                 scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
+
             }
         };
     }
@@ -41,23 +43,32 @@
         vm.Results = [];
 
         vm.Section = {};
+        vm.setCurrentFilter = function () {
+            vm.CurrentFilter = lo.find(vm.Section.filters, {key : vm.filterKey});
+        }
+
         this.set = function (connector, section) {
             vm.Connector = connector;
             vm.Section = section;
             var keyFound = lo.find(vm.Section.filters, {default : true});
             vm.filterKey = (keyFound) ? keyFound.key  : vm.Section.filters[0].key;
+            vm.setCurrentFilter();
+
             if (typeof section.settings.preload != 'undefined' && section.settings.preload){
                 $timeout(function () {
                     vm.applyFilter();
                 });
             }
         };
+
+
         
         vm.get = function (query) {
             vm.Loading = true;
             return ItemSelector.filter(query, vm.Connector.name, vm.Section.name)
                 .then(function (res) {
                     vm.Loading = false;
+
                     return (!query) ? res : res.data.filter( Core.createFilterFor('title',query) );
                 });
         };

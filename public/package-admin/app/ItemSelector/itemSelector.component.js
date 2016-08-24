@@ -15,13 +15,17 @@
             scope: {
                 items: '=items',
                 connector : '=connector',
-                onResult : '&onResult'
+                onResult : '&onResult',
+                options : '=?options'
             },
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
-                    hasFilters: true
+                    hasFilters: true,
+                    connector : {
+                    }
                 };
+
                 scope.Title = attrs.title || null;
 
                 scope.$watch('items', function (val) {
@@ -31,6 +35,10 @@
                 });
 
                 scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
+
+                if (scope.options.searchOn){
+                    scope.searchOn = true;
+                }
             }
         };
     }

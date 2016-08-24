@@ -23,6 +23,8 @@
         this.save = save;
         this.delete = deleteItems;
         this.langFields = langFields;
+        this.setDefaultLang = setDefaultLang;
+        this.sync = sync;
 
         function init() {
             return Lang.init().then(function (bootData) {
@@ -128,6 +130,14 @@
             });
 
             return fields;
+        }
+
+        function setDefaultLang(code) {
+            DefaultLang = code;
+        }
+
+        function sync() {
+            return Lang.sync();
         }
     }
 })();

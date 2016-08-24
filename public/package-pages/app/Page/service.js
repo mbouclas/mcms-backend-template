@@ -5,9 +5,10 @@
         .service('PageService',Service);
 
     Service.$inject = ['PageDataService', 'LangService', 'lodashFactory', 'mediaFileService',
-        '$q', 'PageCategoryService', 'ItemSelectorService', 'mcms.settingsManagerService'];
+        '$q', 'PageCategoryService', 'ItemSelectorService', 'mcms.settingsManagerService',
+        'SeoService', 'TagsService', '$location', 'PAGES_CONFIG'];
 
-    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector, SM) {
+    function Service(DS, Lang, lo, MediaFiles, $q, PageCategoryService, ItemSelector, SM, SEO, Tags, $location, Config) {
         var _this = this;
         var Pages = [];
         this.get = get;
@@ -17,9 +18,16 @@
         this.save = save;
         this.destroy = destroy;
 
-        function init() {
+
+        function init(filters) {
+            filters = filters || {};
+            var params = $location.search();
+            if (typeof params.page != 'undefined' && params.page){
+                filters.page = params.page;
+            }
+
             var tasks = [
-                get(),
+                get(filters),
                 categories()
             ];
 
@@ -44,6 +52,11 @@
                     ItemSelector.register(response.connectors);
                     MediaFiles.setImageCategories(response.imageCategories);
                     SM.addSettingsItem(response.settings);
+                    if (typeof response.config == 'undefined' || typeof response.config.previewController == 'undefined'){
+                        Config.previewUrl = null;
+                    }
+                    SEO.init(response.seoFields);
+                    Tags.set(response.tags);
                     return response.item || newPage();
                 });
         }
@@ -58,7 +71,9 @@
                 categories : [],
                 extraFields : [],
                 related : [],
-                settings : {},
+                settings : {
+                    seo : {}
+                },
                 id : null
             };
         }

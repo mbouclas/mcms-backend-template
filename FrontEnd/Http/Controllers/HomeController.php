@@ -3,6 +3,7 @@
 namespace FrontEnd\Http\Controllers;
 
 use App\Http\Requests;
+use IdeaSeven\FrontEnd\Services\EditableRegions;
 use Illuminate\Routing\Controller as BaseController;
 use IdeaSeven\Pages\Services\Page\PageService;
 use Illuminate\Http\Request;
@@ -24,8 +25,12 @@ class HomeController extends BaseController
      *
      * @return \Illuminate\Http\Response
      */
-    public function index(PageService $pageService)
+    public function index(EditableRegions $editableRegions, PageService $pageService)
     {
+        $regions = $editableRegions->filter('frontPage')
+            ->processRegions(['slider','latestBlogPosts', 'banners'])
+            ->get(true);
+
         $articles = $pageService->model
             ->with(['categories'])
             ->take(5)
@@ -34,7 +39,10 @@ class HomeController extends BaseController
 
         return view('home')
             ->with([
-                'latestArticles' => $articles
+                'latestBlogPosts' => $regions['latestBlogPosts'],
+                'latestArticles' => $articles,
+                'sliderItems' => $regions['slider'],
+                'banners' => $regions['banners'],
             ]);
     }
 }

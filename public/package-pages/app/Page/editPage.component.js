@@ -2,13 +2,14 @@
     angular.module('mcms.pages.page')
         .directive('editPage', Directive);
 
-    Directive.$inject = ['PAGES_CONFIG', '$timeout'];
+    Directive.$inject = ['PAGES_CONFIG', 'hotkeys'];
     DirectiveController.$inject = [ '$scope','PageService',
         'core.services', 'configuration', 'AuthService', 'LangService',
         'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService', 'lodashFactory',
-        'mcms.settingsManagerService'];
+        'mcms.settingsManagerService', 'SeoService', 'LayoutManagerService', '$timeout', '$rootScope', '$q',
+        'momentFactory', 'ModuleExtender'];
 
-    function Directive(Config, $timeout) {
+    function Directive(Config, hotkeys) {
 
         return {
             templateUrl: Config.templatesDir + "Page/editPage.component.html",
@@ -25,15 +26,39 @@
                 var defaults = {
                     hasFilters: true
                 };
-                
+
+
+                scope.refreshIframe = function () {
+                    var iframe = document.getElementById('preview');
+                    if (!iframe){
+                        return;
+                    }
+
+                    iframe.contentDocument.location.reload(true);
+                };
+
+                hotkeys.add({
+                    combo: 'ctrl+s',
+                    description: 'save',
+                    allowIn: ['INPUT', 'SELECT', 'TEXTAREA'],
+                    callback: function(e) {
+                        e.preventDefault();
+                        controllers[0].save();
+                    }
+                });
+
                 controllers[0].init(scope.item);
                 scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
             }
         };
     }
 
-    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig, ItemSelector, lo, SM) {
-        var vm = this;
+    function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig,
+                                 ItemSelector, lo, SM, SEO, LMS, $timeout, $rootScope, $q, moment, ModuleExtender) {
+        var vm = this,
+            autoSaveHooks = [];
+
+        vm.published_at = {};
         vm.Lang = Lang;
         vm.defaultLang = Lang.defaultLang();
         vm.Locales = Lang.locales();
@@ -44,56 +69,70 @@
         vm.Permissions = ACL.permissions();
         vm.isSu = ACL.role('su');//more efficient check
         vm.isAdmin = ACL.role('admin');//more efficient check
-        vm.Settings = SM.get({name : 'pages'});
+
+
         vm.tabs = [
             {
                 label : 'General',
                 file : PagesConfig.templatesDir + 'Page/Components/tab-general-info.html',
                 active : true,
                 default : true,
-                alias : 'general'
+                id : 'general',
+                order : 1
             },
             {
                 label : 'Translations',
                 file : PagesConfig.templatesDir + 'Page/Components/tab-translations.html',
                 active : false,
-                alias : 'translations',
+                id : 'translations',
+                order : 20
             },
             {
                 label : 'Media files',
                 file : PagesConfig.templatesDir + 'Page/Components/tab-media-files.html',
                 active : false,
                 default : false,
-                alias : 'mediaFiles'
+                id : 'mediaFiles',
+                order : 30
             },
-            {
+/*            {
                 label : 'Extra Fields',
                 file : PagesConfig.templatesDir + 'Page/Components/tab-extra-fields.html',
                 active : false,
-                alias : 'extraFields',
-            },
+                id : 'extraFields',
+            },*/
             {
                 label : 'Related Items',
                 file : PagesConfig.templatesDir + 'Page/Components/tab-related-items.html',
                 active : false,
                 alias : 'related',
-                acl : 'isSu'
+                order : 40
+            },
+            {
+                label : 'SEO',
+                file : PagesConfig.templatesDir + 'Page/Components/tab-seo.html',
+                active : false,
+                alias : 'seo',
+                order : 50
             }
         ];
+
+        vm.tabs = ModuleExtender.extend('pages', vm.tabs);
+
         vm.Categories = [];
         vm.thumbUploadOptions = {
-            uploadConfig : {
-                url : Config.imageUploadUrl,
-                fields : {
-                    container : 'Item'
-                }
+            url : Config.imageUploadUrl,
+            acceptSelect : PagesConfig.fileTypes.image.acceptSelect,
+            maxFiles : 1,
+            params : {
+                container : 'Item'
             }
         };
+
         vm.imagesUploadOptions = {
             url : PagesConfig.imageUploadUrl,
-            accept : PagesConfig.fileTypes.image.accept,
             acceptSelect : PagesConfig.fileTypes.image.acceptSelect,
-            fields : {
+            params : {
                 container : 'Item'
             },
             uploadOptions : PagesConfig.fileTypes.image.uploadOptions
@@ -103,10 +142,14 @@
             file : {},
             image : vm.imagesUploadOptions
         };
+        vm.Layouts = LMS.layouts('pages.items');
+        vm.LayoutsObj = LMS.toObj();
+        vm.categoriesValid = null;
+
         vm.init = function (item) {
             if (!item.id){
                 //call for data from the server
-                Page.find(item)
+                return Page.find(item)
                     .then(init);
             }
 
@@ -114,14 +157,24 @@
 
         };
 
+
         vm.exists = function (item, type) {
             type = (!type) ? 'checkForPermission' : 'checkFor' + type;
             return ACL[type](vm.User, item);
         };
 
         vm.save = function () {
+
+            if (!$scope.ItemForm.$valid){
+                $q.reject();
+            }
+
             var isNew = (!(typeof vm.Item.id == 'number'));
-            Page.save(vm.Item)
+
+            vm.Item.published_at = Helpers.deComposeDate(vm.publish_at).toISOString();
+
+
+            return Page.save(vm.Item)
                 .then(function (result) {
                    Helpers.toast('Saved!');
 
@@ -132,6 +185,8 @@
                     if (typeof $scope.onSave == 'function'){
                         $scope.onSave({item : result, isNew : isNew});
                     }
+
+                    return result;
                 });
         };
 
@@ -147,6 +202,10 @@
 
         vm.removeCategory = function (cat) {
             vm.Item.categories.splice(lo.findIndex(vm.Item.categories, {id : cat.id}), 1);
+
+            if (vm.Item.categories.length == 0){
+                vm.categoriesValid = null;
+            }
         };
 
         vm.onCategorySelected = function (cat) {
@@ -160,6 +219,7 @@
             }
 
             vm.Item.categories.push(cat);
+            vm.categoriesValid = true;
             vm.searchText = null;
         };
 
@@ -178,14 +238,74 @@
 
         function init(item) {
             vm.Item = item;
+            SEO.fillFields(vm.Item.settings, function (model, key) {
+                SEO.prefill(model, vm.Item, key);
+            });
+            // console.log(lo.find(vm.Layouts, {varName : vm.Item.settings.Layout.id}));
+            vm.publish_at = Helpers.composeDate(vm.Item.published_at);
+            vm.SEO = SEO.fields();
             vm.Connectors = ItemSelector.connectors();
-            vm.thumbUploadOptions.uploadConfig.fields.item_id = item.id;
-            vm.thumbUploadOptions.uploadConfig.fields.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
-            vm.thumbUploadOptions.uploadConfig.fields.type = 'thumb';
+            vm.thumbUploadOptions.params.item_id = item.id;
+            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
+            vm.thumbUploadOptions.params.type = 'thumb';
 
-            vm.imagesUploadOptions.fields.item_id = item.id;
-            vm.imagesUploadOptions.fields.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
-            vm.imagesUploadOptions.fields.type = 'images';
+            vm.imagesUploadOptions.params.item_id = item.id;
+            vm.imagesUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
+            vm.imagesUploadOptions.params.type = 'images';
+            LMS.setModel(vm.Item);
+            vm.Settings = SM.get({name : 'pages'});
+            if (lo.isArray(vm.Item.categories) && vm.Item.categories.length > 0){
+                vm.categoriesValid = true;
+            }
         }
+
+
+
+        var watcher = null,
+            timer = null;
+        /*
+        * autosave
+        * */
+        watcher = $scope.$watch(angular.bind(vm, function () {
+            var publishDate = Helpers.deComposeDate(vm.publish_at);
+            if (publishDate.isAfter(moment())){
+                vm.Item.active = false;
+                vm.disableStatus = true;
+                vm.toBePublished = publishDate;
+            } else {
+                vm.disableStatus = false;
+            }
+            return this.Item;
+        }), function (newVal) {
+
+            if(timer){
+                $timeout.cancel(timer);
+            }
+
+
+            if (typeof newVal.id == 'undefined' || !newVal.id){
+                watcher();
+                return;
+            }
+
+            timer = $timeout(function () {
+                vm.save().then(function (item) {
+
+                    for (var i in autoSaveHooks){
+                        autoSaveHooks[i].call(this, item);
+                    }
+                });
+            }, 5000);
+
+        }, true);
+
+        $rootScope.$on('page.preview', function (e, preview) {
+            if (preview){
+                autoSaveHooks.push($scope.refreshIframe);
+            } else {
+                autoSaveHooks.splice(autoSaveHooks.indexOf($scope.refreshIframe), 1);
+            }
+        });
+
     }
 })();

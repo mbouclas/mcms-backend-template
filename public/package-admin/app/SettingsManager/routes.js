@@ -14,6 +14,11 @@
                 controller: 'SettingsManagerController',
                 controllerAs: 'VM',
                 reloadOnSearch : false,
+                resolve: {
+                    init : ["AuthService", '$q', 'mcms.settingsManagerService', function (ACL, $q, SMS) {
+                        return (!ACL.role('admin')) ? $q.reject(403) : SMS.init();
+                    }]
+                },
                 name: 'settings-manager'
             });
 

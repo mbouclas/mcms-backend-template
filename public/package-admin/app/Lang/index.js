@@ -2,8 +2,7 @@
   'use strict';
 
   angular.module('mcms.lang', [
-      'pascalprecht.translate',
-      'md.data.table'
+      'pascalprecht.translate'
   ])
       .run(run)
       .config(config);

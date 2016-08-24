@@ -20,9 +20,9 @@
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
-                    hasFilters: true
+                    hasFilters: true,
+                    searchOn : false
                 };
-
 
                 controllers[0].set(scope.connector);
 

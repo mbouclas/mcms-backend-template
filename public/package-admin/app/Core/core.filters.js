@@ -24,9 +24,9 @@
         };
     }
 
-    function lo(lodash) {
-        return function (method, params) {
-            return lodash[method](params);
+    function lo(ld) {
+        return function (array,method, params) {
+            return ld[method](array, params);
         }
     }
 

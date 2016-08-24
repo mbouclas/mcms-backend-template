@@ -45,6 +45,15 @@ class Handler extends ExceptionHandler
      */
     public function render($request, Exception $e)
     {
+        /*
+         * Added by the FrontEnd package
+         */
+        if($this->isHttpException($e)){
+            $redirectTo = PermalinkArchive::lookUp($request, $e);
+            if ($redirectTo){
+                return \Redirect::to($redirectTo, 301);
+            }
+        }
         return parent::render($request, $e);
     }
 }

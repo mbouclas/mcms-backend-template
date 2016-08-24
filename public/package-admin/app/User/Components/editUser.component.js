@@ -64,7 +64,6 @@
 
         vm.init = function (user) {
             vm.User = user;
-            console.log(user);
         };
 
         vm.exists = function (item, type) {

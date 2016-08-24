@@ -32,7 +32,7 @@
     function DirectiveController(Helpers, Config, ACL) {
         var vm = this;
         vm.Permission = {};
-
+        vm.ValidationMessagesTemplate = Config.validationMessages;
         vm.init = function (permission) {
             vm.Permission = permission;
         };

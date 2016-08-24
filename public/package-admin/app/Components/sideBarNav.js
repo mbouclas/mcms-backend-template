@@ -2,10 +2,10 @@
     angular.module('mcms.components')
         .directive('sideBarNav', sideBarNav);
 
-    sideBarNav.$inject = ['configuration'];
+    sideBarNav.$inject = ['configuration', '$rootScope'];
     sideBarNavController.$inject = ['mcms.menuService','$location','$mdSidenav', 'AuthService'];
 
-    function sideBarNav(Config){
+    function sideBarNav(Config, $rootScope){
 
         return {
             require : 'sideBarNav',
@@ -15,6 +15,11 @@
             restrict : 'E',
             replace : true,
             link : function(scope, element, attrs, controllers){
+                scope.isLocked = true;
+                $rootScope.$on('sideNav.unlock', function (event, mode) {
+                    scope.isLocked = mode || false;
+                });
+
             }
         };
     }

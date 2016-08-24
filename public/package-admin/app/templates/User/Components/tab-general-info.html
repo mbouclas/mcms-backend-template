@@ -28,7 +28,7 @@
 
 <md-input-container class="md-block" flex-gt-sm>
     <label>Password</label>
-    <input type="password" ng-model="VM.User.password" required name="password">
+    <input type="password" ng-model="VM.User.password" ng-required="!VM.User.id" name="password">
 
     <div ng-messages="UserForm.password.$error">
         <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
@@ -37,7 +37,7 @@
 
 <md-input-container class="md-block" flex-gt-sm>
     <label>Confirm Password</label>
-    <input type="password" ng-model="confirm" required compare-to="VM.User.password" name="compare">
+    <input type="password" ng-model="confirm" ng-required="!VM.User.id" compare-to="VM.User.password" name="compare">
 
     <div ng-messages="UserForm.compare.$error">
         <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>

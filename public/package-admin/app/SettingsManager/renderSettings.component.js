@@ -2,10 +2,10 @@
     angular.module('mcms.settingsManager')
         .directive('renderSettings', Directive);
 
-    Directive.$inject = ['configuration'];
-    DirectiveController.$inject = ['$scope', 'mcms.settingsManagerService', 'lodashFactory','$timeout'];
+    Directive.$inject = ['configuration', 'lodashFactory'];
+    DirectiveController.$inject = ['$scope', 'mcms.settingsManagerService', 'lodashFactory','$timeout', 'LangService'];
 
-    function Directive(Config) {
+    function Directive(Config, lo) {
 
         return {
             require : ['ngModel','renderSettings'],
@@ -20,30 +20,43 @@
             restrict: 'E',
             link: function (scope, element, attrs, controllers) {
                 var defaults = {
-                    limit: 10
+
                 };
 
                 scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
-                controllers[1].assignItems(scope.items,scope.model);
-/*                scope.$watch('items',function (val) {
+
+
+                var unregister = scope.$watch('items',function (val) {
                     if (!val){
                         return;
                     }
+
+                    if (lo.isArray(scope.model) || typeof scope.model == 'undefined' || !scope.model){
+                        scope.model = {};
+                    }
                     controllers[1].assignItems(scope.items,scope.model);
+
                     // unregister();
-                },true);*/
+                },true);
 
             }
         };
     }
 
-    function DirectiveController($scope, Settings, lo, $timeout) {
+    function DirectiveController($scope, Settings, lo, $timeout, Lang) {
         var vm = this;
         vm.Items = [];
-
+        vm.models = {};
+        vm.imageOptions = {
+            showPreview : false,
+            showDetails : false,
+            showUpload : true
+        };
+        vm.defaultLang = Lang.defaultLang();
+        vm.Locales = Lang.locales();
 
         vm.assignItems = function(items,ngModel){
-            console.log('running');
+
             if (lo.isArray(items)){
                 //direct assignment
                 vm.Items = items;
@@ -53,48 +66,37 @@
             }
 
             //now merge items with the given ngModel
+
             fillValues(ngModel);
-
-
-
-
         };
 
         function fillValues(ngModel) {
-            var values = [];
+            var value = '';
 
             vm.Items.forEach(function (field) {
-
-                var found = null;
-                if (typeof ngModel[field.varName] != 'undefined') {
-                    console.log('found ', ngModel[field.varName])
-                    field.value = ngModel[field.varName];
-                }
-
-                if (!found){
-                    var newField = angular.copy(field);
-                    if (field.type == 'boolean'){
-                        newField.value = false;
-                    } else {
-                        newField.value = '';
+                if (typeof ngModel[field.varName] == 'undefined') {
+                    switch (field.type){
+                        case 'boolean' : value = false;
+                            break;
+                        case 'selectMultiple' : value = [];
+                            break;
+                        case 'image' : value = {};
+                            break;
+                        case 'file' : value = {};
+                            break;
+                        default : value = (field.translatable) ? Lang.langFields() :  '';
                     }
 
-                    ngModel[field.varName] = newField.value;
-                    field.value = ngModel[field.varName];
-                    values.push(newField);
-
-                    return;
+                    ngModel[field.varName] = value;
                 }
-
-                values.push(found);
+                vm.models[field.varName] = ngModel[field.varName];
             });
 
-            return values;
         }
 
-        vm.changed = function (field) {
+        vm.changed = function (field, value) {
             $timeout(function () {
-                $scope.model[field.varName] = field.value;
+                $scope.model[field] = (typeof value != 'undefined') ? value : vm.models[field];
             });
         }
     }

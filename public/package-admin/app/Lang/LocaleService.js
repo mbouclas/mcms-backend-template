@@ -4,9 +4,9 @@
     angular.module('mcms.lang')
         .service('LocaleService', Service);
 
-    Service.$inject = ['LocaleDataService', '$q', 'lodashFactory'];
+    Service.$inject = ['LocaleDataService', '$q', 'lodashFactory', 'LangService'];
 
-    function Service(DS, $q, lo) {
+    function Service(DS, $q, lo, Lang) {
         var _this = this;
         var Locales = [],
             LocalesAvailable,
@@ -23,6 +23,7 @@
         this.disable = disable;
         this.update = update;
         this.find = find;
+        this.setDefault = setDefault;
 
 
         function init() {
@@ -66,6 +67,10 @@
         }
 
         function enable(locale) {
+            if (typeof locale == 'undefined' || typeof locale.code == 'undefined'){
+                return;
+            }
+
             return DS.enable(locale.code)
                 .then(function (res) {
                     Locales[locale.code] = locale;
@@ -88,6 +93,21 @@
 
         function find(query) {
             return lo.find(LocalesAvailable, query);
+        }
+
+        function setDefault(locale) {
+            return DS.setDefault(locale)
+                .then(function () {
+                    for (var i in Locales){
+                        Locales[i].default = false;
+                        if (i == locale.code){
+                            Locales[i].default = true;
+                        }
+                    }
+                    DefaultLang = locale;
+                    Lang.setDefaultLang(locale.code);
+                    return Locales;
+                });
         }
 
     }

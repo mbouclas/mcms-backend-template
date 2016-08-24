@@ -4,10 +4,11 @@
     angular.module('mcms.lang')
         .controller('LangController', Controller);
 
-    Controller.$inject = ['translations', 'LangService', '$mdSidenav', 'Dialog', 'core.services'];
+    Controller.$inject = ['translations', 'LangService', '$mdSidenav', 'Dialog', 'core.services', 'BottomSheet', '$rootScope'];
 
-    function Controller(Translations, Lang, $mdSidenav, Dialog, Helpers) {
+    function Controller(Translations, Lang, $mdSidenav, Dialog, Helpers, BottomSheet, $rootScope) {
         var vm = this;
+
         vm.filters = {
             status: null,
             key: null,
@@ -34,11 +35,28 @@
         vm.Translations = Translations.data;
         vm.Pagination = Translations.pagination;
 
+        vm.showActions = function (ev, item) {
+            BottomSheet.show({
+                item : item,
+                title : 'Edit ' + item.key
+            },[
+                { name: 'Edit', icon: 'edit', fn : vm.quickEdit },
+                { name: 'Delete', icon: 'delete', fn : vm.delete },
+            ]);
+        };
+        vm.Groups = Lang.groups();
+
         function filter() {
+            vm.Loading = true;
+            vm.Translations = [];
+
             return Lang.get(vm.filters)
                 .then(function (res) {
+                    vm.Loading = false;
                     vm.Translations = res.data;
                     vm.Pagination = res.pagination;
+                    $rootScope.$broadcast('scroll.to.top');
+
                 });
         }
 
@@ -56,13 +74,17 @@
         };
 
         vm.add = function (ev) {
-            ev.stopPropagation();
-            showDialog(ev, Lang.newItem(), onCreatedDone);
+            showDialog(Lang.newItem(), onCreatedDone);
         };
 
-        vm.quickEdit = function (ev, item) {
-            ev.stopPropagation();
-            showDialog(ev, item, onUpdateDone);
+        vm.quickEdit = function ( item) {
+            showDialog(item, onUpdateDone);
+        };
+
+        vm.sync = function () {
+            Lang.sync().then(function () {
+                Helpers.toast('done!!!');
+            });
         };
 
         vm.delete = function (ev) {
@@ -84,12 +106,12 @@
 
         };
 
-        function showDialog(ev, item, onSave) {
+        function showDialog(item, onSave) {
             onSave = onSave || null;
             var action = (!item.key) ? 'create' : 'update';
             Dialog.show({
                 title : (item.key || 'Add new'),
-                contents : '<translation-component item="VM.item" action="VM.mode" ' +
+                contents : '<translation-component item="VM.item" action="VM.action" ' +
                 'on-save="VM.onSave(result)"></translation-component>',
                 locals : {
                     item: item,
@@ -97,51 +119,20 @@
                     onSave: onSave
                 }
             });
-/*            $mdDialog.show({
-                controller: DialogController,
-                template: '<md-dialog aria-label="' + (item.key || 'Add new') + '">' +
-                '<md-toolbar><div class="md-toolbar-tools"><h2>' + (item.key || 'Add new') + '</h2>' +
-                '<div flex=""></div> ' +
-                '<md-button class="md-icon-button" ng-click="close()">' +
-                '<md-icon  class="material-icons">close</md-icon>' +
-                '</md-button>' +
-                ' </div></md-toolbar>' +
-                '<md-dialog-content style="min-width: 600px;">' +
-                '<translation-component item="VM.item" action="VM.mode" ' +
-                'on-save="VM.onSave(result)"></translation-component>' +
-                '</md-dialog-content>' +
-                '</md-dialog>',
-                locals: {
-                    item: item,
-                    action: action,
-                    onSave: onSave
-                },
-                bindToController: true,
-                controllerAs: 'VM',
-                parent: angular.element(document.body),
-                targetEvent: ev,
-                clickOutsideToClose: true,
-                fullscreen: true
-            })
-                .then(function (answer) {
-
-                }, function () {
-                });*/
         }
 
         function DialogController($scope, $mdDialog) {
             $scope.close = function () {
-                $mdDialog.hide();
+                Dialog.close();
             };
         }
 
         function onUpdateDone(result) {
-            console.log('Result', result);
-            $mdDialog.hide();
+            Dialog.close();
         }
 
         function onCreatedDone(result) {
-            $mdDialog.hide();
+            Dialog.close();
             filter();//refresh the results with everything new
         }
     }

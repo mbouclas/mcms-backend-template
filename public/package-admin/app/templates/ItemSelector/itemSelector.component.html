@@ -1,4 +1,4 @@
-<md-toolbar class="md-table-toolbar md-default" ng-cloak ng-init="searchOn=true">
+<md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
         <h2 class="md-title">{{ Title || 'Featured items' }}</h2>
         <div flex=""></div>
@@ -31,14 +31,16 @@
         </md-list>
     </md-sidenav>
 <div ng-repeat="connector in VM.Connectors" ng-if="$index == VM.selectedTab">
+
     <item-connector
             connector="connector"
             on-result="VM.onResult(result)"
+            options="options.connector"
             ng-if="connector.type != 'custom'">
         </item-connector>
 </div>
     </section>
-<md-list sv-root sv-part="VM.Items" ng-hide="searchOn">
+<md-list sv-root sv-part="VM.Items" ng-hide="searchOn || options.itemsHidden">
     <md-list-item
             ng-repeat="item in VM.Items"
             sv-element="opts"
