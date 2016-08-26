@@ -4,6 +4,7 @@ return [
     'items' => [
         'slug_pattern' => '/page/%slug$s',
         'images' => [
+            "optimize" => true,
             'keepOriginals' => true,
             'dirPattern' => 'pages/page_%id$s',
             'filePattern' => '',
@@ -50,6 +51,7 @@ return [
     'categories' => [
         'slug_pattern' => '/pages/%slug$s',
         'images' => [
+            "optimize" => true,
             'keepOriginals' => true,
             'dirPattern' => 'pages/category_%id$s',
             'filePattern' => '',
