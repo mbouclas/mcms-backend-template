@@ -7,6 +7,7 @@ return [
             "optimize" => true,
             'keepOriginals' => true,
             'dirPattern' => 'pages/page_%id$s',
+            'savePath' => 'public_path',
             'filePattern' => '',
             'types' => [
                 [
@@ -53,6 +54,7 @@ return [
         'images' => [
             "optimize" => true,
             'keepOriginals' => true,
+            'savePath' => 'public_path',
             'dirPattern' => 'pages/category_%id$s',
             'filePattern' => '',
             'types' => [
