@@ -10,7 +10,7 @@ return [
         'driver' => 'gd',
         'keepOriginals' => true,
         'dirPattern' => 'uploads',
-        'filePattern' => 'images',
+        'filePattern' => 'images/uploads',
         'types' => ['images'],
         'copies' => [
 
