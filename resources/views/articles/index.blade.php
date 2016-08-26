@@ -1,6 +1,20 @@
 @extends('layouts.app')
 @section('meta-title')
-    {!! $category->title !!}
+    @if(isset($category->settings['seo'][App::getLocale()]['title']))
+        {!! $category->settings['seo'][App::getLocale()]['title'] !!}
+    @else
+        {!! $category->title !!}
+    @endif
+@endsection
+@section('meta-description')
+    @if(isset($category->settings['seo'][App::getLocale()]['description']))
+        {!! $category->settings['seo'][App::getLocale()]['description'] !!}
+    @endif
+@endsection
+@section('meta-keywords')
+    @if(isset($category->settings['seo'][App::getLocale()]['keywords']))
+        {!! $category->settings['seo'][App::getLocale()]['keywords'] !!}
+    @endif
 @endsection
 @section('content')
     <header class="page-header">

@@ -39,7 +39,6 @@
                 section : section
             },query))
                 .then(function (response) {
-                    
                     return response.data;
                 });
         }

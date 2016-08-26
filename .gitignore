@@ -8,3 +8,4 @@ Homestead.json
 .git
 .DS_Store
 *.log
+public/images

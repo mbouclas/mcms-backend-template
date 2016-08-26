@@ -1,6 +1,20 @@
 @extends('layouts.app')
 @section('meta-title')
-    {!! $article->title !!}
+    @if(isset($article->settings['seo'][App::getLocale()]['title']))
+        {!! $article->settings['seo'][App::getLocale()]['title'] !!}
+    @else
+        {!! $article->title !!}
+    @endif
+@endsection
+@section('meta-description')
+    @if(isset($article->settings['seo'][App::getLocale()]['description']))
+        {!! $article->settings['seo'][App::getLocale()]['description'] !!}
+    @endif
+@endsection
+@section('meta-keywords')
+    @if(isset($article->settings['seo'][App::getLocale()]['keywords']))
+        {!! $article->settings['seo'][App::getLocale()]['keywords'] !!}
+    @endif
 @endsection
 @section('content')
     <header class="page-header">
@@ -15,13 +29,13 @@
 
                 @if(isset( $article->thumb) && isset( $article->thumb['copies']))
                 <div class="slider-item">
-                    <img src="{{ $article->thumb['copies']['originals']['url'] }}" width="1140" height="700">
+                    <img src="{{ $article->thumb['copies']['originals']['url'] }}" width="1140" >
                 </div><!-- .slider-item -->
 
                 @endif
                 @foreach($article->images as $image)
                     <div class="slider-item">
-                        <img src="{{ $image['copies']['originals']['url'] }}" width="1140" height="700" alt="{!! $image->alt !!}">
+                        <img src="{{ $image['copies']['originals']['url'] }}" width="1140" alt="{!! $image->alt !!}">
                     </div><!-- .slider-item -->
                 @endforeach
             </div><!-- .slider -->
@@ -42,11 +56,11 @@
             </div>
 
             <div class="post-footer">
-                @if(isset($article->tagging))
+                @if(isset($article->tagged))
                 <div class="post-footer-item">
                     <ul class="tags-list">
-                        @foreach($article->tags as $tag)
-                        <li><a href="#">{{$tag->$tag}}</a>
+                        @foreach($article->tagged as $tag)
+                        <li><a href="{{ route('tag', ['slug'=>$tag->tag_slug]) }}">{{$tag->tag_name}}</a>
                         @endforeach
                     </ul>
                 </div>
