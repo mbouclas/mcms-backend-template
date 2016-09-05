@@ -8,7 +8,7 @@
             "regional" => "el_GR",
             "flag_icon" => "asasasas",
             "code" => "el",
-            "default" => true
+            "default" => TRUE
         ]
     ],
     "useAcceptLanguageHeader" => TRUE,

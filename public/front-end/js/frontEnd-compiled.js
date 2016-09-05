@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -991,46 +991,6 @@ require('./welcome.widget');
     }
 })();
 },{}],25:[function(require,module,exports){
-(function(){
-    'use strict';
-    var assetsUrl = '/assets/',
-        appUrl = '/app/',
-        componentsUrl = appUrl + 'Components/',
-        templatesDir = '/front-end/app/templates/';
-
-    var config = {
-        apiUrl : '/api/',
-        prefixUrl : '/admin',
-        templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
-        imageBasePath: assetsUrl + 'img',
-        validationMessages : templatesDir + 'Components/validationMessages.html',
-        appUrl : appUrl,
-        componentsUrl : componentsUrl,
-        fileTypes : {
-            image : {
-                accept : 'image/*',
-                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
-            },
-            document : {
-                accept : 'application/pdf,application/doc,application/docx',
-                acceptSelect : 'application/pdf,application/doc,application/docx'
-            },
-            file : {
-                accept : 'application/*',
-                acceptSelect : 'application/*'
-            },
-            audio : {
-                accept : 'audio/*',
-                acceptSelect : 'audio/*'
-            }
-        }
-    };
-
-    angular.module('mcms.core')
-        .constant('FRONTEND_CONFIG',config);
-})();
-},{}],26:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1052,7 +1012,6 @@ require('./welcome.widget');
 
 
     function run(Menu) {
-
         Menu.addMenu(Menu.newItem({
             id: 'FrontEnd',
             title: 'Website',
@@ -1109,4 +1068,44 @@ require('./LayoutManager');
 require('./PermalinkArchive');
 require('./Widgets');
 
-},{"./EditableRegions":5,"./FrontPage":10,"./LayoutManager":13,"./PermalinkArchive":17,"./Seo":20,"./Settings":22,"./Widgets":23,"./config":25}]},{},[26])
+},{"./EditableRegions":5,"./FrontPage":10,"./LayoutManager":13,"./PermalinkArchive":17,"./Seo":20,"./Settings":22,"./Widgets":23,"./config":26}],26:[function(require,module,exports){
+(function(){
+    'use strict';
+    var assetsUrl = '/assets/',
+        appUrl = '/app/',
+        componentsUrl = appUrl + 'Components/',
+        templatesDir = '/front-end/app/templates/';
+
+    var config = {
+        apiUrl : '/api/',
+        prefixUrl : '/admin',
+        templatesDir : templatesDir,
+        imageUploadUrl: '/admin/api/upload/image',
+        imageBasePath: assetsUrl + 'img',
+        validationMessages : templatesDir + 'Components/validationMessages.html',
+        appUrl : appUrl,
+        componentsUrl : componentsUrl,
+        fileTypes : {
+            image : {
+                accept : 'image/*',
+                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
+            },
+            document : {
+                accept : 'application/pdf,application/doc,application/docx',
+                acceptSelect : 'application/pdf,application/doc,application/docx'
+            },
+            file : {
+                accept : 'application/*',
+                acceptSelect : 'application/*'
+            },
+            audio : {
+                accept : 'audio/*',
+                acceptSelect : 'audio/*'
+            }
+        }
+    };
+
+    angular.module('mcms.core')
+        .constant('FRONTEND_CONFIG',config);
+})();
+},{}]},{},[25]);

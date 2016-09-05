@@ -8,6 +8,7 @@
     "js" : [
       "front-end/js/frontEnd-compiled.js"
     ],
-    "css" : []
+    "css" : [
+    ]
   }
 }

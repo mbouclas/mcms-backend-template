@@ -19,7 +19,7 @@
 
         </div>
 
-        @include('partials.paginator', ['items' => $items])
+        @include('components.paginator', ['items' => $items])
 
     </div>
 @endsection

@@ -2,31 +2,31 @@
 return [
     [
         'label' => 'Title',
-        'name' => 'title',
+        'varName' => 'title',
         'type' => 'text',
-        'default' => 'title'
+        'prefill' => 'title'
     ],
     [
         'label' => 'Description',
-        'name' => 'description',
+        'varName' => 'description',
         'type' => 'textarea',
-        'default' => 'description'
+        'prefill' => 'description'
     ],
     [
         'label' => 'Keywords',
-        'name' => 'keywords',
+        'varName' => 'keywords',
         'type' => 'textarea'
     ],
     [
         'label' => 'og:title',
-        'name' => 'og_title',
+        'varName' => 'og_title',
         'type' => 'text',
-        'default' => 'title'
+        'prefill' => 'title'
     ],
     [
         'label' => 'og:description',
-        'name' => 'og_description',
+        'varName' => 'og_description',
         'type' => 'textarea',
-        'default' => 'description'
+        'prefill' => 'description'
     ],
 ];

@@ -1,4 +1,4 @@
-<div flex="50" ng-repeat="item in VM.Permissions">
+<div ng-repeat="item in VM.Permissions">
     <md-checkbox ng-checked="VM.exists(item)" ng-click="VM.toggle(item)">
         {{ item.name }}
     </md-checkbox>

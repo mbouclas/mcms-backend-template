@@ -1,507 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function() {
-    'use strict';
-
-    angular.module('mcms.pages.pageCategory')
-        .controller('PageCategoryHomeController',Controller);
-
-    Controller.$inject = ['init', 'LangService', 'Dialog', 'PageCategoryService', 'core.services', 'ItemSelectorService'];
-
-    function Controller(Categories, Lang, Dialog, PageCategoryService, Helpers, ItemSelector) {
-        var vm = this;
-        vm.Categories = Categories;
-        vm.Lang = Lang;
-        vm.defaultLang = Lang.defaultLang();
-        vm.treeOptions = {
-            dragStop: function (ev) {
-
-            }
-        };
-
-        PageCategoryService.find(3)
-            .then(function (res) {
-                vm.Item = res;
-                vm.Connectors = ItemSelector.connectors();
-
-            });
-
-        vm.onResult = function (result) {
-            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
-                vm.Item.featured = [];
-            }
-
-            vm.Item.featured.push(result);
-        };
-
-        vm.onSave = function (item, isNew, parent) {
-            if (isNew){
-                if (parent){
-                    if (!parent.children){
-                        parent.children = [];
-                    }
-
-                    parent.children.push(item);
-                } else {
-                    vm.Categories.push(item);
-                }
-                PageCategoryService.toFlat();
-
-                Dialog.close();
-                vm.edit(item);
-            }
-            var found = PageCategoryService.where({id : item.id});
-
-            if (found){
-                found.title= item.title;
-            }
-        };
-
-        vm.add = function (node) {
-            node = node || null;
-            var newCategory = PageCategoryService.newCategory();
-            newCategory.parent_id = node.id;
-
-            Dialog.show({
-                title: (!node) ? 'Create root node' : 'Add node to "' + node.title[vm.defaultLang] + '"',
-                contents: '<edit-page-category item="VM.node" add-to="VM.parentNode" ' +
-                'on-save="VM.onSave(item, isNew, parent)"></edit-page-category>',
-                locals: {
-                    node: newCategory,
-                    onSave: vm.onSave,
-                    parentNode: node || null
-                }
-            });
-        };
-
-        vm.edit = function (node) {
-            if (!node){
-                node = PageCategoryService.newCategory();
-            }
-
-            Dialog.show({
-                title: (node.id) ? 'Edit "' + node.title[vm.defaultLang] + '"' : 'Create new',
-                contents: '<edit-page-category item="VM.node" ' +
-                'on-save="VM.onSave(item, isNew)"></edit-page-category>',
-                locals: {
-                    node: (node.id) ? node.id : node,
-                    onSave: vm.onSave
-                }
-            });
-
-        };
-
-        vm.save = function () {
-            PageCategoryService.rebuild(vm.Categories)
-                .then(function () {
-                    Helpers.toast('Saved!');
-                });
-        };
-
-        vm.delete = function (node) {
-            Helpers.confirmDialog({}, {})
-                .then(function () {
-                    PageCategoryService.destroy(node)
-                        .then(function (nodes) {
-                            vm.Categories = nodes;
-                            Helpers.toast('Deleted');
-                        });
-                });
-        };
-    }
-
-})();
-
-},{}],2:[function(require,module,exports){
-(function () {
-    'use strict';
-
-    angular.module('mcms.pages.pageCategory')
-        .service('PageCategoryDataService',Service);
-
-    Service.$inject = ['$http', '$q'];
-
-    function Service($http, $q) {
-        var _this = this;
-        var baseUrl = '/admin/api/pageCategory/';
-
-        this.index = index;
-        this.tree = tree;
-        this.store = store;
-        this.show = show;
-        this.update = update;
-        this.destroy = destroy;
-        this.rebuild = rebuild;
-
-        function index() {
-            return $http.get(baseUrl).then(returnData);
-        }
-
-        function tree(filters) {
-            return $http.get(baseUrl + 'tree', {params : filters}).then(returnData);
-        }
-
-        /**
-         * Creates a new category
-         *
-         * @param {object} category - the category object
-         * @returns {object} - the ajax response
-         */
-        function store(category) {
-            return $http.post(baseUrl, category)
-                .then(returnData);
-        }
-
-        function show(id) {
-            return $http.get(baseUrl + id)
-                .then(returnData);
-        }
-
-        function update(category) {
-            return $http.put(baseUrl + category.id, category)
-                .then(returnData);
-        }
-
-        function destroy(id) {
-            return $http.delete(baseUrl + id)
-                .then(returnData);
-        }
-
-        function rebuild(tree) {
-            return $http.put(baseUrl + 'rebuild', tree)
-                .then(returnData);
-        }
-
-        function returnData(response) {
-            return response.data;
-        }
-    }
-})();
-
-},{}],3:[function(require,module,exports){
-(function () {
-    angular.module('mcms.pages.page')
-        .directive('editPageCategory', Directive);
-
-    Directive.$inject = ['PAGES_CONFIG', '$timeout'];
-    DirectiveController.$inject = ['$scope', 'PageCategoryService',
-        'core.services', 'configuration', 'AuthService', 'LangService',
-        'PAGES_CONFIG', 'ItemSelectorService', 'SeoService', 'mcms.settingsManagerService',
-        'LayoutManagerService', 'ModuleExtender'];
-
-    function Directive(Config, $timeout) {
-
-        return {
-            templateUrl: Config.templatesDir + "PageCategory/editPageCategory.component.html",
-            controller: DirectiveController,
-            controllerAs: 'VM',
-            require: ['editPageCategory'],
-            scope: {
-                options: '=?options',
-                addTo: '=?addTo',
-                item: '=?item',
-                onSave: '&?onSave'
-            },
-            restrict: 'E',
-            link: function (scope, element, attrs, controllers) {
-                var defaults = {
-                    hasFilters: true
-                };
-
-                controllers[0].init(scope.item);
-                scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
-            }
-        };
-    }
-
-    function DirectiveController($scope, PageCategory, Helpers, Config, ACL, Lang, PagesConfig, ItemSelector, SEO, SM, LMS, ModuleExtender) {
-        var vm = this;
-        vm.Lang = Lang;
-        vm.defaultLang = Lang.defaultLang();
-        vm.Locales = Lang.locales();
-        vm.ValidationMessagesTemplate = Config.validationMessages;
-        vm.Roles = ACL.roles();
-        vm.Item = {};
-        vm.Parent = null;
-        vm.Roles = ACL.roles();
-        vm.Permissions = ACL.permissions();
-        vm.isSu = ACL.role('su');//more efficient check
-        vm.isAdmin = ACL.role('admin');//more efficient check
-        vm.tabs = [
-            {
-                label: 'General',
-                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-general-info.html',
-                active: true,
-                default: true,
-                id: 'general',
-                order : 1
-            },
-            {
-                label: 'Translations',
-                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-translations.html',
-                active: false,
-                id: 'translations',
-                order : 10
-            },
-            {
-                label: 'Extra Fields',
-                file: PagesConfig.templatesDir + 'Page/Components/tab-extra-fields.html',
-                active: false,
-                id: 'extraFields',
-                order : 20
-            },
-            {
-                label: 'Featured',
-                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-featured.html',
-                active: false,
-                id: 'featured',
-                order : 30
-            },
-            {
-                label : 'SEO',
-                file : PagesConfig.templatesDir + 'PageCategory/Components/tab-seo.html',
-                active : false,
-                id : 'seo',
-                order : 40
-            }
-        ];
-
-        vm.tabs = ModuleExtender.extend('pages', vm.tabs);
-        vm.Layouts = LMS.layouts('pages.categories');
-        vm.LayoutsObj = LMS.toObj();
-
-        vm.thumbUploadOptions = {
-            url : Config.imageUploadUrl,
-            acceptSelect : PagesConfig.fileTypes.image.acceptSelect,
-            maxFiles : 1,
-            params : {
-                container : 'Item'
-            }
-        };
-        vm.UploadConfig = {
-            file: {},
-            image: vm.imagesUploadOptions
-        };
-
-        vm.init = function (item) {
-            if (typeof item == 'number') {
-                //call for data from the server
-                return PageCategory.find(item)
-                    .then(init);
-            }
-
-            init(item);
-
-        };
-
-        vm.onResult = function (result) {
-            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
-                vm.Item.featured = [];
-            }
-
-            result.category_id = vm.Item.id;
-            vm.Item.featured.push(result);
-        };
-
-
-        vm.save = function () {
-            PageCategory.save(vm.Item)
-                .then(function (result) {
-                    var isNew = (!vm.Item.id && result.id);
-                    if (isNew) {
-                        vm.Item = result;
-                        vm.Item.children = [];
-                    }
-
-                    Helpers.toast('Saved!');
-
-                    if (typeof $scope.onSave == 'function') {
-                        $scope.onSave({item: vm.Item, isNew: isNew, parent: vm.Parent});
-                    }
-                });
-        };
-
-        function init(item) {
-            vm.Connectors = ItemSelector.connectors();
-            vm.Item = item;
-
-            SEO.fillFields(vm.Item.settings, function (model, key) {
-                SEO.prefill(model, vm.Item, key);
-            });
-
-            vm.SEO = SEO.fields();
-            vm.Parent = $scope.addTo || null;
-            vm.thumbUploadOptions.params.item_id = item.id;
-            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\PageCategory\\ImageConfigurator';
-            vm.thumbUploadOptions.params.type = 'thumb';
-            vm.Settings = SM.get({name : 'pageCategories'});
-            LMS.setModel(vm.Item);
-        }
-    }
-})();
-
-},{}],4:[function(require,module,exports){
-(function(){
-    'use strict';
-
-    angular.module('mcms.pages.pageCategory', [
-        'ui.tree'
-    ])
-        .run(run);
-
-    run.$inject = ['mcms.menuService'];
-
-    function run(Menu) {
-
-    }
-
-
-})();
-
-require('./routes');
-require('./dataService');
-require('./service');
-require('./PageCategoryHomeController');
-require('./editPageCategory.component');
-},{"./PageCategoryHomeController":1,"./dataService":2,"./editPageCategory.component":3,"./routes":5,"./service":6}],5:[function(require,module,exports){
-(function() {
-    'use strict';
-
-    angular.module('mcms.pages.pageCategory')
-        .config(config);
-
-    config.$inject = ['$routeProvider','PAGES_CONFIG'];
-
-    function config($routeProvider,Config) {
-
-        $routeProvider
-            .when('/pages/categories', {
-                templateUrl:  Config.templatesDir + 'PageCategory/index.html',
-                controller: 'PageCategoryHomeController',
-                controllerAs: 'VM',
-                reloadOnSearch : false,
-                resolve: {
-                    init : ["AuthService", '$q', 'PageCategoryService', function (ACL, $q, Category) {
-                        return (!ACL.role('admin')) ? $q.reject(403) : Category.get();
-                    }]
-                },
-                name: 'pages-categories'
-            });
-    }
-
-})();
-
-},{}],6:[function(require,module,exports){
-(function () {
-    'use strict';
-
-    angular.module('mcms.pages.pageCategory')
-        .service('PageCategoryService',Service);
-
-    Service.$inject = ['PageCategoryDataService', 'ItemSelectorService', 'SeoService', 'LangService',
-        'core.services', 'lodashFactory','mcms.settingsManagerService'];
-
-    function Service(DS, ItemSelector, SEO, Lang, Helpers, lo, SM) {
-        var _this = this;
-        var Categories = [];
-        var CategoriesFlat = [];
-        this.get = get;
-        this.find = find;
-        this.newCategory = newCategory;
-        this.save = save;
-        this.destroy = destroy;
-        this.rebuild = rebuild;
-        this.tree = tree;
-        this.categories = categories;
-        this.toFlat = flattenCategories;
-        this.where = where;
-
-        function get() {
-            return DS.index()
-                .then(function (response) {
-                    Categories = response;
-                    CategoriesFlat = flattenCategories();
-                    return response;
-                });
-        }
-
-        function find(id) {
-            return DS.show(id)
-                .then(function (response) {
-                    ItemSelector.register(response.connectors);
-                    SEO.init(response.seoFields);
-                    SM.addSettingsItem(response.settings);
-                    return response.item;
-                });
-        }
-
-        function tree(filters) {
-            return DS.tree(filters)
-                .then(function (response) {
-                    return response;
-                });
-        }
-
-
-        /**
-         * Create the holder object for a new category object
-         *
-         * @returns {{title: string, description: string, slug: string, children: Array, settings: {}, active: boolean, orderBy: number}}
-         */
-        function newCategory() {
-            var Locales = Lang.locales();
-            var settings = {seo : {}};
-            for (var key in Locales){
-                settings.seo[key] = {};
-            }
-
-            return {
-                title : '',
-                description : '',
-                slug : '',
-                children : [],
-                settings : settings,
-                active : false,
-                orderBy : 0,
-            };
-        }
-
-        function save(item) {
-            if (!item.id){
-                return DS.store(item);
-            }
-
-
-            return DS.update(item);
-        }
-
-        function destroy(item) {
-            return DS.destroy(item.id);
-        }
-
-        function rebuild(tree) {
-            return DS.rebuild(tree)
-                .then(function (newTree) {
-                    Categories = newTree;
-                });
-        }
-
-        function categories() {
-            return Categories;
-        }
-
-        function flattenCategories() {
-            CategoriesFlat = Helpers.flattenTree(Categories);
-            return CategoriesFlat;
-        }
-
-        function where(search) {
-            return lo.find(CategoriesFlat, search);
-        }
-
-    }
-})();
-
-},{}],7:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -544,7 +41,7 @@ require('./editPageCategory.component');
 
 })();
 
-},{}],8:[function(require,module,exports){
+},{}],2:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -699,7 +196,7 @@ require('./editPageCategory.component');
 
 })();
 
-},{}],9:[function(require,module,exports){
+},{}],3:[function(require,module,exports){
 (function(){
     'use strict';
 
@@ -724,7 +221,7 @@ require('./editPageCategory.component');
         };
     }
 })();
-},{}],10:[function(require,module,exports){
+},{}],4:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -773,7 +270,7 @@ require('./editPageCategory.component');
     }
 })();
 
-},{}],11:[function(require,module,exports){
+},{}],5:[function(require,module,exports){
 (function () {
     angular.module('mcms.pages.page')
         .directive('editPage', Directive);
@@ -1086,7 +583,7 @@ require('./editPageCategory.component');
     }
 })();
 
-},{}],12:[function(require,module,exports){
+},{}],6:[function(require,module,exports){
 (function(){
     'use strict';
 
@@ -1117,7 +614,7 @@ require('./pageList.component');
 require('./editPage.component');
 require('./Widgets/latestPages.widget');
 
-},{"./PageController":7,"./PageHomeController":8,"./Widgets/latestPages.widget":9,"./dataService":10,"./editPage.component":11,"./pageList.component":13,"./routes":14,"./service":15}],13:[function(require,module,exports){
+},{"./PageController":1,"./PageHomeController":2,"./Widgets/latestPages.widget":3,"./dataService":4,"./editPage.component":5,"./pageList.component":7,"./routes":8,"./service":9}],7:[function(require,module,exports){
 (function () {
     angular.module('mcms.pages.page')
         .directive('pageList', Directive);
@@ -1303,7 +800,7 @@ require('./Widgets/latestPages.widget');
         };
     }
 })();
-},{}],14:[function(require,module,exports){
+},{}],8:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -1343,7 +840,7 @@ require('./Widgets/latestPages.widget');
 
 })();
 
-},{}],15:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1416,6 +913,7 @@ require('./Widgets/latestPages.widget');
                 active : false,
                 categories : [],
                 extraFields : [],
+                tagged : [],
                 related : [],
                 settings : {
                     seo : {}
@@ -1442,48 +940,510 @@ require('./Widgets/latestPages.widget');
     }
 })();
 
-},{}],16:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
+(function() {
+    'use strict';
+
+    angular.module('mcms.pages.pageCategory')
+        .controller('PageCategoryHomeController',Controller);
+
+    Controller.$inject = ['init', 'LangService', 'Dialog', 'PageCategoryService', 'core.services', 'ItemSelectorService'];
+
+    function Controller(Categories, Lang, Dialog, PageCategoryService, Helpers, ItemSelector) {
+        var vm = this;
+        vm.Categories = Categories;
+        vm.Lang = Lang;
+        vm.defaultLang = Lang.defaultLang();
+        vm.treeOptions = {
+            dragStop: function (ev) {
+
+            }
+        };
+
+        PageCategoryService.find(3)
+            .then(function (res) {
+                vm.Item = res;
+                vm.Connectors = ItemSelector.connectors();
+
+            });
+
+        vm.onResult = function (result) {
+            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
+                vm.Item.featured = [];
+            }
+
+            vm.Item.featured.push(result);
+        };
+
+        vm.onSave = function (item, isNew, parent) {
+            if (isNew){
+                if (parent){
+                    if (!parent.children){
+                        parent.children = [];
+                    }
+
+                    parent.children.push(item);
+                } else {
+                    vm.Categories.push(item);
+                }
+                PageCategoryService.toFlat();
+
+                Dialog.close();
+                vm.edit(item);
+            }
+            var found = PageCategoryService.where({id : item.id});
+
+            if (found){
+                found.title= item.title;
+            }
+        };
+
+        vm.add = function (node) {
+            node = node || null;
+            var newCategory = PageCategoryService.newCategory();
+            newCategory.parent_id = node.id;
+
+            Dialog.show({
+                title: (!node) ? 'Create root node' : 'Add node to "' + node.title[vm.defaultLang] + '"',
+                contents: '<edit-page-category item="VM.node" add-to="VM.parentNode" ' +
+                'on-save="VM.onSave(item, isNew, parent)"></edit-page-category>',
+                locals: {
+                    node: newCategory,
+                    onSave: vm.onSave,
+                    parentNode: node || null
+                }
+            });
+        };
+
+        vm.edit = function (node) {
+            if (!node){
+                node = PageCategoryService.newCategory();
+            }
+
+            Dialog.show({
+                title: (node.id) ? 'Edit "' + node.title[vm.defaultLang] + '"' : 'Create new',
+                contents: '<edit-page-category item="VM.node" ' +
+                'on-save="VM.onSave(item, isNew)"></edit-page-category>',
+                locals: {
+                    node: (node.id) ? node.id : node,
+                    onSave: vm.onSave
+                }
+            });
+
+        };
+
+        vm.save = function () {
+            PageCategoryService.rebuild(vm.Categories)
+                .then(function () {
+                    Helpers.toast('Saved!');
+                });
+        };
+
+        vm.delete = function (node) {
+            Helpers.confirmDialog({}, {})
+                .then(function () {
+                    PageCategoryService.destroy(node)
+                        .then(function (nodes) {
+                            vm.Categories = nodes;
+                            Helpers.toast('Deleted');
+                        });
+                });
+        };
+    }
+
+})();
+
+},{}],11:[function(require,module,exports){
+(function () {
+    'use strict';
+
+    angular.module('mcms.pages.pageCategory')
+        .service('PageCategoryDataService',Service);
+
+    Service.$inject = ['$http', '$q'];
+
+    function Service($http, $q) {
+        var _this = this;
+        var baseUrl = '/admin/api/pageCategory/';
+
+        this.index = index;
+        this.tree = tree;
+        this.store = store;
+        this.show = show;
+        this.update = update;
+        this.destroy = destroy;
+        this.rebuild = rebuild;
+
+        function index() {
+            return $http.get(baseUrl).then(returnData);
+        }
+
+        function tree(filters) {
+            return $http.get(baseUrl + 'tree', {params : filters}).then(returnData);
+        }
+
+        /**
+         * Creates a new category
+         *
+         * @param {object} category - the category object
+         * @returns {object} - the ajax response
+         */
+        function store(category) {
+            return $http.post(baseUrl, category)
+                .then(returnData);
+        }
+
+        function show(id) {
+            return $http.get(baseUrl + id)
+                .then(returnData);
+        }
+
+        function update(category) {
+            return $http.put(baseUrl + category.id, category)
+                .then(returnData);
+        }
+
+        function destroy(id) {
+            return $http.delete(baseUrl + id)
+                .then(returnData);
+        }
+
+        function rebuild(tree) {
+            return $http.put(baseUrl + 'rebuild', tree)
+                .then(returnData);
+        }
+
+        function returnData(response) {
+            return response.data;
+        }
+    }
+})();
+
+},{}],12:[function(require,module,exports){
+(function () {
+    angular.module('mcms.pages.page')
+        .directive('editPageCategory', Directive);
+
+    Directive.$inject = ['PAGES_CONFIG', '$timeout'];
+    DirectiveController.$inject = ['$scope', 'PageCategoryService',
+        'core.services', 'configuration', 'AuthService', 'LangService',
+        'PAGES_CONFIG', 'ItemSelectorService', 'SeoService', 'mcms.settingsManagerService',
+        'LayoutManagerService', 'ModuleExtender'];
+
+    function Directive(Config, $timeout) {
+
+        return {
+            templateUrl: Config.templatesDir + "PageCategory/editPageCategory.component.html",
+            controller: DirectiveController,
+            controllerAs: 'VM',
+            require: ['editPageCategory'],
+            scope: {
+                options: '=?options',
+                addTo: '=?addTo',
+                item: '=?item',
+                onSave: '&?onSave'
+            },
+            restrict: 'E',
+            link: function (scope, element, attrs, controllers) {
+                var defaults = {
+                    hasFilters: true
+                };
+
+                controllers[0].init(scope.item);
+                scope.options = (!scope.options) ? defaults : angular.extend(defaults, scope.options);
+            }
+        };
+    }
+
+    function DirectiveController($scope, PageCategory, Helpers, Config, ACL, Lang, PagesConfig, ItemSelector, SEO, SM, LMS, ModuleExtender) {
+        var vm = this;
+        vm.Lang = Lang;
+        vm.defaultLang = Lang.defaultLang();
+        vm.Locales = Lang.locales();
+        vm.ValidationMessagesTemplate = Config.validationMessages;
+        vm.Roles = ACL.roles();
+        vm.Item = {};
+        vm.Parent = null;
+        vm.Roles = ACL.roles();
+        vm.Permissions = ACL.permissions();
+        vm.isSu = ACL.role('su');//more efficient check
+        vm.isAdmin = ACL.role('admin');//more efficient check
+        vm.tabs = [
+            {
+                label: 'General',
+                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-general-info.html',
+                active: true,
+                default: true,
+                id: 'general',
+                order : 1
+            },
+            {
+                label: 'Translations',
+                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-translations.html',
+                active: false,
+                id: 'translations',
+                order : 10
+            },
+            {
+                label: 'Extra Fields',
+                file: PagesConfig.templatesDir + 'Page/Components/tab-extra-fields.html',
+                active: false,
+                id: 'extraFields',
+                order : 20
+            },
+            {
+                label: 'Featured',
+                file: PagesConfig.templatesDir + 'PageCategory/Components/tab-featured.html',
+                active: false,
+                id: 'featured',
+                order : 30
+            },
+            {
+                label : 'SEO',
+                file : PagesConfig.templatesDir + 'PageCategory/Components/tab-seo.html',
+                active : false,
+                id : 'seo',
+                order : 40
+            }
+        ];
+
+        vm.tabs = ModuleExtender.extend('pages', vm.tabs);
+        vm.Layouts = LMS.layouts('pages.categories');
+        vm.LayoutsObj = LMS.toObj();
+
+        vm.thumbUploadOptions = {
+            url : Config.imageUploadUrl,
+            acceptSelect : PagesConfig.fileTypes.image.acceptSelect,
+            maxFiles : 1,
+            params : {
+                container : 'Item'
+            }
+        };
+        vm.UploadConfig = {
+            file: {},
+            image: vm.imagesUploadOptions
+        };
+
+        vm.init = function (item) {
+            if (typeof item == 'number') {
+                //call for data from the server
+                return PageCategory.find(item)
+                    .then(init);
+            }
+
+            init(item);
+
+        };
+
+        vm.onResult = function (result) {
+            if (typeof vm.Item.featured == 'undefined' || !vm.Item.featured){
+                vm.Item.featured = [];
+            }
+
+            result.category_id = vm.Item.id;
+            vm.Item.featured.push(result);
+        };
+
+
+        vm.save = function () {
+            PageCategory.save(vm.Item)
+                .then(function (result) {
+                    var isNew = (!vm.Item.id && result.id);
+                    if (isNew) {
+                        vm.Item = result;
+                        vm.Item.children = [];
+                    }
+
+                    Helpers.toast('Saved!');
+
+                    if (typeof $scope.onSave == 'function') {
+                        $scope.onSave({item: vm.Item, isNew: isNew, parent: vm.Parent});
+                    }
+                });
+        };
+
+        function init(item) {
+            vm.Connectors = ItemSelector.connectors();
+            vm.Item = item;
+
+            SEO.fillFields(vm.Item.settings, function (model, key) {
+                SEO.prefill(model, vm.Item, key);
+            });
+
+            vm.SEO = SEO.fields();
+            vm.Parent = $scope.addTo || null;
+            vm.thumbUploadOptions.params.item_id = item.id;
+            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\PageCategory\\ImageConfigurator';
+            vm.thumbUploadOptions.params.type = 'thumb';
+            vm.Settings = SM.get({name : 'pageCategories'});
+            LMS.setModel(vm.Item);
+        }
+    }
+})();
+
+},{}],13:[function(require,module,exports){
 (function(){
     'use strict';
-    var assetsUrl = '/assets/',
-        appUrl = '/app/',
-        componentsUrl = appUrl + 'Components/',
-        templatesDir = '/package-pages/app/templates/';
 
-    var config = {
-        apiUrl : '/api/',
-        prefixUrl : '/admin',
-        previewUrl : '/admin/api/page/preview/',
-        templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
-        imageBasePath: assetsUrl + 'img',
-        validationMessages : templatesDir + 'Components/validationMessages.html',
-        appUrl : appUrl,
-        componentsUrl : componentsUrl,
-        fileTypes : {
-            image : {
-                accept : 'image/*',
-                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
-            },
-            document : {
-                accept : 'application/pdf,application/doc,application/docx',
-                acceptSelect : 'application/pdf,application/doc,application/docx'
-            },
-            file : {
-                accept : 'application/*',
-                acceptSelect : 'application/*'
-            },
-            audio : {
-                accept : 'audio/*',
-                acceptSelect : 'audio/*'
-            }
-        }
-    };
+    angular.module('mcms.pages.pageCategory', [
+        'ui.tree'
+    ])
+        .run(run);
 
-    angular.module('mcms.core')
-        .constant('PAGES_CONFIG',config);
+    run.$inject = ['mcms.menuService'];
+
+    function run(Menu) {
+
+    }
+
+
 })();
-},{}],17:[function(require,module,exports){
+
+require('./routes');
+require('./dataService');
+require('./service');
+require('./PageCategoryHomeController');
+require('./editPageCategory.component');
+},{"./PageCategoryHomeController":10,"./dataService":11,"./editPageCategory.component":12,"./routes":14,"./service":15}],14:[function(require,module,exports){
+(function() {
+    'use strict';
+
+    angular.module('mcms.pages.pageCategory')
+        .config(config);
+
+    config.$inject = ['$routeProvider','PAGES_CONFIG'];
+
+    function config($routeProvider,Config) {
+
+        $routeProvider
+            .when('/pages/categories', {
+                templateUrl:  Config.templatesDir + 'PageCategory/index.html',
+                controller: 'PageCategoryHomeController',
+                controllerAs: 'VM',
+                reloadOnSearch : false,
+                resolve: {
+                    init : ["AuthService", '$q', 'PageCategoryService', function (ACL, $q, Category) {
+                        return (!ACL.role('admin')) ? $q.reject(403) : Category.get();
+                    }]
+                },
+                name: 'pages-categories'
+            });
+    }
+
+})();
+
+},{}],15:[function(require,module,exports){
+(function () {
+    'use strict';
+
+    angular.module('mcms.pages.pageCategory')
+        .service('PageCategoryService',Service);
+
+    Service.$inject = ['PageCategoryDataService', 'ItemSelectorService', 'SeoService', 'LangService',
+        'core.services', 'lodashFactory','mcms.settingsManagerService'];
+
+    function Service(DS, ItemSelector, SEO, Lang, Helpers, lo, SM) {
+        var _this = this;
+        var Categories = [];
+        var CategoriesFlat = [];
+        this.get = get;
+        this.find = find;
+        this.newCategory = newCategory;
+        this.save = save;
+        this.destroy = destroy;
+        this.rebuild = rebuild;
+        this.tree = tree;
+        this.categories = categories;
+        this.toFlat = flattenCategories;
+        this.where = where;
+
+        function get() {
+            return DS.index()
+                .then(function (response) {
+                    Categories = response;
+                    CategoriesFlat = flattenCategories();
+                    return response;
+                });
+        }
+
+        function find(id) {
+            return DS.show(id)
+                .then(function (response) {
+                    ItemSelector.register(response.connectors);
+                    SEO.init(response.seoFields);
+                    SM.addSettingsItem(response.settings);
+                    return response.item;
+                });
+        }
+
+        function tree(filters) {
+            return DS.tree(filters)
+                .then(function (response) {
+                    return response;
+                });
+        }
+
+
+        /**
+         * Create the holder object for a new category object
+         *
+         * @returns {{title: string, description: string, slug: string, children: Array, settings: {}, active: boolean, orderBy: number}}
+         */
+        function newCategory() {
+            var Locales = Lang.locales();
+            var settings = {seo : {}};
+            for (var key in Locales){
+                settings.seo[key] = {};
+            }
+
+            return {
+                title : '',
+                description : '',
+                slug : '',
+                children : [],
+                settings : settings,
+                active : false,
+                orderBy : 0,
+            };
+        }
+
+        function save(item) {
+            if (!item.id){
+                return DS.store(item);
+            }
+
+
+            return DS.update(item);
+        }
+
+        function destroy(item) {
+            return DS.destroy(item.id);
+        }
+
+        function rebuild(tree) {
+            return DS.rebuild(tree)
+                .then(function (newTree) {
+                    Categories = newTree;
+                });
+        }
+
+        function categories() {
+            return Categories;
+        }
+
+        function flattenCategories() {
+            CategoriesFlat = Helpers.flattenTree(Categories);
+            return CategoriesFlat;
+        }
+
+        function where(search) {
+            return lo.find(CategoriesFlat, search);
+        }
+
+    }
+})();
+
+},{}],16:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1541,4 +1501,45 @@ require('./Widgets/latestPages.widget');
 require('./config');
 require('./Page');
 require('./PageCategory');
-},{"./Page":12,"./PageCategory":4,"./config":16}]},{},[17])
+},{"./Page":6,"./PageCategory":13,"./config":17}],17:[function(require,module,exports){
+(function(){
+    'use strict';
+    var assetsUrl = '/assets/',
+        appUrl = '/app/',
+        componentsUrl = appUrl + 'Components/',
+        templatesDir = '/package-pages/app/templates/';
+
+    var config = {
+        apiUrl : '/api/',
+        prefixUrl : '/admin',
+        previewUrl : '/admin/api/page/preview/',
+        templatesDir : templatesDir,
+        imageUploadUrl: '/admin/api/upload/image',
+        imageBasePath: assetsUrl + 'img',
+        validationMessages : templatesDir + 'Components/validationMessages.html',
+        appUrl : appUrl,
+        componentsUrl : componentsUrl,
+        fileTypes : {
+            image : {
+                accept : 'image/*',
+                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
+            },
+            document : {
+                accept : 'application/pdf,application/doc,application/docx',
+                acceptSelect : 'application/pdf,application/doc,application/docx'
+            },
+            file : {
+                accept : 'application/*',
+                acceptSelect : 'application/*'
+            },
+            audio : {
+                accept : 'audio/*',
+                acceptSelect : 'audio/*'
+            }
+        }
+    };
+
+    angular.module('mcms.core')
+        .constant('PAGES_CONFIG',config);
+})();
+},{}]},{},[16]);

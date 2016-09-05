@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'resultsPerPage' => 10
+    'resultsPerPage' => 10,
 ];

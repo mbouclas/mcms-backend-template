@@ -2,10 +2,17 @@
 
 return [
     'pages' =>  [
+/*        [
+            'varName' => 'label',
+            'label' => 'A label',
+            'type' => 'text',
+            'translatable' => true,
+            'options' => null
+        ],
         [
             'varName' => 'video',
-            'label' => 'Video embed',
-            'type' => 'textarea',
+            'label' => 'Video file',
+            'type' => 'file',
             'options' => null
         ],
         [
@@ -15,9 +22,15 @@ return [
             'options' => null
         ],
         [
+            'varName' => 'alwaysShown',
+            'label' => 'Alway shown?',
+            'type' => 'boolean',
+            'options' => null
+        ],*/
+        [
             'varName' => 'availableToEveryOne',
             'label' => 'Who can see this',
-            'type' => 'select',
+            'type' => 'selectMultiple',
             'options' => [
                 [
                     'default' => true,

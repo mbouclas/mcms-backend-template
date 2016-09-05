@@ -15,9 +15,12 @@
 
 </md-toolbar>
 <md-list>
-    <md-list-item ng-repeat="item in VM.Roles | orderBy :'-level'"
+    <md-list-item ng-repeat="item in VM.Roles | orderBy :'-level'" class="md-2-line"
                   ng-click="VM.showActions($event, item)" aria-label="show actions">
-        <p>{{ item.name }}</p>
+        <div class="md-list-item-text" layout="column">
+            <h3>{{ item.display_name }}</h3>
+            <p>{{ item.description }}</p>
+        </div>
     </md-list-item>
 </md-list>
 

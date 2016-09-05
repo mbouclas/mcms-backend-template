@@ -1,23 +1,54 @@
 <?php
-return [
-    "siteName" => "GalaStyle",
+        return [
+    "siteName" => "διαδικτυογράφος 132",
+            "mail" => [
+                "address" => "info@net-tomorrow.com",
+                "name" => "Net Tomorrow LTD"
+            ],
     "meta" => [
-        "keywords" => 'GalaStyle, magazine',
-        'description' => 'Περιοδικό Lifestyle'
+        "el" => [
+            "keywords" => "Κειμενογραφία, κείμενα για site",
+            "description" => "Υπηρεσίες κειμενογραφίας"
+        ]
     ],
-    'images' => [
-        'optimize' => false,
-        'driver' => 'gd',
-        'keepOriginals' => true,
-        'dirPattern' => 'uploads',
-        'filePattern' => 'images/uploads',
-        'types' => ['images'],
-        'copies' => [
+    "images" => [
+        "driver" => "gd",
+        "keepOriginals" => TRUE,
+        "dirPattern" => "uploads",
+        "optimize" => TRUE,
+        "filePattern" => "images",
+        "types" => [
+            "images"
+        ],
+        "copies" => [
 
         ]
     ],
-    'files' => [
-        'dirPattern' => 'uploads',
-        'filePattern' => 'uploads',
+    "files" => [
+        "dirPattern" => "uploads",
+        "filePattern" => "uploads"
     ],
+    "seo" => [
+        "el" => [
+            "keywords" => "Κειμενογραφία, κείμενα για site",
+            "description" => "Υπηρεσίες κειμενογραφίας",
+            "title" => "",
+            "og_title" => "",
+            "og_description" => ""
+        ]
+    ],
+    "logo" => [
+
+    ],
+    "driver" => "gd",
+    "keepOriginals" => TRUE,
+    "dirPattern" => "uploads",
+    "optimize" => TRUE,
+    "filePattern" => "images",
+    "types" => [
+        "images"
+    ],
+    "copies" => [
+
+    ]
 ];

@@ -4,7 +4,7 @@
     <div flex>
         <md-input-container class="md-block" flex-gt-sm>
             <label>Name</label>
-            <input ng-model="VM.Role.name" required name="label">
+            <input ng-model="VM.Role.display_name" required name="label">
             <div ng-messages="ItemsForm.label.$error">
                 <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
             </div>
@@ -13,8 +13,8 @@
         <div>
             <md-input-container class="md-block" flex-gt-sm>
                 <label>Alias</label>
-                <input ng-model="VM.Role.slug" required name="slug">
-                <div ng-messages="ItemsForm.slug.$error">
+                <input ng-model="VM.Role.name" required name="name">
+                <div ng-messages="ItemsForm.name.$error">
                     <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
                 </div>
             </md-input-container>
@@ -37,6 +37,12 @@
                 </div>
             </md-input-container>
 
+            <h2>Permissions</h2>
+            <div ng-repeat="item in VM.Permissions">
+                <md-checkbox ng-checked="VM.exists(item)" ng-click="VM.toggle(item)">
+                    {{ item.name }}
+                </md-checkbox>
+            </div>
         </div>
     </div>
 

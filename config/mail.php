@@ -55,7 +55,10 @@ return [
     |
     */
 
-    'from' => ['address' => 'info@galastyle.in', 'name' => 'The GalaStyle team'],
+    'from' => [
+        'address' => 'hello@example.com',
+        'name' => 'Example',
+    ],
 
     /*
     |--------------------------------------------------------------------------

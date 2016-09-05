@@ -1,17 +1,19 @@
+const elixir = require('laravel-elixir');
+
+require('laravel-elixir-vue');
+
 /*
-var elixir = require('laravel-elixir');
-var config = require('./gulpTasks/gulp.config');
+ |--------------------------------------------------------------------------
+ | Elixir Asset Management
+ |--------------------------------------------------------------------------
+ |
+ | Elixir provides a clean, fluent API for defining some basic Gulp tasks
+ | for your Laravel application. By default, we are compiling the Sass
+ | file for our application, as well as publishing vendor resources.
+ |
+ */
 
-var toConcat = require(config.js.srcDir + 'entry.js'),
-    scripts = [];
-for (var i in toConcat){
-    scripts.push(config.js.srcDir + toConcat[i]);
-}
-
-
-elixir(function(mix) {
-    mix.scripts(toConcat, 'public/js/scripts.min.js');
-    mix.styles(styles, 'public/js/scripts.min.css');
+elixir(mix => {
+    mix.sass('app.scss')
+       .webpack('app.js');
 });
-*/
-require('./gulpTasks');
