@@ -1,14 +1,14 @@
 <?php
         return [
-    "siteName" => "διαδικτυογράφος 132",
+    "siteName" => "Galastyle",
             "mail" => [
-                "address" => "info@net-tomorrow.com",
-                "name" => "Net Tomorrow LTD"
+                "address" => "editor@galastyle.in",
+                "name" => "Galastyle"
             ],
     "meta" => [
         "el" => [
-            "keywords" => "Κειμενογραφία, κείμενα για site",
-            "description" => "Υπηρεσίες κειμενογραφίας"
+            "keywords" => "Galastyle",
+            "description" => "Galastyle"
         ]
     ],
     "images" => [
@@ -30,8 +30,8 @@
     ],
     "seo" => [
         "el" => [
-            "keywords" => "Κειμενογραφία, κείμενα για site",
-            "description" => "Υπηρεσίες κειμενογραφίας",
+            "keywords" => "Galastyle",
+            "description" => "Galastyle",
             "title" => "",
             "og_title" => "",
             "og_description" => ""
