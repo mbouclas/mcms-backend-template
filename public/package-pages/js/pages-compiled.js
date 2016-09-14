@@ -1,4 +1,4 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
 (function() {
     'use strict';
 
@@ -280,7 +280,7 @@
         'core.services', 'configuration', 'AuthService', 'LangService',
         'PageCategoryService',  'PAGES_CONFIG', 'ItemSelectorService', 'lodashFactory',
         'mcms.settingsManagerService', 'SeoService', 'LayoutManagerService', '$timeout', '$rootScope', '$q',
-        'momentFactory', 'ModuleExtender'];
+        'momentFactory', 'ModuleExtender', 'MediaLibraryService'];
 
     function Directive(Config, hotkeys) {
 
@@ -327,7 +327,8 @@
     }
 
     function DirectiveController($scope, Page, Helpers, Config, ACL, Lang, PageCategory, PagesConfig,
-                                 ItemSelector, lo, SM, SEO, LMS, $timeout, $rootScope, $q, moment, ModuleExtender) {
+                                 ItemSelector, lo, SM, SEO, LMS, $timeout, $rootScope, $q,
+                                 moment, ModuleExtender, MLS) {
         var vm = this,
             autoSaveHooks = [];
 
@@ -410,7 +411,7 @@
             },
             uploadOptions : PagesConfig.fileTypes.image.uploadOptions
         };
-        vm.mediaFilesOptions = {imageTypes : []};
+        vm.mediaFilesOptions = {imageTypes : [], withMediaLibrary : true};
         vm.UploadConfig = {
             file : {},
             image : vm.imagesUploadOptions
@@ -579,6 +580,14 @@
                 autoSaveHooks.splice(autoSaveHooks.indexOf($scope.refreshIframe), 1);
             }
         });
+
+        vm.onSelectFromMediaLibrary = function (item) {
+            MLS.assign(vm.thumbUploadOptions.params,item)
+                .then(function (res) {
+                    vm.Item.thumb = res;
+                    Helpers.toast('Saved!!!');
+                });
+        };
 
     }
 })();
@@ -1444,6 +1453,47 @@ require('./editPageCategory.component');
 })();
 
 },{}],16:[function(require,module,exports){
+(function(){
+    'use strict';
+    var assetsUrl = '/assets/',
+        appUrl = '/app/',
+        componentsUrl = appUrl + 'Components/',
+        templatesDir = '/package-pages/app/templates/';
+
+    var config = {
+        apiUrl : '/api/',
+        prefixUrl : '/admin',
+        previewUrl : '/admin/api/page/preview/',
+        templatesDir : templatesDir,
+        imageUploadUrl: '/admin/api/upload/image',
+        imageBasePath: assetsUrl + 'img',
+        validationMessages : templatesDir + 'Components/validationMessages.html',
+        appUrl : appUrl,
+        componentsUrl : componentsUrl,
+        fileTypes : {
+            image : {
+                accept : 'image/*',
+                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
+            },
+            document : {
+                accept : 'application/pdf,application/doc,application/docx',
+                acceptSelect : 'application/pdf,application/doc,application/docx'
+            },
+            file : {
+                accept : 'application/*',
+                acceptSelect : 'application/*'
+            },
+            audio : {
+                accept : 'audio/*',
+                acceptSelect : 'audio/*'
+            }
+        }
+    };
+
+    angular.module('mcms.core')
+        .constant('PAGES_CONFIG',config);
+})();
+},{}],17:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1501,45 +1551,4 @@ require('./editPageCategory.component');
 require('./config');
 require('./Page');
 require('./PageCategory');
-},{"./Page":6,"./PageCategory":13,"./config":17}],17:[function(require,module,exports){
-(function(){
-    'use strict';
-    var assetsUrl = '/assets/',
-        appUrl = '/app/',
-        componentsUrl = appUrl + 'Components/',
-        templatesDir = '/package-pages/app/templates/';
-
-    var config = {
-        apiUrl : '/api/',
-        prefixUrl : '/admin',
-        previewUrl : '/admin/api/page/preview/',
-        templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
-        imageBasePath: assetsUrl + 'img',
-        validationMessages : templatesDir + 'Components/validationMessages.html',
-        appUrl : appUrl,
-        componentsUrl : componentsUrl,
-        fileTypes : {
-            image : {
-                accept : 'image/*',
-                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
-            },
-            document : {
-                accept : 'application/pdf,application/doc,application/docx',
-                acceptSelect : 'application/pdf,application/doc,application/docx'
-            },
-            file : {
-                accept : 'application/*',
-                acceptSelect : 'application/*'
-            },
-            audio : {
-                accept : 'audio/*',
-                acceptSelect : 'audio/*'
-            }
-        }
-    };
-
-    angular.module('mcms.core')
-        .constant('PAGES_CONFIG',config);
-})();
-},{}]},{},[16]);
+},{"./Page":6,"./PageCategory":13,"./config":16}]},{},[17])

@@ -65,7 +65,6 @@ return [
             'region' => 'your-region',
             'bucket' => 'your-bucket',
         ],
-
     ],
 
 ];

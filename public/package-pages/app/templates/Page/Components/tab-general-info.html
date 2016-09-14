@@ -48,11 +48,17 @@
             <md-switch ng-model="VM.Item.active" aria-label="Active" ng-disabled="VM.disableStatus">
                 Status
             </md-switch>
-            <div ng-if="VM.disableStatus">To be published on {{ VM.toBePublished | moment }}</div>
-            <md-button class="md-button md-primary md-raised"
-                       ng-click="future=true">Change Publish Date</md-button>
 
-            <div  ng-show="future">
+            <md-button class="md-button md-primary md-raised" ng-if="VM.Item.id" ng-init="VM.setUser=false"
+                       ng-click="VM.setUser=!VM.setUser">Change page author</md-button>
+
+            <div ng-show="VM.setUser"><user-selector ng-model="VM.Item.user_id" show-current-user="true"></user-selector></div>
+
+            <div ng-if="VM.disableStatus">To be published on {{ VM.toBePublished | moment }}</div>
+            <md-button class="md-button md-primary md-raised" ng-if="VM.Item.id" ng-init="VM.future=false"
+                       ng-click="VM.future=!VM.future">Change Publish Date</md-button>
+
+            <div  ng-show="VM.future">
 
                 <md-input-container>
                     <label>Publish on</label>
@@ -109,9 +115,12 @@
             <div ng-if="VM.Item.id" >
                 <img ng-src="{{ VM.Item.thumb.copies.thumb.url }}" style="width: 100%;" />
         <upload  ng-model="VM.Item.thumb"
+                 on-media-library-select="VM.onSelectFromMediaLibrary(item)"
                        options="VM.thumbUploadOptions"></upload>
 
                 </div>
+
+
 
 
 

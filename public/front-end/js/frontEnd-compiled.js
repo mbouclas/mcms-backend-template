@@ -1,50 +1,79 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function() {
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function () {
     'use strict';
 
     angular.module('mcms.frontEnd.editableRegions')
-        .controller('EditableRegionController',Controller);
+        .controller('EditableRegionController', Controller);
 
     Controller.$inject = ['Region', 'Dialog', 'FRONTEND_CONFIG', 'configuration',
-        'EditableRegionService', 'core.services', 'LangService'];
+        'EditableRegionService', 'core.services', 'LangService', '$timeout'];
 
-    function Controller(Region, Dialog, Config, BaseConfig, ERS, Helpers, Lang) {
-        var vm = this;
+    function Controller(Region, Dialog, Config, BaseConfig, ERS, Helpers, Lang, $timeout) {
+        var vm = this,
+            Items = [];
+
         vm.tmpModel = {};
         vm.Region = Region;
         vm.defaultLang = Lang.defaultLang();
         vm.Locales = Lang.locales();
 
         vm.add = function (region, item) {
-
             Dialog.show({
-                title : 'Add items ',
-                contents : '<editable-region region="VM.region" item="VM.item" ' +
+                title: 'Add items',
+                contents: '<editable-region region="VM.region" item="VM.item" ' +
                 'on-select-item="VM.onSelectItem(region, item, isNew)"></editable-region>',
-                locals : {
-                    item : item,
-                    region : region,
-                    onSelectItem : vm.onSelectItem
+                locals: {
+                    item: item,
+                    region: region,
+                    onSelectItem: vm.onSelectItem
                 }
             });
         };
 
-        vm.edit = function (region) {
+        vm.reOrder = function () {
+            Items = [];
+            for (var i in vm.Region.regions) {
+                Items.push(vm.Region.regions[i]);
+            }
 
             Dialog.show({
-                title : 'edit ' + region.label,
-                templateUrl : Config.templatesDir + 'EditableRegions/editRegion.html',
-                locals : {
-                    Region : region,
-                    ValidationMessagesTemplate : BaseConfig.validationMessages,
-                    onSave : vm.updateRegion,
-                    save : vm.save
+                title: 'Reorder regions',
+                templateUrl: Config.templatesDir + 'EditableRegions/Components/editableRegionsList.html',
+                locals: {
+                    Regions: Items,
+                    onSort: vm.onSort
+                }
+            });
+        };
+
+        vm.onSort = function ($item, $partFrom, $partTo, $indexFrom, $indexTo) {
+            var tmp = {};
+            for (var i in Items) {
+                tmp[Items[i].slug] = Items[i];
+            }
+
+            vm.Region.regions = {};
+            $timeout(function () {
+                vm.Region.regions = tmp;
+                vm.save();
+            });
+
+        };
+
+        vm.edit = function (region) {
+            Dialog.show({
+                title: 'edit ' + region.label,
+                templateUrl: Config.templatesDir + 'EditableRegions/editRegion.html',
+                locals: {
+                    Region: region,
+                    ValidationMessagesTemplate: BaseConfig.validationMessages,
+                    onSave: vm.updateRegion,
+                    save: vm.save
                 }
             });
         };
 
         vm.updateRegion = function (region) {
-
         };
 
         vm.save = function () {
@@ -55,15 +84,17 @@
         };
 
         vm.onSelectItem = function (region, item, isNew) {
-            if (isNew){
+            if (isNew) {
                 region.items.push(item);
             }
 
+            vm.save();
             Dialog.close();
         };
 
         vm.delete = function (region, index) {
-          region.items.splice(index, 1);
+            region.items.splice(index, 1);
+            vm.save();
         };
     }
 
@@ -171,14 +202,16 @@
                 active : true,
                 default : true,
                 alias : 'text',
-                type : 'html'
+                type : 'html',
+                show : true
             },
             {
                 label : 'Image',
                 file : Config.templatesDir + 'EditableRegions/Components/tab-image.html',
                 active : false,
                 alias : 'image',
-                type : 'image'
+                type : 'image',
+                show : true
             },
             {
                 label : 'Item',
@@ -186,7 +219,8 @@
                 active : false,
                 default : false,
                 alias : 'item',
-                type : 'item'
+                type : 'item',
+                show : true
             },
             {
                 label : 'Structured Data',
@@ -194,6 +228,7 @@
                 active : false,
                 alias : 'structured',
                 type : 'structured',
+                show : true
             },
         ];
         vm.Settings = [];
@@ -203,6 +238,7 @@
 
         vm.init = function (region) {
             vm.Region = region;
+            setAllowed(region);
             if (typeof $scope.item != 'undefined'){
                 var selectedTab = lo.find(vm.tabs, {type : $scope.item.type});
                 //set tab
@@ -287,6 +323,20 @@
 
             tab.default = true;
             tab.active = true;
+        }
+
+        function setAllowed(region) {
+            if (!lo.isArray(region.allow)){
+                return;
+            }
+
+
+            lo.forEach(vm.tabs, function (tab) {
+                if (region.allow.indexOf(tab.alias) == -1){
+                    tab.show = false;
+                }
+            });
+
         }
     }
 })();
@@ -991,6 +1041,46 @@ require('./welcome.widget');
     }
 })();
 },{}],25:[function(require,module,exports){
+(function(){
+    'use strict';
+    var assetsUrl = '/assets/',
+        appUrl = '/app/',
+        componentsUrl = appUrl + 'Components/',
+        templatesDir = '/front-end/app/templates/';
+
+    var config = {
+        apiUrl : '/api/',
+        prefixUrl : '/admin',
+        templatesDir : templatesDir,
+        imageUploadUrl: '/admin/api/upload/image',
+        imageBasePath: assetsUrl + 'img',
+        validationMessages : templatesDir + 'Components/validationMessages.html',
+        appUrl : appUrl,
+        componentsUrl : componentsUrl,
+        fileTypes : {
+            image : {
+                accept : 'image/*',
+                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
+            },
+            document : {
+                accept : 'application/pdf,application/doc,application/docx',
+                acceptSelect : 'application/pdf,application/doc,application/docx'
+            },
+            file : {
+                accept : 'application/*',
+                acceptSelect : 'application/*'
+            },
+            audio : {
+                accept : 'audio/*',
+                acceptSelect : 'audio/*'
+            }
+        }
+    };
+
+    angular.module('mcms.core')
+        .constant('FRONTEND_CONFIG',config);
+})();
+},{}],26:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1068,44 +1158,4 @@ require('./LayoutManager');
 require('./PermalinkArchive');
 require('./Widgets');
 
-},{"./EditableRegions":5,"./FrontPage":10,"./LayoutManager":13,"./PermalinkArchive":17,"./Seo":20,"./Settings":22,"./Widgets":23,"./config":26}],26:[function(require,module,exports){
-(function(){
-    'use strict';
-    var assetsUrl = '/assets/',
-        appUrl = '/app/',
-        componentsUrl = appUrl + 'Components/',
-        templatesDir = '/front-end/app/templates/';
-
-    var config = {
-        apiUrl : '/api/',
-        prefixUrl : '/admin',
-        templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
-        imageBasePath: assetsUrl + 'img',
-        validationMessages : templatesDir + 'Components/validationMessages.html',
-        appUrl : appUrl,
-        componentsUrl : componentsUrl,
-        fileTypes : {
-            image : {
-                accept : 'image/*',
-                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
-            },
-            document : {
-                accept : 'application/pdf,application/doc,application/docx',
-                acceptSelect : 'application/pdf,application/doc,application/docx'
-            },
-            file : {
-                accept : 'application/*',
-                acceptSelect : 'application/*'
-            },
-            audio : {
-                accept : 'audio/*',
-                acceptSelect : 'audio/*'
-            }
-        }
-    };
-
-    angular.module('mcms.core')
-        .constant('FRONTEND_CONFIG',config);
-})();
-},{}]},{},[25]);
+},{"./EditableRegions":5,"./FrontPage":10,"./LayoutManager":13,"./PermalinkArchive":17,"./Seo":20,"./Settings":22,"./Widgets":23,"./config":25}]},{},[26])

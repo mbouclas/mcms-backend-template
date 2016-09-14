@@ -119,3 +119,21 @@ md-sidenav, md-sidenav.md-locked-open, md-sidenav.md-closed.md-locked-open-add-a
 .chipsTags .fixedRows {
     height: 250px;
     overflow: hidden; }
+
+md-list-item .label {
+    display: inline;
+    padding: .2em .6em .3em;
+    font-size: 75%;
+    font-weight: 700;
+    line-height: 1;
+    color: #fff;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: .25em;
+}
+md-list-item .label-success { background-color: #5cb85c; }
+md-list-item .label-error { background-color: #d9534f; }
+md-list-item .label-warning { background-color: #f0ad4e; }
+md-list-item .label-info { background-color: #5bc0de; }
+md-list-item .label-primary { background-color: #337ab7; }

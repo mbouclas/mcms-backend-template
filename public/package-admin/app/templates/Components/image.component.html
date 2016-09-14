@@ -1,5 +1,4 @@
 <md-card class="md-whitespace-4dp">
-
     <div layout="{{ layoutType || 'row' }}" layout-xs="column">
         <img ng-src="{{ Item.src || 'package-admin/img/no-image.png' }}"
              ng-if="options.showPreview"
@@ -17,14 +16,14 @@
                 <label>Link</label>
                 <input ng-model="Item.href">
             </md-input-container>
-            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+<!--            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
                 <label>Title</label>
                 <input ng-model="Item.title">
             </md-input-container>
             <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
                 <label>Alt</label>
                 <input ng-model="Item.alt">
-            </md-input-container>
+            </md-input-container>-->
             <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
                 <label>Open in</label>
                 <md-select ng-model="Item.target" flex>
@@ -33,11 +32,35 @@
                     </md-option>
                 </md-select>
             </md-input-container>
-            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+<!--            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
                 <label>Description</label>
                 <textarea ng-model="Item.description" rows="3"></textarea>
-            </md-input-container>
+            </md-input-container>-->
+            <div ng-repeat="(key, locale) in VM.Locales">
+                <md-toolbar class="md-accent">
+                    <div class="md-toolbar-tools">
+                        <h3><span>{{ locale.name }}</span></h3>
+                    </div>
+                </md-toolbar>
 
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Alt</label>
+                    <input ng-model="Item.alt[key]"
+                           name="alt-{{ key }}">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Title</label>
+                    <input ng-model="Item.title[key]"
+                           name="title-{{ key }}">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Description</label>
+                    <textarea ng-model="Item.description[key]" name="description-{{ key }}" redactor placeholder="Description"></textarea>
+                </md-input-container>
+
+            </div>
 
         </md-card-content>
 
