@@ -5,6 +5,7 @@ return [
         'slug_pattern' => '/page/%slug$s',
         'previewController' => '\FrontEnd\Http\Controllers\HomeController@preview',
         'images' => [
+            'savePath' => 'public_path',
             'optimize' => true,
             'keepOriginals' => true,
             'dirPattern' => 'pages/page_%id$s',
