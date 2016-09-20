@@ -55,6 +55,11 @@ return [
                     'dir' => '/',
                 ],
             ]
+        ],
+        'files' => [
+            'dirPattern' => 'pages/page_%id$s',
+            'filePattern' => '',
+            'savePath' => 'public_path'
         ]
     ],
     'categories' => [
@@ -94,9 +99,5 @@ return [
             ]
         ]
     ],
-    'files' => [
-        'dirPattern' => 'pages/page_%id$s',
-        'filePattern' => '',
-        'savePath' => 'public_path'
-    ]
+
 ];
