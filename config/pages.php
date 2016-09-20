@@ -93,5 +93,10 @@ return [
                 ],
             ]
         ]
+    ],
+    'files' => [
+        'dirPattern' => 'pages/page_%id$s',
+        'filePattern' => '',
+        'savePath' => 'public_path'
     ]
 ];
