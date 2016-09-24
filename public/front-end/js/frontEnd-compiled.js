@@ -233,12 +233,13 @@
         ];
         vm.Settings = [];
 
+        var CurrentType;
 
-        var CurrentType = vm.tabs[0].type;
 
         vm.init = function (region) {
             vm.Region = region;
-            setAllowed(region);
+            CurrentType = vm.tabs[0].type;
+
             if (typeof $scope.item != 'undefined'){
                 var selectedTab = lo.find(vm.tabs, {type : $scope.item.type});
                 //set tab
@@ -261,7 +262,9 @@
                 }
             }
             vm.Settings  = region.structuredData;
-
+            $timeout(function () {
+                setAllowed(region);
+            }, 500);
         };
 
         vm.save = function(){
@@ -326,17 +329,27 @@
         }
 
         function setAllowed(region) {
+
+
             if (!lo.isArray(region.allow)){
                 return;
             }
 
-
-            lo.forEach(vm.tabs, function (tab) {
+            var toRemove = [];
+            lo.forEach(vm.tabs, function (tab, index) {
                 if (region.allow.indexOf(tab.alias) == -1){
-                    tab.show = false;
+                    // tab.show = false;
+                    toRemove.push(tab.alias);
+
                 }
             });
 
+            for (var i in toRemove){
+                var index = lo.findIndex(vm.tabs, {alias : toRemove[i]});
+                 vm.tabs.splice(index, 1);
+            }
+
+            return vm.tabs;
         }
     }
 })();
@@ -1125,16 +1138,6 @@ require('./welcome.widget');
                 order : 2
             })
         ]);
-
-/*        pagesMenu.addChildren([
-            Menu.newItem({
-                id: 'frontEnd-settings',
-                title: 'Settings',
-                permalink: '/front/settings',
-                icon: 'settings',
-                order : 3
-            })
-        ]);*/
 
         pagesMenu.addChildren([
             Menu.newItem({

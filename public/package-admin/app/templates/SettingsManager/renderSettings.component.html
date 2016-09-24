@@ -102,6 +102,7 @@
     <image-component ng-model="VM.models[field.varName]" layout-type="column"
                      name="{{ field.varName }}"
                      on-change="VM.changed(field, value)"
+                     settings="field.settings"
                      options="VM.imageOptions" ></image-component>
     </div>
     <div ng-if="field.type=='file'">
@@ -118,5 +119,14 @@
                        name="{{ field.varName }}"
                        ng-change="VM.changed(field, value)"
                        md-open-on-focus></md-datepicker>
+    </div>
+
+    <div ng-if="field.type == 'itemSelector'">
+        <h4>{{ field.label }}</h4>
+<!--        <item-selector items="[]"
+                       connector="VM.Connectors"
+                       on-result="VM.onResult(result)"
+                       options="VM.itemSelectorOptions"
+                       title="Items"></item-selector>-->
     </div>
 </div>

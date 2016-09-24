@@ -1,4 +1,11 @@
 <md-card class="md-whitespace-4dp">
+    <md-toolbar class="md-hue-2" ng-if="settings.width">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Image will be resized to {{ settings.width }}x{{ settings.height }}px</span>
+            </h2>
+        </div>
+    </md-toolbar>
     <div layout="{{ layoutType || 'row' }}" layout-xs="column">
         <img ng-src="{{ Item.src || 'package-admin/img/no-image.png' }}"
              ng-if="options.showPreview"
@@ -6,7 +13,7 @@
         <upload  ng-model="Item.src" ng-hide="!options.showUpload"
                  options="uploadOptions"
                  callbacks="callbacks"></upload>
-        <md-card-content flex="70" flex-xs="100">
+        <md-card-content flex="70" flex-xs="100" ng-show="options.showDetails">
 
             <md-input-container layout  flex-gt-sm>
                 <label>Image URL</label>

@@ -1,5 +1,4 @@
 <div class="md-dialog-content">
-    <span ng-repeat="tab in VM.tabs">{{ tab.label }}</span>
 <form ng-submit="UserForm.$valid && VM.save()" novalidate name="UserForm">
     <md-tabs md-dynamic-height md-border-bottom md-autoselect>
         <md-tab label="{{ tab.label }}"

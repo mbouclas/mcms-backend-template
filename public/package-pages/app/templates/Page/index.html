@@ -43,7 +43,10 @@
                       class="md-3-line">
             <div class="md-list-item-text" layout="column">
                 <h3><strong>#{{ item.id }} {{ item.title[VM.defaultLang] }}</strong></h3>
-                <h4><span ng-repeat="cat in item.categories">
+                <h4>
+                    <label class="label label-success" ng-if="item.active">Active</label>
+                    <label class="label label-error" ng-if="!item.active">Disabled</label>
+                    <span ng-repeat="cat in item.categories">
                     <span ng-bind="cat.title[VM.defaultLang]"></span>
                     <span ng-if="!$last">,</span>
                 </span></h4>

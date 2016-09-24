@@ -32,9 +32,10 @@ class HomeController extends BaseController
             ->get(true);
 
         $articles = $pageService->model
+            ->where('active', true)
             ->with(['categories'])
             ->take(5)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('published_at', 'DESC')
             ->get();
 
         return view('home')

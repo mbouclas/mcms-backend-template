@@ -137,6 +137,7 @@ class PageController extends Controller
         $resultsPerPage = (isset($category->settings['resultsPerPage'])) ? $category->settings['resultsPerPage'] : Config::get('pages.items.per_page');
         $pages = $page->with(['categories'])
             ->where('active', true)
+            ->orderBy('published_at', 'DESC')
             ->filter($filters)
             ->paginate($resultsPerPage);
 

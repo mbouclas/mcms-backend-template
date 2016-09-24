@@ -330,7 +330,8 @@
                                  ItemSelector, lo, SM, SEO, LMS, $timeout, $rootScope, $q,
                                  moment, ModuleExtender, MLS) {
         var vm = this,
-            autoSaveHooks = [];
+            autoSaveHooks = [],
+            Model = '\\IdeaSeven\\Pages\\Models\\Page';
 
         vm.published_at = {};
         vm.Lang = Lang;
@@ -362,12 +363,20 @@
                 order : 20
             },
             {
-                label : 'Media files',
-                file : PagesConfig.templatesDir + 'Page/Components/tab-media-files.html',
+                label : 'Image gallery',
+                file : PagesConfig.templatesDir + 'Page/Components/tab-image-gallery.html',
                 active : false,
                 default : false,
-                id : 'mediaFiles',
+                id : 'imageGallery',
                 order : 30
+            },
+            {
+                label : 'Files',
+                file : PagesConfig.templatesDir + 'Page/Components/tab-file-gallery.html',
+                active : false,
+                default : false,
+                id : 'fileGallery',
+                order : 40
             },
 /*            {
                 label : 'Extra Fields',
@@ -380,14 +389,14 @@
                 file : PagesConfig.templatesDir + 'Page/Components/tab-related-items.html',
                 active : false,
                 alias : 'related',
-                order : 40
+                order : 50
             },
             {
                 label : 'SEO',
                 file : PagesConfig.templatesDir + 'Page/Components/tab-seo.html',
                 active : false,
                 alias : 'seo',
-                order : 50
+                order : 60
             }
         ];
 
@@ -416,6 +425,16 @@
             file : {},
             image : vm.imagesUploadOptions
         };
+
+        vm.FileUploadConfig = {
+            url : Config.fileUploadUrl,
+            acceptedFiles : PagesConfig.fileTypes.file.acceptSelect,
+            uploadOptions : PagesConfig.fileTypes.file.uploadOptions,
+            params : {
+                container : 'Item'
+            }
+        };
+
         vm.Layouts = LMS.layouts('pages.items');
         vm.LayoutsObj = LMS.toObj();
         vm.categoriesValid = null;
@@ -512,6 +531,9 @@
 
         function init(item) {
             vm.Item = item;
+            if (typeof vm.Item.files == 'undefined'){
+                vm.Item.files = [];
+            }
             SEO.fillFields(vm.Item.settings, function (model, key) {
                 SEO.prefill(model, vm.Item, key);
             });
@@ -520,12 +542,15 @@
             vm.SEO = SEO.fields();
             vm.Connectors = ItemSelector.connectors();
             vm.thumbUploadOptions.params.item_id = item.id;
-            vm.thumbUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
+            vm.thumbUploadOptions.params.model = Model;
             vm.thumbUploadOptions.params.type = 'thumb';
 
             vm.imagesUploadOptions.params.item_id = item.id;
-            vm.imagesUploadOptions.params.configurator = '\\IdeaSeven\\Pages\\Services\\Page\\ImageConfigurator';
+            vm.imagesUploadOptions.params.model = Model;
             vm.imagesUploadOptions.params.type = 'images';
+            vm.FileUploadConfig.params.item_id = item.id;
+            vm.FileUploadConfig.params.model = Model;
+            vm.FileUploadConfig.params.type = 'file';
             LMS.setModel(vm.Item);
             vm.Settings = SM.get({name : 'pages'});
             if (lo.isArray(vm.Item.categories) && vm.Item.categories.length > 0){
@@ -924,6 +949,7 @@ require('./Widgets/latestPages.widget');
                 extraFields : [],
                 tagged : [],
                 related : [],
+                files : [],
                 settings : {
                     seo : {}
                 },
@@ -1466,6 +1492,7 @@ require('./editPageCategory.component');
         previewUrl : '/admin/api/page/preview/',
         templatesDir : templatesDir,
         imageUploadUrl: '/admin/api/upload/image',
+        fileUploadUrl: '/admin/api/upload/file',
         imageBasePath: assetsUrl + 'img',
         validationMessages : templatesDir + 'Components/validationMessages.html',
         appUrl : appUrl,
@@ -1477,11 +1504,12 @@ require('./editPageCategory.component');
             },
             document : {
                 accept : 'application/pdf,application/doc,application/docx',
+                acceptedFiles : '.pdf,.doc,.docx',
                 acceptSelect : 'application/pdf,application/doc,application/docx'
             },
             file : {
                 accept : 'application/*',
-                acceptSelect : 'application/*'
+                acceptSelect : 'application/*,.pdf,.doc,.docx'
             },
             audio : {
                 accept : 'audio/*',
@@ -1493,12 +1521,14 @@ require('./editPageCategory.component');
     angular.module('mcms.core')
         .constant('PAGES_CONFIG',config);
 })();
+
 },{}],17:[function(require,module,exports){
 (function () {
     'use strict';
 
     angular.module('mcms.pages', [
         'mcms.mediaFiles',
+        'mcms.fileGallery',
         'mcms.extraFields',
         'mcms.pages.page',
         'mcms.pages.pageCategory',
@@ -1513,7 +1543,7 @@ require('./editPageCategory.component');
 
         Menu.addMenu(Menu.newItem({
             id: 'pages',
-            title: 'Pages',
+            title: 'CMS',
             permalink: '',
             icon: 'pages',
             order: 1,
@@ -1528,7 +1558,7 @@ require('./editPageCategory.component');
         pagesMenu.addChildren([
             Menu.newItem({
                 id: 'pages-manager',
-                title: 'Content',
+                title: 'Pages',
                 permalink: '/pages/content',
                 icon: 'content_copy',
                 order : 2
@@ -1551,4 +1581,5 @@ require('./editPageCategory.component');
 require('./config');
 require('./Page');
 require('./PageCategory');
+
 },{"./Page":6,"./PageCategory":13,"./config":16}]},{},[17])
