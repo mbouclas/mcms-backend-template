@@ -10,10 +10,8 @@
         </div><!-- END LEFT -->
 
         <div class="col-xs-12 col-lg-3 sidebar">
-            <aside class="widget bg z-depth-1 widget_categories">
-                <h4 class="widget-title">Categories</h4>
-                @include('partials.categories-sideBar')
-            </aside><!-- .widget_categories -->
+            @include('partials.sidebar-widgets.categories',
+            ['Categories' => $Categories, 'Title' => 'Categories' ])
 
             <aside class="widget bg z-depth-1">
                 <h4 class="widget-title">Subscribe</h4>

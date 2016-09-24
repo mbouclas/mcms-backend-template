@@ -15,7 +15,7 @@ class ViewComposerServiceProvider extends BaseViewComposerServiceProvider
     {
         // Using class based composers...
         view()->composer('partials.header', 'FrontEnd\Http\ViewComposers\MenuComposer');
-        view()->composer(['partials.categories-sideBar'], 'FrontEnd\Http\ViewComposers\Categories');
+        view()->composer(['home'], 'FrontEnd\Http\ViewComposers\Categories');
 
     }
 

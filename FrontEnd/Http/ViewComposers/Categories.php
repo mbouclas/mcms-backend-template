@@ -17,7 +17,7 @@ class Categories
 
     public function compose(View $view)
     {
-        $view->with('Categories', $this->categories->all()->toTree());
+        $view->with('Categories', $this->categories->all());
 
     }
 }

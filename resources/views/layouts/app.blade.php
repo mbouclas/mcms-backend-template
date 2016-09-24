@@ -18,7 +18,7 @@
 
 <div class="page-box">
     @include('partials.header')
-    <main id="main" class="home-page">
+    <main id="main" class="@yield('main-class', 'home-page')">
         <div class="container">
             @yield('content')
         </div>

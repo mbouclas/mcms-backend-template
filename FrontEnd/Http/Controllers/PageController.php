@@ -115,7 +115,8 @@ class PageController extends Controller
 
     public function pages(PageFilters $filters, Page $page, PageCategory $pageCategory, $slug, Request $request, EditableRegions $editableRegions)
     {
-        $category = $pageCategory->where('slug', $slug)->first();
+        $category = $pageCategory->with('descendants')->where('slug', $slug)->first();
+
         if ( ! $category){
             //redirect 404
             return App::abort(404);

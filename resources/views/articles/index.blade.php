@@ -16,13 +16,14 @@
         {!! $category->settings['seo'][App::getLocale()]['keywords'] !!}
     @endif
 @endsection
+@section('main-class') @if(!is_array($category->subcategories)) left-sidebar @else home-page @endif @endsection
 @section('content')
     <header class="page-header">
         <h1><span class="grey-text">Galastyle</span> {!! $category->title !!}</h1>
     </header>
 
     <div class="row">
-        <div class="col-sm-12 posts-list">
+        <div class="col-xs-12 @if(!is_array($category->subcategories))col-lg-9 @else ol-lg-12 @endif posts-list">
             <div class="row grid-layout">
                 <!-- Grid size -->
                 <div class="col-xs-12 col-md-6 col-lg-4 grid-sizer"></div>
@@ -35,9 +36,13 @@
             </div>
 
         </div>
-
-        @include('components.paginator')
+        @if(!is_array($category->subcategories))
+        <div class="col-xs-12 col-lg-3 sidebar">
+            @include('partials.sidebar-widgets.categories',
+            ['Categories' => $category->subcategories, 'Title' => 'Subcategories' ])
+        </div>
+        @endif
 
     </div>
-
+    @include('components.paginator')
 @endsection
