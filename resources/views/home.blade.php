@@ -11,7 +11,7 @@
 
         <div class="col-xs-12 col-lg-3 sidebar">
             @include('partials.sidebar-widgets.categories',
-            ['Categories' => $Categories, 'Title' => 'Categories' ])
+            ['Categories' => $Categories, 'Title' => trans('site.categories') ])
 
             <aside class="widget bg z-depth-1">
                 <h4 class="widget-title">Subscribe</h4>
