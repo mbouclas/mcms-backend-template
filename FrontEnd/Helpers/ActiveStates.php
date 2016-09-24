@@ -3,6 +3,7 @@
 namespace FrontEnd\Helpers;
 
 
+use LaravelLocalization;
 use Request;
 
 /**
@@ -33,12 +34,18 @@ class ActiveStates
      */
     public static function set_active($path, $active = 'active')
     {
+
+        $path = ltrim($path,'/');
+
         if ( ! is_null(self::$page)){
             return (self::$page == $path) ? $active : '';
         }
 
-        $path = ltrim($path, '/');
-        return Request::is($path) ? $active : '';
+        if (empty($path)) {
+            $path = '/';
+        }
+
+        return (Request::is($path)) ? $active : '';
     }
 
     /**

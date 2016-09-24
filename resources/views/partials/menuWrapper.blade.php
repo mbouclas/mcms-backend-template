@@ -1,4 +1,4 @@
-<li @if (count($item['children']) > 0)class="parent"@endif>
+<li class="@if (count($item['children']) > 0)parent @endif {{ \FrontEnd\Helpers\ActiveStates::set_active($item->permalink ?: $item->link) }}">
     <a href="{{$item->link or $item->permalink}}" title="{!! $item->title !!}">{!! $item->title !!}</a>
     @if (count($item['children']) < 1)
 </li>
