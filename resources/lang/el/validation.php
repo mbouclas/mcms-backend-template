@@ -23,9 +23,11 @@ return array (
   'different' => 'The :attribute and :other must be different.',
   'digits' => 'The :attribute must be :digits digits.',
   'digits_between' => 'The :attribute must be between :min and :max digits.',
+  'dimensions' => 'The :attribute has invalid image dimensions.',
   'distinct' => 'The :attribute field has a duplicate value.',
   'email' => 'The :attribute must be a valid email address.',
   'exists' => 'The selected :attribute is invalid.',
+  'file' => 'The :attribute must be a file.',
   'filled' => 'The :attribute field is required.',
   'image' => 'The :attribute must be an image.',
   'in' => 'The selected :attribute is invalid.',
@@ -78,6 +80,4 @@ return array (
       'rule-name' => 'custom-message',
     ),
   ),
-  'dimensions' => 'The :attribute has invalid image dimensions.',
-  'file' => 'The :attribute must be a file.',
 );

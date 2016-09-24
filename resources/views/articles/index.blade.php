@@ -39,7 +39,7 @@
         @if(!is_array($category->subcategories))
         <div class="col-xs-12 col-lg-3 sidebar">
             @include('partials.sidebar-widgets.categories',
-            ['Categories' => $category->subcategories, 'Title' => 'Subcategories' ])
+            ['Categories' => $category->subcategories, 'Title' => trans('Subcategories') ])
         </div>
         @endif
 
