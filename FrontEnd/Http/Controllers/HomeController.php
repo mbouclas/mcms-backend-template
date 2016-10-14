@@ -28,18 +28,19 @@ class HomeController extends BaseController
     public function index(EditableRegions $editableRegions, PageService $pageService)
     {
         $regions = $editableRegions->filter('frontPage')
-            ->processRegions(['slider','latestBlogPosts', 'banners'])
+            ->processRegions(['slider','featuredBlogPosts', 'banners'])
             ->get(true);
 
         $articles = $pageService->model
+            ->where('active', true)
             ->with(['categories'])
             ->take(5)
-            ->orderBy('created_at', 'DESC')
+            ->orderBy('published_at', 'DESC')
             ->get();
 
         return view('home')
             ->with([
-                'latestBlogPosts' => $regions['latestBlogPosts'],
+                'featuredBlogPosts' => $regions['featuredBlogPosts'],
                 'latestArticles' => $articles,
                 'sliderItems' => $regions['slider'],
                 'banners' => $regions['banners'],

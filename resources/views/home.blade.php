@@ -10,10 +10,23 @@
         </div><!-- END LEFT -->
 
         <div class="col-xs-12 col-lg-3 sidebar">
-            <aside class="widget bg z-depth-1 widget_categories">
-                <h4 class="widget-title">Categories</h4>
-                @include('partials.categories-sideBar')
-            </aside><!-- .widget_categories -->
+
+            <aside class="widget bg z-depth-1 latest-posts">
+                <h4 class="widget-title">{{ trans('site.featuredPosts') }}</h4>
+                <ul>
+                    @foreach($featuredBlogPosts as $item)
+                        <li>
+                            <a href="{{ route('article', ['slug' => $item->slug]) }}" class="post-img">
+                                <img class="retina" src="{{ $item->thumb['copies']['thumb']['url'] }}" alt="">
+                            </a>
+                            <div class="post-content">
+                                <h5 class="post-title"><a href="{{ route('article', ['slug' => $item->slug]) }}">{!! $item->title !!}</a></h5>
+                                <div class="date">{{ $item->published_at->format('d/m/Y') }}</div>
+                            </div>
+                        </li>
+                    @endforeach
+                </ul>
+            </aside><!-- .latest-posts -->
 
             <aside class="widget bg z-depth-1">
                 <h4 class="widget-title">Subscribe</h4>
@@ -28,22 +41,7 @@
                 </form>
             </aside><!-- .subscribe -->
 
-            <aside class="widget bg z-depth-1 latest-posts">
-                <h4 class="widget-title">Latest Posts</h4>
-                <ul>
-                    @foreach($latestBlogPosts as $item)
-                    <li>
-                        <a href="{{ route('article', ['slug' => $item->slug]) }}" class="post-img">
-                            <img class="retina" src="{{ $item->thumb['copies']['thumb']['url'] }}" alt="">
-                        </a>
-                        <div class="post-content">
-                            <h5 class="post-title"><a href="{{ route('article', ['slug' => $item->slug]) }}">{!! $item->title !!}</a></h5>
-                            <div class="date">{{ $item->published_at->format('d/m/Y') }}</div>
-                        </div>
-                    </li>
-                    @endforeach
-                </ul>
-            </aside><!-- .latest-posts -->
+
 
             @foreach($banners as $item)
             <aside class="widget bg z-depth-1 banner">
@@ -60,6 +58,9 @@
                 </div>
             </aside>
             @endforeach
+
+            @include('partials.sidebar-widgets.categories',
+['Categories' => $Categories, 'Title' => trans('site.categories') ])
         </div><!-- .sidebar -->
 
     </div>

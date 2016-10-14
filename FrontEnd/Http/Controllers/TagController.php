@@ -15,7 +15,14 @@ class TagController extends Controller
     {
         $resultsPerPage = Config::get('pages.items.per_page');
         $Tag = Tag::where('slug', $tag)->first();
-        $items = $page->withAnyTag($tag)->paginate($resultsPerPage);
+        if ( ! $Tag){
+            return abort(404);
+        }
+
+        $items = $page->where('active', true)
+            ->withAnyTag($tag)
+            ->orderBy('published_at', 'DESC')
+            ->paginate($resultsPerPage);
 
         return view('tags.index')
             ->with([

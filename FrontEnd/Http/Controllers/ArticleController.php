@@ -68,14 +68,28 @@ class ArticleController extends BaseController
 
     public function articles(PageFilters $filters, Page $page, PageCategory $pageCategory, $slug, Request $request)
     {
-        $category = $pageCategory->where('slug', $slug)->first();
-        $request->merge(['category_id'=> $category->id]);
+        $category = $pageCategory
+            ->where('slug', $slug)
+            ->first()
+            ->itemCount();
+
+        if ( ! $category){
+            return abort(404);
+        }
+
+        $categories = [$category->id];
+
+        if (! is_array($category->descendants)){
+            $categories = array_merge($categories, $category->descendants->pluck('id')->toArray());
+        }
+
+        $request->merge(['category_id'=> implode(',', $categories)]);
 
         $articles = $page->with(['categories'])
+            ->where('active', true)
+            ->orderBy('published_at', 'DESC')
             ->filter($filters)
             ->paginate(Config::get('pages.items.per_page'));
-
-
 
         return view('articles.index')
             ->with([
