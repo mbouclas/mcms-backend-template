@@ -44,15 +44,9 @@
 <div class='md-padding' layout="row" layout-wrap>
 
         <md-card ng-repeat="item in VM.Items" flex-xs="50" >
+            <a href="" ng-click="VM.set(item)">
             <img ng-src="{{ item.url }}" class="md-card-image" style="max-width: 150px;">
-            <md-card-actions layout="row" layout-align="end center">
-                <md-button class="md-icon-button">
-                    <md-icon class="material-icons">add</md-icon>
-                </md-button>
-                <md-button class="md-icon-button">
-                    <md-icon class="material-icons">add</md-icon>
-                </md-button>
-            </md-card-actions>
+            </a>
         </md-card>
 
 

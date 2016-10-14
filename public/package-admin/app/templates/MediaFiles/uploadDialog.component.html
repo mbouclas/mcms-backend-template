@@ -10,19 +10,18 @@
     </md-toolbar>
 <div class="md-dialog-content" style="min-height: 400px">
 
-<!--    <div layout="row" layout-align="center center">
-       <upload-box
-                ng-model="VM.model" config="VM.UploadConfig"
-                callback="VM.onUploadDone(file, response, model)"
-                auto-start="true" progress-bar="true" multiple="true"
-                accept-select="{{ VM.UploadConfig.acceptSelect }}"
-                accept="{{ VM.UploadConfig.accept }}"></upload-box>
+    <upload  ng-model="VM.model" ng-if="VM.onSelectFromMediaLibrary"
+             options="VM.UploadConfig"
+             instance="VM.dzInstance(instance)"
+             on-media-library-select="VM.onSelectFromMediaLibrary(item)"
+             callbacks="VM.Callbacks"></upload>
 
-    </div>-->
-    <upload  ng-model="VM.model"
+
+    <upload  ng-model="VM.model" ng-if="!VM.onSelectFromMediaLibrary"
              options="VM.UploadConfig"
              instance="VM.dzInstance(instance)"
              callbacks="VM.Callbacks"></upload>
+
 
 </div>
 

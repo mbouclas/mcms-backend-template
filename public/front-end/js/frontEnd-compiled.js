@@ -1,50 +1,79 @@
-(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);var f=new Error("Cannot find module '"+o+"'");throw f.code="MODULE_NOT_FOUND",f}var l=n[o]={exports:{}};t[o][0].call(l.exports,function(e){var n=t[o][1][e];return s(n?n:e)},l,l.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
-(function() {
+(function e(t,n,r){function s(o,u){if(!n[o]){if(!t[o]){var a=typeof require=="function"&&require;if(!u&&a)return a(o,!0);if(i)return i(o,!0);throw new Error("Cannot find module '"+o+"'")}var f=n[o]={exports:{}};t[o][0].call(f.exports,function(e){var n=t[o][1][e];return s(n?n:e)},f,f.exports,e,t,n,r)}return n[o].exports}var i=typeof require=="function"&&require;for(var o=0;o<r.length;o++)s(r[o]);return s})({1:[function(require,module,exports){
+(function () {
     'use strict';
 
     angular.module('mcms.frontEnd.editableRegions')
-        .controller('EditableRegionController',Controller);
+        .controller('EditableRegionController', Controller);
 
     Controller.$inject = ['Region', 'Dialog', 'FRONTEND_CONFIG', 'configuration',
-        'EditableRegionService', 'core.services', 'LangService'];
+        'EditableRegionService', 'core.services', 'LangService', '$timeout'];
 
-    function Controller(Region, Dialog, Config, BaseConfig, ERS, Helpers, Lang) {
-        var vm = this;
+    function Controller(Region, Dialog, Config, BaseConfig, ERS, Helpers, Lang, $timeout) {
+        var vm = this,
+            Items = [];
+
         vm.tmpModel = {};
         vm.Region = Region;
         vm.defaultLang = Lang.defaultLang();
         vm.Locales = Lang.locales();
 
         vm.add = function (region, item) {
-
             Dialog.show({
-                title : 'Add items ',
-                contents : '<editable-region region="VM.region" item="VM.item" ' +
+                title: 'Add items',
+                contents: '<editable-region region="VM.region" item="VM.item" ' +
                 'on-select-item="VM.onSelectItem(region, item, isNew)"></editable-region>',
-                locals : {
-                    item : item,
-                    region : region,
-                    onSelectItem : vm.onSelectItem
+                locals: {
+                    item: item,
+                    region: region,
+                    onSelectItem: vm.onSelectItem
                 }
             });
         };
 
-        vm.edit = function (region) {
+        vm.reOrder = function () {
+            Items = [];
+            for (var i in vm.Region.regions) {
+                Items.push(vm.Region.regions[i]);
+            }
 
             Dialog.show({
-                title : 'edit ' + region.label,
-                templateUrl : Config.templatesDir + 'EditableRegions/editRegion.html',
-                locals : {
-                    Region : region,
-                    ValidationMessagesTemplate : BaseConfig.validationMessages,
-                    onSave : vm.updateRegion,
-                    save : vm.save
+                title: 'Reorder regions',
+                templateUrl: Config.templatesDir + 'EditableRegions/Components/editableRegionsList.html',
+                locals: {
+                    Regions: Items,
+                    onSort: vm.onSort
+                }
+            });
+        };
+
+        vm.onSort = function ($item, $partFrom, $partTo, $indexFrom, $indexTo) {
+            var tmp = {};
+            for (var i in Items) {
+                tmp[Items[i].slug] = Items[i];
+            }
+
+            vm.Region.regions = {};
+            $timeout(function () {
+                vm.Region.regions = tmp;
+                vm.save();
+            });
+
+        };
+
+        vm.edit = function (region) {
+            Dialog.show({
+                title: 'edit ' + region.label,
+                templateUrl: Config.templatesDir + 'EditableRegions/editRegion.html',
+                locals: {
+                    Region: region,
+                    ValidationMessagesTemplate: BaseConfig.validationMessages,
+                    onSave: vm.updateRegion,
+                    save: vm.save
                 }
             });
         };
 
         vm.updateRegion = function (region) {
-
         };
 
         vm.save = function () {
@@ -55,15 +84,17 @@
         };
 
         vm.onSelectItem = function (region, item, isNew) {
-            if (isNew){
+            if (isNew) {
                 region.items.push(item);
             }
 
+            vm.save();
             Dialog.close();
         };
 
         vm.delete = function (region, index) {
-          region.items.splice(index, 1);
+            region.items.splice(index, 1);
+            vm.save();
         };
     }
 
@@ -171,14 +202,16 @@
                 active : true,
                 default : true,
                 alias : 'text',
-                type : 'html'
+                type : 'html',
+                show : true
             },
             {
                 label : 'Image',
                 file : Config.templatesDir + 'EditableRegions/Components/tab-image.html',
                 active : false,
                 alias : 'image',
-                type : 'image'
+                type : 'image',
+                show : true
             },
             {
                 label : 'Item',
@@ -186,7 +219,8 @@
                 active : false,
                 default : false,
                 alias : 'item',
-                type : 'item'
+                type : 'item',
+                show : true
             },
             {
                 label : 'Structured Data',
@@ -194,20 +228,17 @@
                 active : false,
                 alias : 'structured',
                 type : 'structured',
+                show : true
             },
         ];
         vm.Settings = [];
 
+        var CurrentType;
 
-        var CurrentType = vm.tabs[0].type;
 
         vm.init = function (region) {
             vm.Region = region;
             if (typeof $scope.item != 'undefined'){
-                var selectedTab = lo.find(vm.tabs, {type : $scope.item.type});
-                //set tab
-                setTab(selectedTab);
-
                 if ($scope.item.type == 'image'){
                     vm.Image = $scope.item.item;
                     vm.Item = $scope.item;
@@ -224,8 +255,17 @@
                     vm.Item = $scope.item;
                 }
             }
-            vm.Settings  = region.structuredData;
 
+            vm.Settings  = region.structuredData;
+            $timeout(function () {
+                setAllowed(region);
+                CurrentType = vm.tabs[0].type;
+                if (typeof $scope.item != 'undefined') {
+                    var selectedTab = lo.find(vm.tabs, {type: $scope.item.type});
+                    //set tab
+                    setTab(selectedTab);
+                }
+            }, 500);
         };
 
         vm.save = function(){
@@ -245,6 +285,7 @@
             };
 
             if (typeof $scope.onSelectItem == 'function'){
+
                 $timeout(function () {
                     var isNew = (typeof $scope.item == 'undefined');
                     $scope.onSelectItem({region: vm.Region, item: ret, isNew : isNew});
@@ -280,6 +321,7 @@
 
         function setTab(tab) {
             //reset
+
             for (var i in vm.tabs){
                 vm.tabs[i].active = false;
                 vm.tabs[i].default = false;
@@ -287,6 +329,29 @@
 
             tab.default = true;
             tab.active = true;
+        }
+
+        function setAllowed(region) {
+            if (!lo.isArray(region.allow)){
+                return;
+            }
+
+
+            var toRemove = [];
+            lo.forEach(vm.tabs, function (tab, index) {
+                if (region.allow.indexOf(tab.alias) == -1){
+                    // tab.show = false;
+                    toRemove.push(tab.alias);
+
+                }
+            });
+
+            for (var i in toRemove){
+                var index = lo.findIndex(vm.tabs, {alias : toRemove[i]});
+                 vm.tabs.splice(index, 1);
+            }
+
+            return vm.tabs;
         }
     }
 })();
@@ -934,6 +999,37 @@ require('./editPage.component');
 */
 
 },{}],23:[function(require,module,exports){
+(function () {
+    'use strict';
+
+    angular.module('mcms.frontEnd.widgets')
+        .service('WelcomeWidgetDataService',Service);
+
+    Service.$inject = ['$http', '$q'];
+
+    function Service($http, $q) {
+        var _this = this;
+        var baseUrl = '/admin/api/welcomeWidget/';
+
+        this.index = index;
+        this.update = update;
+
+        function index(filters) {
+            return $http.get(baseUrl, {params : filters}).then(returnData);
+        }
+
+        function update(id, item) {
+            return $http.put(baseUrl + id, item)
+                .then(returnData);
+        }
+
+        function returnData(response) {
+            return response.data;
+        }
+    }
+})();
+
+},{}],24:[function(require,module,exports){
 (function(){
     'use strict';
 
@@ -947,50 +1043,168 @@ require('./editPage.component');
             id : 'welcome',
             title : 'Things to do',
             template : '<welcome-widget></welcome-widget>',
-            settings : {}
+            settings : {},
         }));
     }
 })();
 
+
 require('./welcome.widget');
-},{"./welcome.widget":24}],24:[function(require,module,exports){
+require('./dataService');
+require('./service');
+},{"./dataService":23,"./service":25,"./welcome.widget":26}],25:[function(require,module,exports){
+(function () {
+    'use strict';
+
+    angular.module('mcms.frontEnd.widgets')
+        .service('WelcomeWidgetService',Service);
+
+    Service.$inject = ['lodashFactory', 'LangService', 'WelcomeWidgetDataService', '$q'];
+
+    function Service(lo, Lang, DS, $q) {
+        var _this = this,
+            WelcomeWidget = [];
+
+        this.get = get;
+        this.update = update;
+
+
+        function get(filters) {
+            return DS.index(filters)
+                .then(function (response) {
+                    WelcomeWidget = response;
+                    return response;
+                });
+        }
+
+
+        function update(id, item) {
+            return DS.update(id, item);
+        }
+
+    }
+})();
+
+},{}],26:[function(require,module,exports){
 (function(){
     'use strict';
 
     angular.module('mcms.frontEnd.widgets')
         .directive('welcomeWidget', Component);
 
-    Component.$inject = ['FRONTEND_CONFIG', '$filter'];
+    Component.$inject = ['FRONTEND_CONFIG', '$filter', 'WelcomeWidgetService', 'lodashFactory', '$location',
+        'Dialog', 'AuthService'];
 
-    function Component(Config, $filter){
+    function Component(Config, $filter, WelcomeWidgetService, lo, $location, Dialog, ACL){
 
         return {
             templateUrl: Config.templatesDir + "Widgets/welcome.widget.html",
             restrict : 'E',
             link : function(scope, element, attrs, controllers){
                 // $location.path($filter('reverseUrl')('pages-edit',{id : id}).replace('#',''));
-                scope.Items = [
+                var defaults = [
                     {
                         title : 'Manage your users',
                         href  : $filter('reverseUrl')('user-manager'),
-                        description : 'Add/remove/edit system users'
+                        description : 'Add/remove/edit system users',
+                        acl : {type : 'level', permission : 98}
                     },
                     {
                         title : 'Manage your menus',
                         href  : $filter('reverseUrl')('menu-manager'),
-                        description : 'Add/remove/edit website menus'
+                        description : 'Add/remove/edit website menus',
+                        acl : {type : 'level', permission : 98}
                     },
                     {
                         title : 'Translate your site',
                         href  : $filter('reverseUrl')('lang'),
-                        description : 'Add/remove/edit website translations'
+                        description : 'Add/remove/edit website translations',
+                        acl : {type : 'level', permission : 98}
                     }
                 ];
+                scope.Items = [];
+                WelcomeWidgetService.get()
+                    .then(function (WelcomeWidget) {
+                        if (typeof WelcomeWidget == 'undefined' || typeof WelcomeWidget.links == 'undefined' || !lo.isArray(WelcomeWidget.links) || WelcomeWidget.links.length == 0){
+                            scope.Items = defaults;
+                            return;
+                        }
+
+                        lo.forEach(WelcomeWidget.links, function (item) {
+                            if (typeof item.acl == 'undefined' || !item.acl){
+                                scope.Items.push(item);
+                                return;
+                            }
+
+                            var acl = ACL[item.acl.type](item.acl.permission);
+                            if (typeof acl == 'undefined' || !acl){
+                                return;
+                            }
+
+                            scope.Items.push(item);
+                        });
+
+                    });
+
+                scope.activate = function ($index) {
+                  var item = scope.Items[$index];
+                  if (item.link.type == 'href'){
+                      $location.path($filter('reverseUrl')(item.link.link).replace('#', ''));
+                  }
+                  else if (item.link.type == 'component') {
+                      //open a dialog
+                      Dialog.show({
+                          title :item.title,
+                          contents : item.link.link,
+                          locals : (typeof item.settings.locals == 'undefined') ? {} : item.settings.locals
+                      });
+                  }
+                };
             }
         };
     }
 })();
-},{}],25:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
+(function(){
+    'use strict';
+    var assetsUrl = '/assets/',
+        appUrl = '/app/',
+        componentsUrl = appUrl + 'Components/',
+        templatesDir = '/front-end/app/templates/';
+
+    var config = {
+        apiUrl : '/api/',
+        prefixUrl : '/admin',
+        templatesDir : templatesDir,
+        imageUploadUrl: '/admin/api/upload/image',
+        imageBasePath: assetsUrl + 'img',
+        validationMessages : templatesDir + 'Components/validationMessages.html',
+        appUrl : appUrl,
+        componentsUrl : componentsUrl,
+        fileTypes : {
+            image : {
+                accept : 'image/*',
+                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
+            },
+            document : {
+                accept : 'application/pdf,application/doc,application/docx',
+                acceptSelect : 'application/pdf,application/doc,application/docx'
+            },
+            file : {
+                accept : 'application/*',
+                acceptSelect : 'application/*'
+            },
+            audio : {
+                accept : 'audio/*',
+                acceptSelect : 'audio/*'
+            }
+        }
+    };
+
+    angular.module('mcms.core')
+        .constant('FRONTEND_CONFIG',config);
+})();
+},{}],28:[function(require,module,exports){
 (function () {
     'use strict';
 
@@ -1036,16 +1250,6 @@ require('./welcome.widget');
             })
         ]);
 
-/*        pagesMenu.addChildren([
-            Menu.newItem({
-                id: 'frontEnd-settings',
-                title: 'Settings',
-                permalink: '/front/settings',
-                icon: 'settings',
-                order : 3
-            })
-        ]);*/
-
         pagesMenu.addChildren([
             Menu.newItem({
                 id: 'permalink-archive',
@@ -1068,44 +1272,4 @@ require('./LayoutManager');
 require('./PermalinkArchive');
 require('./Widgets');
 
-},{"./EditableRegions":5,"./FrontPage":10,"./LayoutManager":13,"./PermalinkArchive":17,"./Seo":20,"./Settings":22,"./Widgets":23,"./config":26}],26:[function(require,module,exports){
-(function(){
-    'use strict';
-    var assetsUrl = '/assets/',
-        appUrl = '/app/',
-        componentsUrl = appUrl + 'Components/',
-        templatesDir = '/front-end/app/templates/';
-
-    var config = {
-        apiUrl : '/api/',
-        prefixUrl : '/admin',
-        templatesDir : templatesDir,
-        imageUploadUrl: '/admin/api/upload/image',
-        imageBasePath: assetsUrl + 'img',
-        validationMessages : templatesDir + 'Components/validationMessages.html',
-        appUrl : appUrl,
-        componentsUrl : componentsUrl,
-        fileTypes : {
-            image : {
-                accept : 'image/*',
-                acceptSelect : 'image/jpg,image/JPG,image/jpeg,image/JPEG,image/PNG,image/png,image/gif,image/GIF'
-            },
-            document : {
-                accept : 'application/pdf,application/doc,application/docx',
-                acceptSelect : 'application/pdf,application/doc,application/docx'
-            },
-            file : {
-                accept : 'application/*',
-                acceptSelect : 'application/*'
-            },
-            audio : {
-                accept : 'audio/*',
-                acceptSelect : 'audio/*'
-            }
-        }
-    };
-
-    angular.module('mcms.core')
-        .constant('FRONTEND_CONFIG',config);
-})();
-},{}]},{},[25]);
+},{"./EditableRegions":5,"./FrontPage":10,"./LayoutManager":13,"./PermalinkArchive":17,"./Seo":20,"./Settings":22,"./Widgets":24,"./config":27}]},{},[28])

@@ -25,6 +25,16 @@
     </md-input-container>
     </div>
 
+    <md-input-container layout  flex-gt-sm>
+        <label>Open in</label>
+        <md-select ng-model="VM.Item.settings.target" flex>
+            <md-option ng-repeat="target in targetOptions" value="{{target.value}}">
+                {{target.label}}
+            </md-option>
+        </md-select>
+    </md-input-container>
+
+    <render-settings items="VM.Parent.settings.child" ng-model="VM.Item.settings"></render-settings>
 
     <md-button ng-click="VM.add()" class="md-button md-raised md-accent" type="submit">
         <md-icon class="material-icons">save</md-icon>

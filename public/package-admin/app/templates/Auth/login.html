@@ -1,6 +1,3 @@
-<div layout="column" layout-align="center">
-
-    </div>
 <section layout="row"  layout-align="center center" class="login" layout-padding>
     <md-card class="md-whiteframe-4dp" flex-xl="100" flex="70" flex-xs="80">
         <md-toolbar>
@@ -12,9 +9,15 @@
             </div>
         </md-toolbar>
         <md-card-content>
-            <div ng-if="ACL.can('create.users')">Can create users</div>
+
+<!--            <div ng-if="ACL.can('create.users')">Can create users</div>
             <div ng-if="ACL.level(2)">Is of level</div>
-            <div ng-if="ACL.role('admin')">Is admin</div>
+            <div ng-if="ACL.role('admin')">Is admin</div>-->
+            <md-toolbar class="md-accent" ng-if="VM.errorMessage" style="margin-bottom: 10px; background-color: #d9534f;">
+                <h2 class="md-toolbar-tools">
+                    <span flex>{{ VM.errorMessage | translate }}</span>
+                </h2>
+            </md-toolbar>
             <form name="login" method="POST"  ng-submit="VM.login()" novalidate>
                 <md-input-container class="md-block">
                     <label for="email">Email</label>

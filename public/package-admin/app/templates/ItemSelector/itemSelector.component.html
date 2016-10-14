@@ -50,7 +50,7 @@
         </md-button>
         <div class="md-list-item-text" layout="column">
             <p>
-              #{{ item.item_id }}  {{ item.item.title[VM.defaultLang] || item.title }}
+                <em>{{ item.type }} <strong>#{{ item.item_id }}</strong></em> {{ item.item.title[VM.defaultLang] || item.title }}
                 <md-button class="md-icon-button md-secondary"
                            ng-click="VM.removeItem(item)"
                            aria-label="delete">

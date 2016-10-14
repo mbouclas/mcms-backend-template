@@ -14,7 +14,7 @@
     <md-content role="navigation">
         <md-list ng-repeat="section in VM.Menu"
                  ng-if="(section.acl.type) ? ACL[section.acl.type](section.acl.permission) : true">
-            <md-list-item
+            <md-list-item ng-class="{'active-light' : section.active}"
                 ng-click="(!section.children.length > 0) ? VM.navigate(section.permalink) : (section.expand = !section.expand)">
                 <md-icon ng-if="section.icon" class="material-icons">{{section.icon}}</md-icon>
                 <p class="md-primary">{{section.title}}</p>
@@ -23,11 +23,11 @@
                          ng-if="section.children.length > 0"
                 >{{section.expand ? 'arrow_drop_up' : 'arrow_drop_down'}}</md-icon>
             </md-list-item>
-            <md-list-item ng-show="section.expand"
+            <md-list-item ng-show="section.expand" ng-class="{active : child.active}"
                           ng-if="(child.acl.type) ? ACL[child.acl.type](child.acl.permission) : true"
                           ng-repeat="child in section.children"
                           ng-click="VM.navigate(child.permalink)">
-                <md-icon ng-if="child.icon" class="material-icons" style="margin-left: 10px;">{{child.icon}}</md-icon>
+                <md-icon ng-if="child.icon" class="material-icons" style="margin-left: 20px;">{{child.icon}}</md-icon>
                 <p class="md-body-2">{{child.title}}</p>
                 <span flex></span>
                 <md-icon>chevron_right</md-icon>
@@ -39,3 +39,4 @@
         Logout
     </md-button>
 </md-sidenav>
+

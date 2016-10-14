@@ -1,6 +1,20 @@
-
 <div ng-repeat="field in VM.Items">
+    <div ng-if="field.type=='number'">
+        <md-input-container class="md-block" flex flex-gt-sm>
+
+            <label>{{ field.label }}</label>
+            <input type="number" ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)">
+        </md-input-container>
+    </div>
+    <div ng-if="field.type=='email'">
+        <md-input-container class="md-block" flex flex-gt-sm>
+
+            <label>{{ field.label }}</label>
+            <input type="email" ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)">
+        </md-input-container>
+    </div>
     <div ng-if="field.type=='text'">
+
     <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
 
         <label>{{ field.label }}</label>
@@ -89,6 +103,7 @@
     <image-component ng-model="VM.models[field.varName]" layout-type="column"
                      name="{{ field.varName }}"
                      on-change="VM.changed(field, value)"
+                     settings="field.settings"
                      options="VM.imageOptions" ></image-component>
     </div>
     <div ng-if="field.type=='file'">
@@ -97,5 +112,22 @@
                      name="{{ field.varName }}"
                      on-change="VM.changed(field, value)"
                      options="VM.fileOptions" ></file-component>
+    </div>
+
+    <div ng-if="field.type == 'date'">
+        <h4>{{ field.label }}</h4>
+        <md-datepicker ng-model="VM.models[field.varName]" md-placeholder="Enter date"
+                       name="{{ field.varName }}"
+                       ng-change="VM.changed(field, value)"
+                       md-open-on-focus></md-datepicker>
+    </div>
+
+    <div ng-if="field.type == 'itemSelector'">
+        <h4>{{ field.label }}</h4>
+<!--        <item-selector items="[]"
+                       connector="VM.Connectors"
+                       on-result="VM.onResult(result)"
+                       options="VM.itemSelectorOptions"
+                       title="Items"></item-selector>-->
     </div>
 </div>

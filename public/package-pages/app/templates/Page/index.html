@@ -43,7 +43,10 @@
                       class="md-3-line">
             <div class="md-list-item-text" layout="column">
                 <h3><strong>#{{ item.id }} {{ item.title[VM.defaultLang] }}</strong></h3>
-                <h4><span ng-repeat="cat in item.categories">
+                <h4>
+                    <label class="label label-success" ng-if="item.active">Active</label>
+                    <label class="label label-error" ng-if="!item.active">Disabled</label>
+                    <span ng-repeat="cat in item.categories">
                     <span ng-bind="cat.title[VM.defaultLang]"></span>
                     <span ng-if="!$last">,</span>
                 </span></h4>
@@ -52,6 +55,7 @@
             <md-divider ng-if="!$last"></md-divider>
         </md-list-item>
     </md-list>
+
     <paginator
             md-limit="VM.Pagination.per_page"
             md-page="VM.Pagination.current_page"
@@ -66,7 +70,16 @@
 <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filters">
 
     <md-toolbar class="md-theme-light">
-        <h1 class="md-toolbar-tools">Filter results</h1>
+        <div class="md-toolbar-tools">
+            <h2 class="md-title" class="md-toolbar-tools">Filter</h2>
+            <div flex></div>
+            <md-button class="md-icon-button" ng-click="VM.resetFilters()">
+                <md-icon class="material-icons">clear</md-icon>
+                <md-tooltip md-direction="top">
+                    Reset filters
+                </md-tooltip>
+            </md-button>
+        </div>
     </md-toolbar>
     <md-content layout-padding="">
         <form method="post" novalidate ng-submit="VM.applyFilters()">

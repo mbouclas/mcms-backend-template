@@ -1,8 +1,14 @@
-
 <md-toolbar class="md-table-toolbar md-default">
     <div class="md-toolbar-tools">
         <h2 class="md-title">{{ VM.Region.name }}</h2>
         <div flex></div>
+        <md-button class="md-fab" aria-label="Save"
+                   ng-click="VM.reOrder()">
+            <md-icon class="material-icons">reorder</md-icon>
+            <md-tooltip md-direction="top">
+                Re-Order
+            </md-tooltip>
+        </md-button>
         <md-button class="md-fab" aria-label="Save"
                    ng-click="VM.save()">
             <md-icon class="material-icons">save</md-icon>
@@ -16,10 +22,13 @@
 <md-card class="md-whitespace-4dp" ng-repeat="region in VM.Region.regions">
     <md-toolbar class="md-table-toolbar md-default">
         <div class="md-toolbar-tools">
-            <h2 class="md-title">{{ region.label }}</h2>
+            <h2 class="md-title">{{ region.label }}
+                <small style="color: red; font-size: 12px;" ng-if="region.maxItemsAllowed == region.items.length">No more items allowed</small>
+            </h2>
             <div flex=""></div>
 
             <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                       ng-disabled="region.maxItemsAllowed == region.items.length"
                        ng-if="region.type != 'class'"
                        ng-click="VM.add(region)">
                 <md-icon class="material-icons">add</md-icon>

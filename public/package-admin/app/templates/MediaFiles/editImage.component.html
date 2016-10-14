@@ -18,6 +18,12 @@
                     name="alt-{{ key }}">
         </md-input-container>
 
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Description</label>
+            <textarea ng-model="VM.Item.description[key]"
+                      name="alt-{{ key }}"></textarea>
+        </md-input-container>
+
     </div>
 
     <md-button type="submit" class="md-accent md-raised">

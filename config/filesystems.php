@@ -65,6 +65,10 @@ return [
             'region' => 'your-region',
             'bucket' => 'your-bucket',
         ],
+                    'media' => [
+                'driver' => 'local',
+                'root' => public_path('media')
+            ],
 
     ],
 

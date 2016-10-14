@@ -1,4 +1,12 @@
 <div flex>
+
+    <md-switch ng-model="VM.User.active" aria-label="Active" ng-if="!VM.showApproved">
+        Status
+    </md-switch>
+
+    <md-switch ng-model="VM.userApproved" aria-label="Active" ng-change="VM.approveUser()" ng-if="VM.showApproved">
+        Approve user <span style="color: red;" ng-if="VM.userApproved">User approved</span>
+    </md-switch>
 <md-input-container class="md-block" flex-gt-sm>
     <label>Name</label>
     <input ng-model="VM.User.firstName" required name="firstName">
