@@ -177,7 +177,6 @@ return [
         // App\Providers\BroadcastServiceProvider::class,
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
-        Spatie\MediaLibrary\MediaLibraryServiceProvider::class,
         \Conner\Tagging\Providers\TaggingServiceProvider::class,
 
         IdeaSeven\Core\CoreServiceProvider::class,

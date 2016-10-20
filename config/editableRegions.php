@@ -5,11 +5,19 @@
             "label" => "Slider",
             "slug" => "slider",
             "type" => "generic",
+            "allow" => [
+                "item"
+            ],
             "items" => [
 
             ],
             "settings" => [
 
+            ],
+            "regionSettings" => [
+                "image" => [
+
+                ]
             ]
         ],
         "banners" => [
