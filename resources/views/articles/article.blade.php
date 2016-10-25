@@ -108,14 +108,17 @@
         </div>
         <div class="related-posts bg z-depth-1">
             <h4 class="h5">Παρόμοια άρθρα</h4>
-
+            @if(count($related) > 0)
+                @foreach (array_chunk($related, 3) as $row)
             <div class="row posts-list">
-                @foreach($related as $item)
+                @foreach($row as $item)
                 <div class="col-xs-12 col-md-4 grid-item">
                     @include('partials.article', ['article' => $item])
                 </div>
                 @endforeach
             </div>
+                @endforeach
+                @endif
         </div><!-- .related-posts -->
     </div>
 

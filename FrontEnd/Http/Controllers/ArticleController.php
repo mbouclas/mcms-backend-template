@@ -45,8 +45,13 @@ class ArticleController extends BaseController
                 $exclude[] = $item->item_id;
             }
         }
+/*        \DB::listen(function ($query) {
+            print_r($query->sql);
+            print_r($query->bindings);
+            // $query->time
+        });*/
+        $filters->request->merge(['category_id'=> $article->categories[0]->id]);
 
-        $request->merge(['category_id'=> $article->categories[0]->id]);
         $relatedGenerated = $pageService->model
             ->filter($filters)
             ->whereNotIn('id', $exclude)
