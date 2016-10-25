@@ -16,11 +16,11 @@
                 <ul>
                     @foreach($featuredBlogPosts as $item)
                         <li>
-                            <a href="{{ route('article', ['slug' => $item->slug]) }}" class="post-img">
+                            <a href="{{ $item->getSlug() }}" class="post-img">
                                 <img class="retina" src="{{ $item->thumb['copies']['thumb']['url'] }}" alt="">
                             </a>
                             <div class="post-content">
-                                <h5 class="post-title"><a href="{{ route('article', ['slug' => $item->slug]) }}">{!! $item->title !!}</a></h5>
+                                <h5 class="post-title"><a href="{{ $item->getSlug() }}">{!! $item->title !!}</a></h5>
                                 <div class="date">{{ $item->published_at->format('d/m/Y') }}</div>
                             </div>
                         </li>
@@ -45,7 +45,7 @@
 
             @foreach($banners as $item)
             <aside class="widget bg z-depth-1 banner">
-                <a href="{{ route('article', ['slug' => $item->slug]) }}" class="banner-link"></a>
+                <a href="{{ $item->getSlug() }}" class="banner-link"></a>
                 <img class="retina banner-img" src="{{ $item->thumb['copies']['big_thumb']['url'] }}" width="270" height="270" alt="{!! $item->title !!}">
 
                 <div class="overlay">
