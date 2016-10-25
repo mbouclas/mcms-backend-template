@@ -20,14 +20,6 @@ return [
                         'default' => true
                     ]
                 ],
-                [
-                    'name' => 'floor_plans',
-                    'title' => 'Floor Plans',
-                    'uploadAs' => 'image',
-                    'settings' => [
-                        'default' => false
-                    ]
-                ]
             ],
             'copies' => [
                 'thumb' => [

@@ -33,11 +33,7 @@
                 </div><!-- .slider-item -->
 
                 @endif
-                @foreach($article->images as $image)
-                    <div class="slider-item">
-                        <img src="{{ $image['copies']['originals']['url'] }}" width="1140" alt="{!! $image->alt !!}">
-                    </div><!-- .slider-item -->
-                @endforeach
+
             </div><!-- .slider -->
         </div>
         @endif
@@ -53,6 +49,18 @@
 
             <div class="post-entry">
             {!! $article->description_long !!}
+
+                <div class="carousel margin">
+                    @foreach($article->images as $image)
+                        <div class="carousel-item">
+                            <img class="owl-lazy" src="{{ $image['copies']['big_thumb']['url'] }}"
+                                 data-src="{{ $image['copies']['big_thumb']['url'] }}"
+                                 data-src-retina="{{ $image['copies']['big_thumb']['url'] }}" width="260" height="260" alt="{!! $image->alt !!}">
+                        </div>
+                    @endforeach
+
+                </div>
+
             </div>
 
             <div class="post-footer">
