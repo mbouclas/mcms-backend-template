@@ -50,6 +50,9 @@
             "label" => "Latest Issue",
             "slug" => "latestIssue",
             "type" => "generic",
+            "allow" => [
+                "item"
+            ],
             "items" => [
 
             ],

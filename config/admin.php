@@ -361,6 +361,18 @@
                 "multiple" => [
                     "type" => "boolean",
                     "default" => TRUE
+                ],
+                "maxItems" => [
+                    "type" => "number",
+                    "default" => NULL
+                ],
+                "minItems" => [
+                    "type" => "number",
+                    "default" => NULL
+                ],
+                "hasFilters" => [
+                    "type" => "boolean",
+                    "default" => TRUE
                 ]
             ]
         ]
