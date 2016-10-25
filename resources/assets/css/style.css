@@ -1299,7 +1299,9 @@ hr {
 .slider {
   height: auto;
   margin-bottom: 3rem;
-  min-height: 370px; }
+  min-height: 370px;
+
+  }
   @media only screen and (max-width: 767px) {
     .slider {
       margin-bottom: 2rem; } }

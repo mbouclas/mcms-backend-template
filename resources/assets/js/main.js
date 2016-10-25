@@ -177,6 +177,16 @@
 			autoplay           : false,
 			autoplayTimeout    : 3500,
 			autoplayHoverPause : true,
+            onInitialized : function () {
+                var maxHeight = 0;
+                $('.owl-item.active').each(function () { // LOOP THROUGH ACTIVE ITEMS
+                    var thisHeight = parseInt( $(this).height() );
+                    maxHeight=(maxHeight>=thisHeight?maxHeight:thisHeight);
+                });
+
+                $('.owl-carousel').css('height', maxHeight );
+                $('.owl-stage-outer').css('height', maxHeight );
+            },
 			autoHeight         : true
 		}).on('resized.owl.carousel', function() {
 			var $this = $(this);
