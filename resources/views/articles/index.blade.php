@@ -23,7 +23,7 @@
     </header>
 
     <div class="row">
-        <div class="col-xs-12 @if(!is_array($category->subcategories))col-lg-9 @else ol-lg-12 @endif posts-list">
+        <div class="col-xs-12 @if(!is_array($category->subcategories))col-lg-9 @else col-lg-12 @endif posts-list">
             <div class="row grid-layout">
                 <!-- Grid size -->
                 <div class="col-xs-12 col-md-6 col-lg-4 grid-sizer"></div>

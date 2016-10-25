@@ -106,11 +106,11 @@
             @include('partials.disqus', ['slug' => $article->slug])
 
         </div>
+        @if(count($related) > 0)
         <div class="related-posts bg z-depth-1">
             <h4 class="h5">Παρόμοια άρθρα</h4>
-            @if(count($related) > 0)
                 @foreach (array_chunk($related, 3) as $row)
-            <div class="row posts-list">
+            <div class="row posts-list" style="margin-bottom: 20px;">
                 @foreach($row as $item)
                 <div class="col-xs-12 col-md-4 grid-item">
                     @include('partials.article', ['article' => $item])
@@ -118,8 +118,9 @@
                 @endforeach
             </div>
                 @endforeach
-                @endif
+
         </div><!-- .related-posts -->
+        @endif
     </div>
 
     @include('components.modal')
