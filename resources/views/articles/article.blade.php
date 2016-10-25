@@ -23,19 +23,10 @@
 
     <div class="container">
     <article class="post post-single page-content bg z-depth-1">
-        @if(isset( $article->thumb['copies']) || (isset($article->images) && count($article->images) > 0))
-        <div class="post-img">
-            <div class="@if(isset( $article->thumb['copies']) && count($article->images) > 0)slider @endif z-depth-1">
-
-                @if(isset( $article->thumb) && isset( $article->thumb['copies']))
-                <div class="slider-item">
-                    <img src="{{ $article->thumb['copies']['originals']['url'] }}" width="1140" >
-                </div><!-- .slider-item -->
-
-                @endif
-
-            </div><!-- .slider -->
-        </div>
+        @if(isset( $article->thumb) && isset( $article->thumb['copies']))
+            <div class="post-img">
+                <img class="retina" src="{{ $article->thumb['copies']['originals']['url'] }}" width="1100" height="700" alt="{!! $article->title !!}">
+            </div>
         @endif
         <div class="post-content">
             <div class="post-header">
