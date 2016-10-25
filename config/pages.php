@@ -4,6 +4,7 @@ return [
     'items' => [
         'slug_pattern' => '/page/%slug$s',
         'previewController' => '\FrontEnd\Http\Controllers\HomeController@preview',
+        'route' => 'article',
         'images' => [
             'savePath' => 'public_path',
             'optimize' => true,
@@ -64,6 +65,7 @@ return [
     ],
     'categories' => [
         'slug_pattern' => '/pages/%slug$s',
+        'route' => 'articles',
         'images' => [
             'keepOriginals' => true,
             'optimize' => true,
