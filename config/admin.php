@@ -341,6 +341,28 @@
                     "required" => FALSE
                 ]
             ]
+        ],
+        [
+            "type" => "itemSelector",
+            "label" => "Item Selector",
+            "params" => [
+                "label" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "toSlug" => "varName",
+                    "multilingual" => TRUE
+                ],
+                "varName" => [
+                    "type" => "text",
+                    "required" => TRUE
+                ]
+            ],
+            "config" => [
+                "multiple" => [
+                    "type" => "boolean",
+                    "default" => TRUE
+                ]
+            ]
         ]
     ]
 ];
