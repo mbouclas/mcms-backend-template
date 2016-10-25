@@ -44,9 +44,15 @@
                 <div class="carousel margin">
                     @foreach($article->images as $image)
                         <div class="carousel-item">
+                            <a href="{{ $image['copies']['originals']['url'] }}" class="gallery-item"
+                               title="{!! $image->title !!}"
+                               data-description="{!! $image->description !!}">
                             <img class="owl-lazy" src="{{ $image['copies']['big_thumb']['url'] }}"
                                  data-src="{{ $image['copies']['big_thumb']['url'] }}"
-                                 data-src-retina="{{ $image['copies']['big_thumb']['url'] }}" width="260" height="260" alt="{!! $image->alt !!}">
+                                 title="{!! $image->title !!}"
+                                 alt="{!! $image->alt !!}"
+                                 data-src-retina="{{ $image['copies']['big_thumb']['url'] }}" width="260" height="260">
+                            </a>
                         </div>
                     @endforeach
 
@@ -112,4 +118,6 @@
             </div>
         </div><!-- .related-posts -->
     </div>
+
+    @include('components.modal')
 @endsection
