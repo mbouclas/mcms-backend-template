@@ -184,7 +184,8 @@ return [
         IdeaSeven\FrontEnd\FrontEndServiceProvider::class,
         IdeaSeven\Pages\PagesServiceProvider::class,
         FrontEnd\CustomServiceProvider::class,
-        FrontEnd\Providers\ViewComposerServiceProvider::class
+        FrontEnd\Providers\ViewComposerServiceProvider::class,
+        \Mcms\Mailchimp\McmsMailchimpServiceProvider::class,
     ],
 
     /*

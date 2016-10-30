@@ -1,7 +1,10 @@
 {
-    "name": "laravel/laravel",
+    "name": "laravel\/laravel",
     "description": "The Laravel Framework.",
-    "keywords": ["framework", "laravel"],
+    "keywords": [
+        "framework",
+        "laravel"
+    ],
     "license": "MIT",
     "type": "project",
     "repositories": [
@@ -12,34 +15,34 @@
     ],
     "require": {
         "php": ">=5.6.4",
-        "laravel/framework": "5.3.*",
+        "laravel\/framework": "5.3.*",
         "idea-seven\/core-package": "dev-master",
         "idea-seven\/package-admin": "dev-master",
         "idea-seven\/package-pages": "dev-master",
         "idea-seven\/front-end": "dev-master",
         "guzzlehttp\/guzzle": "^6.2",
-        "barryvdh/laravel-translation-manager": "dev-master",
-        "mbouclas/mcms-mailchimp": "^1.0"
+        "barryvdh\/laravel-translation-manager": "dev-master",
+        "mbouclas\/mcms-mailchimp": "^1.0"
     },
     "require-dev": {
-        "fzaninotto/faker": "~1.4",
-        "mockery/mockery": "0.9.*",
-        "phpunit/phpunit": "~5.0",
-        "symfony/css-selector": "3.1.*",
-        "symfony/dom-crawler": "3.1.*"
+        "fzaninotto\/faker": "~1.4",
+        "mockery\/mockery": "0.9.*",
+        "phpunit\/phpunit": "~5.0",
+        "symfony\/css-selector": "3.1.*",
+        "symfony\/dom-crawler": "3.1.*"
     },
     "autoload": {
         "classmap": [
             "database"
         ],
         "psr-4": {
-            "App\\": "app/",
+            "App\\": "app\/",
             "FrontEnd\\": "FrontEnd\/"
         }
     },
     "autoload-dev": {
         "classmap": [
-            "tests/TestCase.php"
+            "tests\/TestCase.php"
         ]
     },
     "scripts": {
@@ -59,7 +62,8 @@
             "php artisan core:refreshAssets",
             "php artisan admin:refreshAssets",
             "php artisan frontend:refreshAssets",
-            "php artisan pages:refreshAssets"
+            "php artisan pages:refreshAssets",
+            "php artisan mcmsMailchimp:refreshAssets"
         ]
     },
     "config": {
