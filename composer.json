@@ -18,7 +18,8 @@
         "idea-seven\/package-pages": "dev-master",
         "idea-seven\/front-end": "dev-master",
         "guzzlehttp\/guzzle": "^6.2",
-        "barryvdh/laravel-translation-manager": "dev-master"
+        "barryvdh/laravel-translation-manager": "dev-master",
+        "mbouclas/mcms-mailchimp": "^1.0"
     },
     "require-dev": {
         "fzaninotto/faker": "~1.4",
