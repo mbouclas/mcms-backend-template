@@ -61,7 +61,7 @@ class TinyPngOptimizer extends Command
                         continue;
                     }
 
-                    $file = call_user_func($savePath, $copy['url']);
+                    $file = public_path($copy['url']);
 
                     Tinify::fromFile($file)->toFile($file);
                     if (is_array($newThumb['copies'][$index])) {
