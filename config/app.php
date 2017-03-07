@@ -178,7 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Conner\Tagging\Providers\TaggingServiceProvider::class,
-
+        marvinosswald\LaravelTinify\LaravelTinifyServiceProvider::class,
         Mcms\Core\CoreServiceProvider::class,
         Mcms\Admin\AdminServiceProvider::class,
         Mcms\FrontEnd\FrontEndServiceProvider::class,
@@ -232,7 +232,7 @@ return [
         'URL' => Illuminate\Support\Facades\URL::class,
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
-
+        'Tinify' => marvinosswald\LaravelTinify\Facades\Tinify::class
     ],
 
 ];

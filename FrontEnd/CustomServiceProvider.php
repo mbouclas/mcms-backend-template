@@ -3,6 +3,7 @@
 namespace FrontEnd;
 
 
+use FrontEnd\Console\Commands\TinyPngOptimizer;
 use Mcms\FrontEnd\FrontEndServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -13,7 +14,9 @@ class CustomServiceProvider extends ServiceProvider
 {
     protected $policies = [];
     protected $listeners = [];
-    protected $commands = [];
+    protected $commands = [
+        TinyPngOptimizer::class
+    ];
 
     /**
      * Boot the service provider.
