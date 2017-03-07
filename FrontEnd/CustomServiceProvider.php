@@ -4,6 +4,7 @@ namespace FrontEnd;
 
 
 use FrontEnd\Console\Commands\TinyPngOptimizer;
+use FrontEnd\StartUp\RegisterEvents;
 use Mcms\FrontEnd\FrontEndServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
@@ -28,6 +29,8 @@ class CustomServiceProvider extends ServiceProvider
         if (! $this->app->routesAreCached()) {
             require __DIR__.'/Http/routes.php';
         }
+
+        (new RegisterEvents())->handle($this,$events);
     }
 
     /**

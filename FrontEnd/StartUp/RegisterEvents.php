@@ -10,10 +10,10 @@ class RegisterEvents
 {
     public function handle(ServiceProvider $serviceProvider, DispatcherContract $events)
     {
-/*        $events->listen('image.uploaded', function ($image) {
+/*        $events->listen('image.upload.done', function ($image) {
             //
             print_r($image);
         });*/
-        $events->listen('image.uploaded', TinyPng::class);
+        $events->listen('image.upload.done', TinyPng::class);
     }
 }
