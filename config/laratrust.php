@@ -19,7 +19,7 @@ return [
     | the role if it is in a different namespace.
     |
     */
-    'role' => \IdeaSeven\Core\Models\Role::class,
+    'role' => \Mcms\Core\Models\Role::class,
 
     /*
     |--------------------------------------------------------------------------
@@ -40,7 +40,7 @@ return [
     | Update the permission if it is in a different namespace.
     |
     */
-    'permission' => \IdeaSeven\Core\Models\Permission::class,
+    'permission' => \Mcms\Core\Models\Permission::class,
 
     'permission_user_table' => 'permission_user',
 

@@ -3,9 +3,9 @@
 namespace FrontEnd\Http\Controllers;
 
 use App\Http\Requests;
-use IdeaSeven\FrontEnd\Services\EditableRegions;
+use Mcms\FrontEnd\Services\EditableRegions;
 use Illuminate\Routing\Controller as BaseController;
-use IdeaSeven\Pages\Services\Page\PageService;
+use Mcms\Pages\Services\Page\PageService;
 use Illuminate\Http\Request;
 
 class HomeController extends BaseController

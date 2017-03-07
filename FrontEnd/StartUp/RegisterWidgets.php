@@ -10,7 +10,7 @@ class RegisterWidgets
     {
 /*        Widget::create([
             'name' => 'recentNews',
-            'instance' => \IdeaSeven\Admin\Widgets\RecentNews::class
+            'instance' => \Mcms\Admin\Widgets\RecentNews::class
         ]);*/
 
     }

@@ -13,15 +13,15 @@ Route::get('/tag/{slug}', ['as' => 'tag', 'uses'=> 'FrontEnd\Http\Controllers\Ta
 
 
 // Authentication Routes...
-Route::get('login', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\AuthController@showLoginForm');
-Route::post('login', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\AuthController@login');
-Route::get('logout', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\AuthController@logout');
+Route::get('login', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@showLoginForm');
+Route::post('login', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@login');
+Route::get('logout', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@logout');
 
 // Registration Routes...
-Route::get('register', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\AuthController@showRegistrationForm');
-Route::post('register', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\AuthController@register');
+Route::get('register', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@showRegistrationForm');
+Route::post('register', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@register');
 
 // Password Reset Routes...
-Route::get('password/reset/{token?}', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\PasswordController@showResetForm');
-Route::post('password/email', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\PasswordController@sendResetLinkEmail');
-Route::post('password/reset', 'IdeaSeven\FrontEnd\Http\Controllers\Auth\PasswordController@reset');
+Route::get('password/reset/{token?}', 'Mcms\FrontEnd\Http\Controllers\Auth\PasswordController@showResetForm');
+Route::post('password/email', 'Mcms\FrontEnd\Http\Controllers\Auth\PasswordController@sendResetLinkEmail');
+Route::post('password/reset', 'Mcms\FrontEnd\Http\Controllers\Auth\PasswordController@reset');

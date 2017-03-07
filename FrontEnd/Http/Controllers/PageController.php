@@ -6,12 +6,13 @@ use App;
 use Config;
 use FrontEnd\Helpers\ActiveStates;
 use FrontEnd\Layouts\Related;
-use IdeaSeven\FrontEnd\Services\EditableRegions;
-use IdeaSeven\FrontEnd\Services\LayoutManager;
-use IdeaSeven\Pages\Models\Filters\PageFilters;
-use IdeaSeven\Pages\Models\Page;
-use IdeaSeven\Pages\Models\PageCategory;
-use IdeaSeven\Pages\Services\Page\PageService;
+use Intervention\Image\Image;
+use Mcms\FrontEnd\Services\EditableRegions;
+use Mcms\FrontEnd\Services\LayoutManager;
+use Mcms\Pages\Models\Filters\PageFilters;
+use Mcms\Pages\Models\Page;
+use Mcms\Pages\Models\PageCategory;
+use Mcms\Pages\Services\Page\PageService;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 
@@ -68,6 +69,8 @@ class PageController extends Controller
             $regions = $editableRegions->filter($layout['settings']['editableRegions'])
                 ->get(true);
         }
+
+
 
         return view($view)
             ->with([

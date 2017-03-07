@@ -2,7 +2,7 @@
 
 namespace FrontEnd\Http\Middleware;
 
-use IdeaSeven\FrontEnd\Http\Middleware\VerifyCsrfToken as BaseVerifyCsrfToken;
+use Mcms\FrontEnd\Http\Middleware\VerifyCsrfToken as BaseVerifyCsrfToken;
 
 /**
  * Override/extend default CSRF verification middleware

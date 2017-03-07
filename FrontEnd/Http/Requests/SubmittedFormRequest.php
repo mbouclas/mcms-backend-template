@@ -3,7 +3,7 @@
 namespace FrontEnd\Http\Requests;
 
 use Illuminate\Foundation\Http\FormRequest;
-use IdeaSeven\FrontEnd\Http\Requests\SubmittedFormRequest as BaseSubmittedFormRequest;
+use Mcms\FrontEnd\Http\Requests\SubmittedFormRequest as BaseSubmittedFormRequest;
 
 /**
  * Pass this file to your controller to validate a request before taking any further steps

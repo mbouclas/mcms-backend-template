@@ -67,7 +67,7 @@ return [
     'providers' => [
         'users' => [
             'driver' => 'eloquent',
-            'model' => \IdeaSeven\Core\Models\User::class,
+            'model' => \Mcms\Core\Models\User::class,
         ],
 
         // 'users' => [

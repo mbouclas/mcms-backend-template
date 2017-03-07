@@ -3,7 +3,7 @@
 namespace FrontEnd;
 
 
-use IdeaSeven\FrontEnd\FrontEndServiceProvider;
+use Mcms\FrontEnd\FrontEndServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Routing\Router;

@@ -2,10 +2,10 @@
 
 namespace FrontEnd\EditableRegions;
 
-use IdeaSeven\Pages\Models\Filters\PageFilters;
-use IdeaSeven\Pages\Models\Page;
-use IdeaSeven\Pages\Models\PageCategory;
-use IdeaSeven\Pages\Services\Page\PageService;
+use Mcms\Pages\Models\Filters\PageFilters;
+use Mcms\Pages\Models\Page;
+use Mcms\Pages\Models\PageCategory;
+use Mcms\Pages\Services\Page\PageService;
 use Illuminate\Http\Request;
 
 class LatestBlogPosts

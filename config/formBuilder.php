@@ -1,6 +1,6 @@
 <?php
 return [
-    'configurator' => IdeaSeven\FrontEnd\FormBuilder\BaseFormBuilderConfigurator::class,
+    'configurator' => Mcms\FrontEnd\FormBuilder\BaseFormBuilderConfigurator::class,
     'schema' => [
         'default' => 'admin'
     ],
@@ -8,13 +8,13 @@ return [
         'name' => 'postForm',
         'config' => [
             'as' => 'formBuilder-post',
-            'uses'=> 'IdeaSeven\FrontEnd\Http\Controllers\Admin\FormBuilderController@process'
+            'uses'=> 'Mcms\FrontEnd\Http\Controllers\Admin\FormBuilderController@process'
         ],
         'middleware' => ['web'],
     ],
     'providers' => [
-        \IdeaSeven\FrontEnd\FormBuilder\Providers\Mail::class,
-        \IdeaSeven\FrontEnd\FormBuilder\Providers\Mailchimp::class,
-        \IdeaSeven\FrontEnd\FormBuilder\Providers\DataBase::class,
+        \Mcms\FrontEnd\FormBuilder\Providers\Mail::class,
+        \Mcms\FrontEnd\FormBuilder\Providers\Mailchimp::class,
+        \Mcms\FrontEnd\FormBuilder\Providers\DataBase::class,
     ]
 ];

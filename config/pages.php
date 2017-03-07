@@ -23,16 +23,16 @@ return [
             ],
             'copies' => [
                 'thumb' => [
-                    'width' => 70,
-                    'height' => 70,
+                    'width' => 72,
+                    'height' => 44,
                     'quality' => 100,
                     'prefix' => 't_',
                     'resizeType' => 'fit',
                     'dir' => 'thumbs/',
                 ],
                 'big_thumb' => [
-                    'width' => 170,
-                    'height' => 170,
+                    'width' => 350,
+                    'height' => 213,
                     'quality' => 100,
                     'prefix' => 't_',
                     'suffix' => '@2x',
@@ -40,7 +40,7 @@ return [
                     'dir' => 'thumbs/',
                 ],
                 'main' => [
-                    'width' => 500,
+                    'width' => 820,
                     'height' => 500,
                     'quality' => 100,
                     'prefix' => 'm_',

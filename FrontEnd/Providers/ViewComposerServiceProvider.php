@@ -2,7 +2,7 @@
 
 namespace FrontEnd\Providers;
 
-use IdeaSeven\FrontEnd\Providers\ViewComposerServiceProvider as BaseViewComposerServiceProvider;
+use Mcms\FrontEnd\Providers\ViewComposerServiceProvider as BaseViewComposerServiceProvider;
 
 class ViewComposerServiceProvider extends BaseViewComposerServiceProvider
 {

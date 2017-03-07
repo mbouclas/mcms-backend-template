@@ -11,6 +11,7 @@
 
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
     <link rel="stylesheet" href="{{asset('css/styles.min.css')}}">
+    @yield('og')
 </head>
 
 <body class="dynamic-header">

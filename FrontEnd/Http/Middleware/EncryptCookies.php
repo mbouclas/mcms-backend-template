@@ -2,7 +2,7 @@
 
 namespace FrontEnd\Http\Middleware;
 
-use IdeaSeven\FrontEnd\Http\Middleware\EncryptCookies as BaseEncryptCookies;
+use Mcms\FrontEnd\Http\Middleware\EncryptCookies as BaseEncryptCookies;
 
 /**
  * Override/extend default encrypt cookies middleware

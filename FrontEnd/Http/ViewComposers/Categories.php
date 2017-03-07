@@ -3,7 +3,7 @@
 namespace FrontEnd\Http\ViewComposers;
 
 
-use IdeaSeven\Pages\Models\PageCategory;
+use Mcms\Pages\Models\PageCategory;
 use Illuminate\Contracts\View\View;
 
 class Categories

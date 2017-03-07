@@ -30,7 +30,7 @@
 
                 @foreach($items as $item)
                     <div class="col-xs-12 col-md-6 col-lg-4 grid-item">
-                        @include('partials.article', ['article' => $item])
+                        @include('partials.article', ['article' => $item, 'mode' => 'small'])
                     </div>
                 @endforeach
             </div>

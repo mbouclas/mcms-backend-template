@@ -2,52 +2,10 @@
 
 return [
     'pages' =>  [
-/*        [
-            'varName' => 'label',
-            'label' => 'A label',
-            'type' => 'text',
-            'translatable' => true,
-            'options' => null
-        ],
         [
-            'varName' => 'video',
-            'label' => 'Video file',
-            'type' => 'file',
-            'options' => null
-        ],
-        [
-            'varName' => 'bannerImage',
-            'label' => 'Banner Image',
-            'type' => 'image',
-            'options' => null
-        ],
-        [
-            'varName' => 'alwaysShown',
-            'label' => 'Alway shown?',
+            'varName' => 'subscriptionForm',
+            'label' => 'Show subscription form',
             'type' => 'boolean',
-            'options' => null
-        ],*/
-        [
-            'varName' => 'availableToEveryOne',
-            'label' => 'Who can see this',
-            'type' => 'selectMultiple',
-            'options' => [
-                [
-                    'default' => true,
-                    'label' => 'Everyone',
-                    'value' => ''
-                ],
-                [
-                    'default' => false,
-                    'label' => 'Only me',
-                    'value' => 'me'
-                ],
-                [
-                    'default' => false,
-                    'label' => 'Only god',
-                    'value' => 'god'
-                ],
-            ]
         ],
     ],
     'categories' => [

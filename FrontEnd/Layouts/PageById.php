@@ -4,9 +4,9 @@ namespace FrontEnd\Layouts;
 
 
 
-use IdeaSeven\Pages\Models\Filters\PageFilters;
-use IdeaSeven\Pages\Models\Page;
-use IdeaSeven\Pages\Services\Page\PageService;
+use Mcms\Pages\Models\Filters\PageFilters;
+use Mcms\Pages\Models\Page;
+use Mcms\Pages\Services\Page\PageService;
 use Illuminate\Http\Request;
 use Illuminate\Support\Collection;
 

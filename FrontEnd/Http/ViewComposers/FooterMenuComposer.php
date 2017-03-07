@@ -1,7 +1,7 @@
 <?php
 
 namespace FrontEnd\Http\ViewComposers;
-use IdeaSeven\Core\Services\Menu\MenuService;
+use Mcms\Core\Services\Menu\MenuService;
 use Illuminate\Contracts\View\View;
 use Illuminate\Support\Collection;
 

@@ -14,22 +14,37 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "default" => [
-                    "type" => "text"
+                    "type" => "text",
+                    "label" => "Default value"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "translatable" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Translatable"
                 ]
             ]
         ],
@@ -41,18 +56,31 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
                     "required" => TRUE
                 ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
+                ],
                 "default" => [
-                    "type" => "text"
+                    "type" => "text",
+                    "label" => "Default value"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ]
             ]
         ],
@@ -64,15 +92,28 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ]
             ]
         ],
@@ -84,34 +125,51 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "default" => [
                     "type" => "text",
                     "required" => TRUE,
-                    "value" => 0
+                    "value" => 0,
+                    "label" => "Default value"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "step" => [
                     "type" => "number",
                     "required" => FALSE,
-                    "value" => 1
+                    "value" => 1,
+                    "label" => "Step by"
                 ],
                 "min" => [
                     "type" => "number",
                     "required" => FALSE,
-                    "value" => 0
+                    "value" => 0,
+                    "label" => "Minimum value"
                 ],
                 "max" => [
                     "type" => "number",
-                    "required" => FALSE
+                    "required" => FALSE,
+                    "label" => "Maximum value"
                 ]
             ]
         ],
@@ -123,15 +181,23 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ]
             ]
         ],
@@ -143,15 +209,23 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ]
             ]
         ],
@@ -163,22 +237,37 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "default" => [
-                    "type" => "text"
+                    "type" => "text",
+                    "label" => "Default value"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "translatable" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Translatable"
                 ]
             ]
         ],
@@ -190,17 +279,31 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "default" => [
-                    "type" => "text"
+                    "type" => "text",
+                    "label" => "Default value"
                 ],
                 "required" => [
                     "type" => "boolean",
+                    "label" => "Required field",
                     "value" => FALSE
                 ],
                 "translatable" => [
@@ -217,30 +320,46 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "options" => [
                     "params" => [
                         "default" => [
                             "type" => "boolean",
-                            "unique" => TRUE
+                            "unique" => TRUE,
+                            "label" => "Default value"
                         ],
                         "label" => [
                             "type" => "text",
                             "required" => TRUE,
-                            "multilingual" => TRUE
+                            "multilingual" => TRUE,
+                            "label" => "Label"
                         ],
                         "value" => [
                             "type" => "text",
-                            "required" => TRUE
+                            "required" => TRUE,
+                            "label" => "Value"
                         ]
                     ]
                 ]
@@ -254,31 +373,46 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "placeholder" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Field placeholder"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "options" => [
                     "params" => [
                         "default" => [
                             "type" => "boolean",
-                            "unique" => TRUE
+                            "unique" => TRUE,
+                            "label" => "Default value"
                         ],
                         "label" => [
                             "type" => "text",
                             "required" => TRUE,
-                            "multilingual" => TRUE
+                            "multilingual" => TRUE,
+                            "label" => "Label"
                         ],
                         "value" => [
                             "type" => "text",
                             "required" => TRUE,
-                            "multilingual" => TRUE
+                            "label" => "Value"
                         ]
                     ]
                 ]
@@ -290,21 +424,30 @@
             "params" => [
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
                 ],
                 "label" => [
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "translatable" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Translatable"
                 ]
             ]
         ],
@@ -316,29 +459,40 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
+                ],
+                "description" => [
+                    "type" => "text",
+                    "required" => TRUE,
+                    "label" => "Description"
                 ],
                 "required" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Required?"
                 ],
                 "translatable" => [
                     "type" => "boolean",
-                    "value" => FALSE
+                    "value" => FALSE,
+                    "label" => "Translatable"
                 ]
             ],
             "settings" => [
                 "width" => [
                     "type" => "number",
-                    "required" => FALSE
+                    "required" => FALSE,
+                    "label" => "Image width"
                 ],
                 "height" => [
                     "type" => "number",
-                    "required" => FALSE
+                    "required" => FALSE,
+                    "label" => "Image height"
                 ]
             ]
         ],
@@ -350,29 +504,35 @@
                     "type" => "text",
                     "required" => TRUE,
                     "toSlug" => "varName",
-                    "multilingual" => TRUE
+                    "multilingual" => TRUE,
+                    "label" => "Label"
                 ],
                 "varName" => [
                     "type" => "text",
-                    "required" => TRUE
+                    "required" => TRUE,
+                    "label" => "Field name (no spaces)"
                 ]
             ],
             "config" => [
                 "multiple" => [
                     "type" => "boolean",
-                    "default" => TRUE
+                    "default" => TRUE,
+                    "label" => "Allow multiple items"
                 ],
                 "maxItems" => [
                     "type" => "number",
-                    "default" => NULL
+                    "default" => NULL,
+                    "label" => "Max number of items"
                 ],
                 "minItems" => [
                     "type" => "number",
-                    "default" => NULL
+                    "default" => NULL,
+                    "label" => "Min number of items"
                 ],
                 "hasFilters" => [
                     "type" => "boolean",
-                    "default" => TRUE
+                    "default" => TRUE,
+                    "label" => "Allow filters"
                 ]
             ]
         ]

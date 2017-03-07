@@ -2,7 +2,7 @@
 
 namespace FrontEnd\Services;
 use Carbon\Carbon;
-use IdeaSeven\Pages\Models\Page;
+use Mcms\Pages\Models\Page;
 use Illuminate\Support\Facades\Cache;
 
 class SiteMap

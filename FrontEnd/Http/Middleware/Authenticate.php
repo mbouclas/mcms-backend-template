@@ -2,7 +2,7 @@
 
 namespace FrontEnd\Http\Middleware;
 
-use IdeaSeven\FrontEnd\Http\Middleware\Authenticate as BaseAuthenticate;
+use Mcms\FrontEnd\Http\Middleware\Authenticate as BaseAuthenticate;
 
 /**
  * Override/extend default authentication middleware

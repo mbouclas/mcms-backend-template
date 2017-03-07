@@ -5,7 +5,7 @@ namespace FrontEnd\Http\Controllers;
 
 use Config;
 use Conner\Tagging\Model\Tag;
-use IdeaSeven\Pages\Models\Page;
+use Mcms\Pages\Models\Page;
 use Illuminate\Routing\Controller;
 
 class TagController extends Controller

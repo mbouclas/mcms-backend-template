@@ -16,16 +16,41 @@
         {!! $article->settings['seo'][App::getLocale()]['keywords'] !!}
     @endif
 @endsection
+@section('og')
+<meta property="og:url"  content="{{ Request::url() }}" />
+<meta property="og:type" content="article" />
+<meta property="og:title" content="{!! $article->title !!}" />
+<meta property="og:description" content="{!! $article->description !!}" />
+<meta property="og:locale" content="{{ LaravelLocalization::getCurrentLocaleRegional() }}" />
+@if(isset($article->thumb['copies']['originals']['url']))
+<meta property="og:image"  content="{{ url($article->thumb['copies']['originals']['url']) }}" />
+<meta property="og:image:width"  content="{{ $article->img['width'] }}" />
+<meta property="og:image:height"  content="{{ $article->img['height'] }}" />
+<meta property="og:image:type"  content="{{ $article->img['type'] }}" />
+@endif
+@endsection
 @section('content')
-    <header class="page-header">
-        <h1>{!! $article->title !!}</h1>
+    <div itemscope itemtype="http://schema.org/NewsArticle">
+        <meta itemscope itemprop="mainEntityOfPage"
+              itemType="https://schema.org/WebPage"
+              itemid="{{ Request::url() }}"/>
+        <meta itemprop="datePublished" content="{{ $article->published_at->format('Y-m-d\TH:i:sP') }}"/>
+        <meta itemprop="dateModified" content="{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}"/>
+
+        <header class="page-header">
+        <h1 itemprop="headline">{!! $article->title !!}</h1>
     </header>
 
     <div class="container">
     <article class="post post-single page-content bg z-depth-1">
         @if(isset( $article->thumb) && isset( $article->thumb['copies']))
-            <div class="post-img">
-                <img class="retina" src="{{ $article->thumb['copies']['originals']['url'] }}" width="1100" height="700" alt="{!! $article->title !!}">
+            <div class="post-img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
+                <img class="retina" src="{{ $article->thumb['copies']['originals']['url'] }}"
+                     width="100%"
+                     alt="{!! $article->title !!}">
+                <meta itemprop="url" content="{{ url($article->thumb['copies']['originals']['url']) }}">
+                <meta itemprop="width" content="{{ $article->img['width'] }}">
+                <meta itemprop="height" content="{{ $article->img['height'] }}">
             </div>
         @endif
         <div class="post-content">
@@ -35,10 +60,13 @@
                         <a href="{{ route('articles', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
                     @endforeach
                 </div>
-                <div class="date">{{ $article->created_at->format('d/m/Y') }}</div>
+                <div class="date">{{ $article->published_at->format('d/m/Y') }}</div>
+                <p class="date" itemprop="author" itemscope itemtype="https://schema.org/Person">
+                    <span itemprop="name">{{ isset($article->user->profile['alias']) ? $article->user->profile['alias'] : "{$article->user->firstName} {$article->user->lastName}" }}</span>
+                </p>
             </div>
 
-            <div class="post-entry">
+            <div class="post-entry" itemprop="articleBody">
             {!! $article->description_long !!}
 
                 <div class="carousel margin">
@@ -122,6 +150,16 @@
         </div><!-- .related-posts -->
         @endif
     </div>
+        <div itemprop="publisher" itemscope itemtype="https://schema.org/Organization">
+            <div itemprop="logo" itemscope itemtype="https://schema.org/ImageObject">
+                <meta itemprop="url" content="{{ asset('images/logo.png') }}">
+                <meta itemprop="width" content="236">
+                <meta itemprop="height" content="60">
+            </div>
+            <meta itemprop="name" content="{{ Config::get('core.siteName') }}">
+        </div>
 
+
+    </div>
     @include('components.modal')
 @endsection

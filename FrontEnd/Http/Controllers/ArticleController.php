@@ -2,14 +2,14 @@
 
 namespace FrontEnd\Http\Controllers;
 
-use App\Http\Requests;
 use Config;
-use IdeaSeven\Pages\Models\Filters\PageFilters;
-use IdeaSeven\Pages\Models\Page;
-use IdeaSeven\Pages\Models\PageCategory;
-use IdeaSeven\Pages\Services\PageCategory\PageCategoryService;
+use Intervention\Image\Image;
+use Mcms\Core\Services\Image\Resize;
+use Mcms\Pages\Models\Filters\PageFilters;
+use Mcms\Pages\Models\Page;
+use Mcms\Pages\Models\PageCategory;
 use Illuminate\Routing\Controller as BaseController;
-use IdeaSeven\Pages\Services\Page\PageService;
+use Mcms\Pages\Services\Page\PageService;
 use Illuminate\Http\Request;
 
 class ArticleController extends BaseController
@@ -31,7 +31,12 @@ class ArticleController extends BaseController
      */
     public function index(PageService $pageService, Page $page, $slug, PageFilters $filters, Request $request)
     {
-        $article = $pageService->model->with(['categories','images', 'related.item'])->where('slug', $slug)->first();
+        $article = $pageService->model->with([
+            'categories',
+            'images',
+            'related.item',
+            'user'
+        ])->where('slug', $slug)->first();
 
         if ( ! $article){
             //redirect 404
@@ -62,6 +67,16 @@ class ArticleController extends BaseController
             foreach ($relatedGenerated as $item){
                 $related[] = $item;
             }
+        }
+
+        if (isset( $article->thumb) && isset( $article->thumb['copies'])){
+            $resizer = new Resize();
+            $image = $resizer->image->make(public_path($article->thumb['copies']['originals']['url']));
+            $article->img = [
+                'width' => $image->width(),
+                'height' => $image->height(),
+                'type' => $image->mime()
+            ];
         }
 
         return view('articles.article')

@@ -2,7 +2,7 @@
 
 namespace FrontEnd\Http\Middleware;
 
-use IdeaSeven\FrontEnd\Http\Middleware\RedirectIfAuthenticated as BaseRedirectIfAuthenticated;
+use Mcms\FrontEnd\Http\Middleware\RedirectIfAuthenticated as BaseRedirectIfAuthenticated;
 
 /**
  * Override/extend default redirect if authenticated behavior

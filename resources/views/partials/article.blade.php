@@ -1,7 +1,13 @@
 <article class="post bg z-depth-1">
     <div class="post-img">
         <a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">
-            <img class="retina" src="{{ $article->thumb['copies']['main']['url'] }}" width="820" height="500" alt="{!!  $article->title !!}">
+            <img class="retina"
+                 @if(isset($mode) && $mode == 'small')
+                 src="{{ $article->thumb['copies']['big_thumb']['url'] }}"
+                 @else
+                 src="{{ $article->thumb['copies']['main']['url'] }}" width="820" height="500"
+                 @endif
+                  alt="{!!  $article->title !!}">
         </a>
     </div>
 
@@ -9,7 +15,7 @@
         <div class="post-header center-align">
             <div class="tags">
                 @foreach($article->categories as $category)
-                    <a href="{{ route('articles', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
+                    <a href="{{ route('articles', ['slug' => $category->slug]) }}">{!! $category->title !!}</a>
                 @endforeach
             </div>
             <h2 class="post-title"><a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">{!!  $article->title !!}</a></h2>

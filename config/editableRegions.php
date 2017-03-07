@@ -24,11 +24,19 @@
             "label" => "Sponsored Posts",
             "slug" => "banners",
             "type" => "generic",
+            "allow" => [
+                "item"
+            ],
             "items" => [
 
             ],
             "settings" => [
 
+            ],
+            "regionSettings" => [
+                "image" => [
+
+                ]
             ]
         ],
         "featuredBlogPosts" => [
