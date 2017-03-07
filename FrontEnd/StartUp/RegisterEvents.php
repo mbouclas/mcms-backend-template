@@ -2,7 +2,7 @@
 
 namespace FrontEnd\StartUp;
 
-
+use FrontEnd\Listeners\TinyPng;
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 
@@ -14,5 +14,6 @@ class RegisterEvents
             //
             print_r($image);
         });*/
+        $events->listen('image.uploaded', TinyPng::class);
     }
 }
