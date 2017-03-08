@@ -1,5 +1,5 @@
 module.exports = [
-    'fonts.css',
+    // 'fonts.css',
     'bootstrap.min.css',
     'materialize.css',
     'font-awesome.min.css',
