@@ -17,6 +17,7 @@
     @endif
 @endsection
 @section('og')
+<meta property="fb:app_id" content="{{ getenv('FB_APP_ID') }}" />
 <meta property="og:url"  content="{{ Request::url() }}" />
 <meta property="og:type" content="article" />
 <meta property="og:title" content="{!! $article->title !!}" />

@@ -178,7 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Conner\Tagging\Providers\TaggingServiceProvider::class,
-
+        Alfheim\CriticalCss\CriticalCssServiceProvider::class,
         Mcms\Core\CoreServiceProvider::class,
         Mcms\Admin\AdminServiceProvider::class,
         Mcms\FrontEnd\FrontEndServiceProvider::class,

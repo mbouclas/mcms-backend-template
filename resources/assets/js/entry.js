@@ -1,4 +1,5 @@
 module.exports = [
+    'loadcss',
     'jquery-2.2.4.min.js',
     'materialize.min.js',
     'owl.carousel.min.js',

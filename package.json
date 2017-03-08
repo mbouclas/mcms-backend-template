@@ -1,14 +1,15 @@
 {
   "private": true,
   "scripts": {
-    "watch-admin" : "cd ../package-admin && npm run dev",
-    "watch-pages" : "cd ../package-pages && npm run dev",
-    "watch-frontend" : "cd ../frontend && npm run dev",
-    "watch" : "concurrently \"npm run watch-admin\" \"npm run watch-pages\" \"npm run watch-frontend\""
+    "watch-admin": "cd ../package-admin && npm run dev",
+    "watch-pages": "cd ../package-pages && npm run dev",
+    "watch-frontend": "cd ../frontend && npm run dev",
+    "watch": "concurrently \"npm run watch-admin\" \"npm run watch-pages\" \"npm run watch-frontend\""
   },
   "devDependencies": {
     "browserify": "^13.0.0",
     "browserify-shim": "^3.8.12",
+    "critical": "^0.8.4",
     "fs-extra": "^0.30.0",
     "gulp": "^3.9.1",
     "gulp-angular-templatecache": "^1.8.0",
@@ -33,6 +34,7 @@
     "jshint": "^2.9.2",
     "jshint-stylish": "^2.2.0",
     "laravel-elixir": "^5.0.0",
+    "loadcss": "0.0.2",
     "lodash": "^4.13.1",
     "vinyl-buffer": "^1.0.0",
     "vinyl-source-stream": "^1.1.0",
