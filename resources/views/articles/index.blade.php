@@ -17,6 +17,9 @@
     @endif
 @endsection
 @section('main-class') @if(!is_array($category->subcategories)) left-sidebar @else home-page @endif @endsection
+@section('critical-css')
+    @criticalCss('/pages/events')
+@endsection
 @section('content')
     <header class="page-header">
         <h1><span class="grey-text">Galastyle</span> {!! $category->title !!}</h1>

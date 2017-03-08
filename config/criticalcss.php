@@ -32,8 +32,8 @@ return [
 
     'routes' => [
          '/',               // In Blade: `@criticalCss('static/route')`
-         '/pages/events',               // In Blade: `@criticalCss('static/route')`
-        // 'users/profile' => 'users/1', // In Blade: `@criticalCss('users/profile')`
+         '/pages/events',               // In Blade: `@criticalCss('/pages/events')`
+         '/page/hlios-vs-derma',               // In Blade: `@criticalCss('static/route')`
     ],
 
     /*

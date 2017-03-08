@@ -16,6 +16,9 @@
         {!! $article->settings['seo'][App::getLocale()]['keywords'] !!}
     @endif
 @endsection
+@section('critical-css')
+    @criticalCss('/page/hlios-vs-derma')
+@endsection
 @section('og')
 <meta property="fb:app_id" content="{{ getenv('FB_APP_ID') }}" />
 <meta property="og:url"  content="{{ Request::url() }}" />

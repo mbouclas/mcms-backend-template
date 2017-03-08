@@ -1,5 +1,7 @@
 @extends('layouts.app')
-
+@section('critical-css')
+    @criticalCss('/')
+@endsection
 @section('content')
     @include('components.slider', ['Items' => $sliderItems])
     <div class="row">
