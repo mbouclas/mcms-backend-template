@@ -3,7 +3,7 @@
     @criticalCss('/')
 @endsection
 @section('content')
-    @include('components.slider', ['Items' => $sliderItems])
+{{--    @include('components.slider', ['Items' => $sliderItems])--}}
     <div class="row">
         <div class="col-xs-12 col-lg-9 posts-list">
             @foreach($latestArticles as $article)
