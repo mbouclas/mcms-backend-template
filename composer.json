@@ -63,7 +63,8 @@
             "php artisan admin:refreshAssets",
             "php artisan frontend:refreshAssets",
             "php artisan pages:refreshAssets",
-            "php artisan mcmsMailchimp:refreshAssets"
+            "php artisan mcmsMailchimp:refreshAssets",
+            "php artisan criticalcss:make"
         ]
     },
     "config": {
