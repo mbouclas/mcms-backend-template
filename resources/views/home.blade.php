@@ -3,13 +3,12 @@
     @criticalCss('/')
 @endsection
 @section('content')
-{{--    @include('components.slider', ['Items' => $sliderItems])--}}
+    @include('components.slider', ['Items' => $sliderItems])
     <div class="row">
         <div class="col-xs-12 col-lg-9 posts-list">
-            @include('partials.article', ['article' => $latestArticles[0]])
-{{--            @foreach($latestArticles as $article)
+            @foreach($latestArticles as $article)
             @include('partials.article', ['article' => $article])
-            @endforeach--}}
+            @endforeach
         </div><!-- END LEFT -->
 
         <div class="col-xs-12 col-lg-3 sidebar">
