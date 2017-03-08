@@ -22,8 +22,7 @@
         "mcms\/front-end": "0.*",
         "guzzlehttp\/guzzle": "^6.2",
         "barryvdh\/laravel-translation-manager": "dev-master",
-        "mbouclas\/mcms-mailchimp": "^1.0",
-        "marvinosswald/laravel-tinify": "~1.0"
+        "mbouclas\/mcms-mailchimp": "^1.0"
     },
     "require-dev": {
         "fzaninotto\/faker": "~1.4",

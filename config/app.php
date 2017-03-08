@@ -178,7 +178,7 @@ return [
         App\Providers\EventServiceProvider::class,
         App\Providers\RouteServiceProvider::class,
         \Conner\Tagging\Providers\TaggingServiceProvider::class,
-        marvinosswald\LaravelTinify\LaravelTinifyServiceProvider::class,
+
         Mcms\Core\CoreServiceProvider::class,
         Mcms\Admin\AdminServiceProvider::class,
         Mcms\FrontEnd\FrontEndServiceProvider::class,

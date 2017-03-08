@@ -3,6 +3,7 @@
 namespace FrontEnd;
 
 
+use FrontEnd\Console\Commands\ImageOptimizer;
 use FrontEnd\Console\Commands\TinyPngOptimizer;
 use FrontEnd\StartUp\RegisterEvents;
 use Mcms\FrontEnd\FrontEndServiceProvider;
@@ -16,7 +17,7 @@ class CustomServiceProvider extends ServiceProvider
     protected $policies = [];
     protected $listeners = [];
     protected $commands = [
-        TinyPngOptimizer::class
+        ImageOptimizer::class
     ];
 
     /**

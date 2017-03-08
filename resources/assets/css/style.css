@@ -1363,7 +1363,7 @@ hr {
           margin-bottom: 0; }
         .slider .caption-wrap .caption .tags,
         .slider .caption-wrap .caption .btn {
-          display: none; } }
+          } }
   .slider .owl-controls .owl-dots {
     bottom: 20px;
     left: 0;
