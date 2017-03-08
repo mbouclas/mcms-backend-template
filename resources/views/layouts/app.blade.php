@@ -27,6 +27,15 @@
 
 <div class="page-box">
     @include('partials.header')
+    <div>
+        <h1>This is a wonderfull site</h1>
+        <h2>Another header</h2>
+        <p>just a random sentence</p>
+        <p>just a random sentence</p>
+        <p>just a random sentence</p>
+        <p>just a random sentence</p>
+        <p>just a random sentence</p>
+    </div>
     <main id="main" class="@yield('main-class', 'home-page')">
         <div class="container">
             @yield('content')
