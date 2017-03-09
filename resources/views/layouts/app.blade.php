@@ -36,7 +36,7 @@
     @include('partials.footer')
 </div>
 @yield('script')
-<script src="{{ elixir('js/all.js') }}"></script>
-<script src="{{ elixir('js/app.js') }}"></script>
+<script src="{{ elixir('js/all.js') }}" async></script>
+<script src="{{ elixir('js/app.js') }}" async></script>
 </body>
 </html>
