@@ -14,9 +14,9 @@
     @yield('critical-css')
     <script>
         !function(a){"use strict";var b=function(b,c,d){var g,e=a.document,f=e.createElement("link");if(c)g=c;else{var h=(e.body||e.getElementsByTagName("head")[0]).childNodes;g=h[h.length-1]}var i=e.styleSheets;f.rel="stylesheet",f.href=b,f.media="only x",g.parentNode.insertBefore(f,c?g:g.nextSibling);var j=function(a){for(var b=f.href,c=i.length;c--;)if(i[c].href===b)return a();setTimeout(function(){j(a)})};return f.onloadcssdefined=j,j(function(){f.media=d||"all"}),f};"undefined"!=typeof module?module.exports=b:a.loadCSS=b}("undefined"!=typeof global?global:this);
-        loadCSS('https://fonts.googleapis.com/css?family=Roboto')
-        loadCSS('https://fonts.googleapis.com/icon?family=Material+Icons')
-        loadCSS('{{ elixir('css/styles.min.css') }}');
+        loadCSS('https://fonts.googleapis.com/css?family=Roboto');
+        loadCSS('https://fonts.googleapis.com/icon?family=Material+Icons');
+        loadCSS('{{ elixir('css/all.css') }}');
     </script>
     {{--<link rel="stylesheet" href="{{asset('css/styles.min.css')}}">--}}
     @yield('og')
@@ -25,7 +25,7 @@
 <body class="dynamic-header">
 {{--<div class="preloader"><div class="loader"></div></div>--}}
 
-<div class="page-box">
+<div class="page-box" id="app">
     @include('partials.header')
 
     <main id="main" class="@yield('main-class', 'home-page')">
@@ -35,6 +35,8 @@
     </main>
     @include('partials.footer')
 </div>
-<script src="{{asset('js/scripts.min.js')}}" async></script>
+@yield('script')
+<script src="{{ elixir('js/all.js') }}"></script>
+<script src="{{ elixir('js/app.js') }}"></script>
 </body>
 </html>

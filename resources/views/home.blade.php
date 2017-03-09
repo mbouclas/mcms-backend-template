@@ -1,5 +1,6 @@
 @extends('layouts.app')
 @section('critical-css')
+    @criticalCss('/')
 @endsection
 @section('content')
     @include('components.slider', ['Items' => $sliderItems])
@@ -32,14 +33,7 @@
             <aside class="widget bg z-depth-1">
                 <h4 class="widget-title">Subscribe</h4>
 
-                <form class="not-bottom-margin subscribe">
-                    <div class="input-field">
-                        <input id="email" type="email" name="subscribe">
-                        <label for="email">Your email address</label>
-                        <span class="form-message"></span>
-                    </div>
-                    <button class="btn btn-block waves-effect waves-light">Subscribe</button>
-                </form>
+                @Form('subscribe-to-newsletter')
             </aside><!-- .subscribe -->
 
 

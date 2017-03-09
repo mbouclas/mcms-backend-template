@@ -17,7 +17,7 @@
     @endif
 @endsection
 @section('critical-css')
-    @criticalCss('/page/hlios-vs-derma')
+    @criticalCss('page/hlios-vs-derma')
 @endsection
 @section('og')
 <meta property="fb:app_id" content="{{ getenv('FB_APP_ID') }}" />
@@ -34,6 +34,7 @@
 @endif
 @endsection
 @section('content')
+
     <div itemscope itemtype="http://schema.org/NewsArticle">
         <meta itemscope itemprop="mainEntityOfPage"
               itemType="https://schema.org/WebPage"
@@ -72,7 +73,9 @@
 
             <div class="post-entry" itemprop="articleBody">
             {!! $article->description_long !!}
-
+                @if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm'])
+                @Form('subscribe-to-newsletter')
+                @endif
                 <div class="carousel margin">
                     @foreach($article->images as $image)
                         <div class="carousel-item">

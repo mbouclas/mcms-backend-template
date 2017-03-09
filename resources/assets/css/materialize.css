@@ -4854,7 +4854,7 @@ small {
       margin-right: 20px;
       -webkit-transition: color .3s ease;
       transition: color .3s ease;
-      text-transform: uppercase; }
+       }
       .card .card-action a:not(.btn):not(.btn-large):not(.btn-large):not(.btn-floating):hover {
         color: #ffd8a6; }
   .card .card-reveal {
@@ -4960,7 +4960,7 @@ small {
     height: 48px;
     padding: 0;
     margin: 0;
-    text-transform: uppercase;
+    
     text-overflow: ellipsis;
     overflow: hidden;
     letter-spacing: .8px;
@@ -5028,7 +5028,7 @@ small {
   line-height: 42px;
   outline: 0;
   padding: 0 2rem;
-  text-transform: uppercase;
+  
   vertical-align: middle;
   -webkit-tap-highlight-color: transparent; }
 
@@ -7412,7 +7412,7 @@ select {
   margin-bottom: 15px; }
 
 .picker__month-display {
-  text-transform: uppercase;
+  
   font-size: 2rem; }
 
 .picker__day-display {
@@ -7568,7 +7568,7 @@ button.picker__today:focus, button.picker__clear:focus, button.picker__close:foc
   font-weight: 500;
   font-size: .67em;
   text-align: center;
-  text-transform: uppercase;
+  
   color: #666; }
 
 .picker--time .picker__button--clear:hover,

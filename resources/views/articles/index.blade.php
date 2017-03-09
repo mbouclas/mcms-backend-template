@@ -18,7 +18,7 @@
 @endsection
 @section('main-class') @if(!is_array($category->subcategories)) left-sidebar @else home-page @endif @endsection
 @section('critical-css')
-    @criticalCss('/pages/events')
+    @criticalCss('pages/events')
 @endsection
 @section('content')
     <header class="page-header">
