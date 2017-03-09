@@ -33,7 +33,7 @@
             <aside class="widget bg z-depth-1">
                 <h4 class="widget-title">Subscribe</h4>
 
-                @Form('subscribe-to-newsletter')
+                @Form('subscribeToNewsletter')
             </aside><!-- .subscribe -->
 
 
