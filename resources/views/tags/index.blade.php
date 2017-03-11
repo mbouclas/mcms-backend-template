@@ -1,4 +1,7 @@
 @extends('layouts.app')
+@section('critical-css')
+    @criticalCss('pages/events')
+@endsection
 @section('content')
     <header class="page-header">
         <h1>Αρθρα για {!! $tag->name !!}</h1>

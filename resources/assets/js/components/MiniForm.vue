@@ -1,9 +1,10 @@
 <template>
     <div>
         <div class="alert alert-success" v-if="success">{{ $t('labels.success') }}</div>
+        <div class="alert alert-info" v-if="submitting">{{ $t('labels.submitting') }}</div>
 
         <form id="miniForm" name="miniForm" method="post" novalidate="novalidate"
-              v-if="!success"
+              v-if="!success && !submitting"
               v-on:submit.prevent="onSubmit">
             <div class="input-field" v-for="field in Form.fields">
                 <input type="email"
@@ -48,7 +49,7 @@
                         v-if="field.type !== 'select'">{{ field.label[locale] }}</label>
             </div>
             <button type="submit" id="submit"
-                    :disabled="$v.$invalid"
+                    :disabled="$v.$invalid || submitting"
                     class="btn btn--wd wave waves-effect">{{ $t('labels.submit') }}
             </button>
 
@@ -69,6 +70,7 @@
         data () {
             return {
                 success : false,
+                submitting : false,
                 locale: Vue.config.lang,
             };
         },
@@ -83,11 +85,12 @@
                 if (this.$v.$invalid) {
                     return;
                 }
-
+                this.submitting = true;
                 Form.post(this.formData)
                     .then((response) => {
                         if (response.success) {
                             this.success = true;
+                            this.submitting = false;
                             this.formData = {};
                         }
                     });
