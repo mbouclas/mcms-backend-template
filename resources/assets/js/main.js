@@ -1,3 +1,4 @@
+
 (function($) {
 	'use strict';
 	var isTouchDevice = navigator.userAgent.match(/(iPhone|iPod|iPad|Android|BlackBerry|Windows Phone)/);
