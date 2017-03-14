@@ -179,7 +179,7 @@ return [
         App\Providers\RouteServiceProvider::class,
         \Conner\Tagging\Providers\TaggingServiceProvider::class,
         Alfheim\CriticalCss\CriticalCssServiceProvider::class,
-        \Torann\GeoIP\GeoIPServiceProvider::class,
+
         Mcms\Core\CoreServiceProvider::class,
         Mcms\Admin\AdminServiceProvider::class,
         Mcms\FrontEnd\FrontEndServiceProvider::class,
@@ -234,7 +234,6 @@ return [
         'Validator' => Illuminate\Support\Facades\Validator::class,
         'View' => Illuminate\Support\Facades\View::class,
         'Tinify' => marvinosswald\LaravelTinify\Facades\Tinify::class,
-        'GeoIP' => \Torann\GeoIP\Facades\GeoIP::class,
     ],
 
 ];

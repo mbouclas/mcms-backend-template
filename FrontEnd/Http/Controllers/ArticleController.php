@@ -103,11 +103,14 @@ class ArticleController extends BaseController
             $categories = array_merge($categories, $category->descendants->pluck('id')->toArray());
         }
 
-        $request->merge(['category_id'=> implode(',', $categories)]);
+        $request->merge([
+            'category_id'=> implode(',', $categories),
+            'orderBy' => 'published_at'
+        ]);
 
         $articles = $page->with(['categories'])
             ->where('active', true)
-            ->orderBy('published_at', 'DESC')
+//            ->orderBy('published_at', 'DESC')
             ->filter($filters)
             ->paginate(Config::get('pages.items.per_page'));
 

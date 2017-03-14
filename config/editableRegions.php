@@ -52,6 +52,11 @@
             ],
             "settings" => [
 
+            ],
+            "regionSettings" => [
+                "image" => [
+
+                ]
             ]
         ],
         "latestIssue" => [
@@ -66,6 +71,11 @@
             ],
             "settings" => [
 
+            ],
+            "regionSettings" => [
+                "image" => [
+
+                ]
             ]
         ],
         "latestBlogPosts" => [
