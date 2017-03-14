@@ -19,7 +19,7 @@
                 @endforeach
             </div>
             <h2 class="post-title"><a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">{!!  $article->title !!}</a></h2>
-            <div class="date">{{ $article->created_at->format('d/m/Y') }}</div>
+            <div class="date">{{ $article->published_at->format('d/m/Y') }}</div>
         </div>
 
         <div class="post-entry">
