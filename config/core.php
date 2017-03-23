@@ -12,6 +12,7 @@
         ]
     ],
     "images" => [
+        "savePath" => 'public_path',
         "driver" => "gd",
         "keepOriginals" => TRUE,
         "dirPattern" => "uploads",
