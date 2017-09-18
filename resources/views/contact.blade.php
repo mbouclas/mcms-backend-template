@@ -3,7 +3,9 @@
 @section('meta-title')
 Contact us
 @endsection
-
+@section('critical-css')
+    @criticalCss('contact')
+@endsection
 @section('content')
     <header class="page-header">
         <h1>Επικοινωνία</h1>

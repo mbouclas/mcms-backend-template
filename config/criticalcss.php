@@ -33,7 +33,8 @@ return [
     'routes' => [
          '/',               // In Blade: `@criticalCss('static/route')`
          'pages/events',
-         'page/hlios-vs-derma',
+         'page/istoria-toy-arsorama',
+         'contact',
     ],
 
     /*

@@ -59,6 +59,7 @@ class ArticleController extends BaseController
 
         $relatedGenerated = $pageService->model
             ->filter($filters)
+            ->where('active', true)
             ->whereNotIn('id', $exclude)
             ->take(5)
             ->get();

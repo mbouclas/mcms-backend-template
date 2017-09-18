@@ -17,7 +17,7 @@
     @endif
 @endsection
 @section('critical-css')
-    @criticalCss('page/hlios-vs-derma')
+    @criticalCss('page/istoria-toy-arsorama')
 @endsection
 @section('og')
 <meta property="fb:app_id" content="{{ getenv('FB_APP_ID') }}" />
@@ -26,7 +26,7 @@
 <meta property="og:title" content="{!! $article->title !!}" />
 <meta property="og:description" content="{!! $article->description !!}" />
 <meta property="og:locale" content="{{ LaravelLocalization::getCurrentLocaleRegional() }}" />
-@if(isset($article->thumb['copies']['originals']['url']))
+@if(isset( $article->thumb) && isset($article->thumb['copies']['originals']['url']))
 <meta property="og:image"  content="{{ url($article->thumb['copies']['originals']['url']) }}" />
 <meta property="og:image:width"  content="{{ $article->img['width'] }}" />
 <meta property="og:image:height"  content="{{ $article->img['height'] }}" />
@@ -148,7 +148,11 @@
             <div class="row posts-list" style="margin-bottom: 20px;">
                 @foreach($row as $item)
                 <div class="col-xs-12 col-md-4 grid-item">
+                    @if(isset($item->thumb['copies']))
                     @include('partials.article', ['article' => $item])
+                        @else
+                        {!! $item->id !!}
+                    @endif
                 </div>
                 @endforeach
             </div>
