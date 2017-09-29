@@ -1,4 +1,5 @@
 <article class="post bg z-depth-1">
+    @if(isset($article->thumb['copies']))
     <div class="post-img">
         <a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">
             <img class="retina"
@@ -10,7 +11,7 @@
                   alt="{!!  $article->title !!}">
         </a>
     </div>
-
+@endif
     <div class="post-content">
         <div class="post-header center-align">
             <div class="tags">
@@ -33,14 +34,9 @@
             </div>
 
             <div class="post-footer-item post-sharing">
-                <a href="#" class="social-sharing-btn link">Sharing</a>
+                <a href="#" class="social-sharing-btn link"></a>
                 <div class="social-wrapper">
-                    <ul class="social">
-                        <li><a href="#" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
-                        <li><a href="#" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
-                        <li><a href="#" class="google-plus-bg"><i class="fa fa-google-plus"></i></a></li>
-                        <li><a href="#" class="pinterest-bg"><i class="fa fa-pinterest-p"></i></a></li>
-                    </ul>
+
                 </div>
             </div>
             <div class="post-footer-item">

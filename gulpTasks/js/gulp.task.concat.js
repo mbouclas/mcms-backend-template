@@ -4,9 +4,9 @@ module.exports = (function (gulp, config, $) {
     return function () {
 
         $.log('Concat scripts');
-        var toConcat = require(config.js.srcDir + 'entry.js'),
+        const toConcat = require(config.js.srcDir + 'entry.js'),
         scripts = [];
-        for (var i in toConcat){
+        for (const i in toConcat){
             scripts.push(config.js.srcDir + toConcat[i]);
         }
 

@@ -5,6 +5,7 @@ namespace FrontEnd;
 
 use FrontEnd\Console\Commands\ImageOptimizer;
 use FrontEnd\Console\Commands\TinyPngOptimizer;
+use FrontEnd\Console\Commands\UpdateAlgolia;
 use FrontEnd\StartUp\RegisterEvents;
 use Mcms\FrontEnd\FrontEndServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
@@ -17,7 +18,8 @@ class CustomServiceProvider extends ServiceProvider
     protected $policies = [];
     protected $listeners = [];
     protected $commands = [
-        ImageOptimizer::class
+        ImageOptimizer::class,
+        UpdateAlgolia::class,
     ];
 
     /**

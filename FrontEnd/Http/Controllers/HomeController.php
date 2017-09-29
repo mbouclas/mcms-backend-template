@@ -38,6 +38,7 @@ class HomeController extends BaseController
             ->orderBy('published_at', 'DESC')
             ->get();
 
+
         return view('home')
             ->with([
                 'featuredBlogPosts' => $regions['featuredBlogPosts'],

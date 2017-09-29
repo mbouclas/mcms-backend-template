@@ -17,8 +17,8 @@ Contact us
                     <h4>Επικοινωνήστε μαζί μας και θα σας απαντήσουμε το δυνατόν συντομότερο.</h4>
 
                     <ul class="contacts-list">
-                        <li><i class="material-icons">place</i> <strong>Address:</strong> 1234 Street Name, City Name, United States</li>
-                        <li><i class="material-icons dp48">phone</i> <strong>Phone:</strong> (123) 456-789</li>
+                        <li><i class="material-icons">place</i> <strong>Address:</strong> 79 Kantaras Aven., 3rd Floor, 2043 Strovolos, Nicosia, P.O.Box: 20368 CY 2151</li>
+                        <li><i class="material-icons dp48">phone</i> <strong>Phone:</strong> (+357) 22252222</li>
                         <li><i class="material-icons dp48">message</i> <strong>Email:</strong> <a href="mailto:info@galastyle.in">info@galastyle.in</a></li>
                     </ul>
 

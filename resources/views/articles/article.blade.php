@@ -124,11 +124,10 @@
 										C358.699,406.132,365.783,397.632,375.416,392.815z"></path>
 									</svg>
 								</span>
-                        <ul class="social">
-                            <li><a href="#" class="twitter-bg"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#" class="facebook-bg"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#" class="google-plus-bg"><i class="fa fa-google-plus"></i></a></li>
-                            <li><a href="#" class="pinterest-bg"><i class="fa fa-pinterest-p"></i></a></li>
+                        <ul class="social a2a_kit a2a_kit_size_32 a2a_default_style">
+                            <li><a href="#" class="facebook-bg a2a_button_facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="#" class="twitter-bg a2a_button_twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="#" class="google-plus-bg a2a_button_google_plus"><i class="fa fa-google-plus"></i></a></li>
                         </ul>
                     </div>
                 </div>
@@ -173,4 +172,51 @@
 
     </div>
     @include('components.modal')
+
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "NewsArticle",
+  "mainEntityOfPage": {
+    "@type": "WebPage",
+    "@id": "https://google.com/article"
+  },
+  "headline": "{!! $article->title !!}",
+  @if(isset($article->thumb['copies']))
+  "image": [
+            "{{ asset($article->thumb['copies']['originals']['url']) }}",
+            "{{ asset($article->thumb['copies']['thumb']['url']) }}",
+            "{{ asset($article->thumb['copies']['big_thumb']['url']) }}"
+   ],
+   @endif
+  "datePublished": "{{ $article->published_at->format('Y-m-d\TH:i:sP') }}",
+  "dateModified": "{{ $article->updated_at->format('Y-m-d\TH:i:sP') }}",
+  "author": {
+    "@type": "Person",
+    "name": "{{ isset($article->user->profile['alias']) ? $article->user->profile['alias'] : "{$article->user->firstName} {$article->user->lastName}" }}"
+  },
+   "publisher": {
+    "@type": "Organization",
+    "name": "Galastyle",
+    "logo": {
+      "@type": "ImageObject",
+      "url": "{{ asset('images/logo.png') }}"
+    }
+  },
+  "description": "{{ $article->description }}"
+}
+</script>
+
+    <script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": "WebSite",
+  "url": "{{url('/')}}",
+  "potentialAction": {
+    "@type": "SearchAction",
+    "target": "{{ url('search?q={search_term_string}') }}",
+    "query-input": "required name=search_term_string"
+  }
+}
+</script>
 @endsection

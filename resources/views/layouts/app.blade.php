@@ -8,7 +8,6 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="format-detection" content="telephone=no">
-
     <link rel="shortcut icon" href="{{asset('img/favicon.ico')}}">
 
     @yield('critical-css')
@@ -26,6 +25,7 @@
 {{--<div class="preloader"><div class="loader"></div></div>--}}
 
 <div class="page-box" id="app">
+
     @include('partials.header')
 
     <main id="main" class="@yield('main-class', 'home-page')">
@@ -36,7 +36,9 @@
     @include('partials.footer')
 </div>
 @yield('script')
-<script src="{{ elixir('js/all.js') }}" async></script>
-<script src="{{ elixir('js/app.js') }}" async></script>
+
+<script src="{{ elixir('dist/combined'. ((env('APP_ENV') == 'production') ? 'min' : null) .'.js') }}" async></script>
+<script src="{{ elixir('dist/app.min.js') }}" async></script>
+<script async src="https://static.addtoany.com/menu/page.js"></script>
 </body>
 </html>

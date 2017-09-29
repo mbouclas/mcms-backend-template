@@ -38,7 +38,7 @@ class ArticleController extends BaseController
             'user'
         ])->where('slug', $slug)->first();
 
-        if ( ! $article){
+        if (!$article) {
             //redirect 404
         }
         $related = [];
@@ -50,12 +50,12 @@ class ArticleController extends BaseController
                 $exclude[] = $item->item_id;
             }
         }
-/*        \DB::listen(function ($query) {
-            print_r($query->sql);
-            print_r($query->bindings);
-            // $query->time
-        });*/
-        $filters->request->merge(['category_id'=> $article->categories[0]->id]);
+        /*        \DB::listen(function ($query) {
+                    print_r($query->sql);
+                    print_r($query->bindings);
+                    // $query->time
+                });*/
+        $filters->request->merge(['category_id' => $article->categories[0]->id]);
 
         $relatedGenerated = $pageService->model
             ->filter($filters)
@@ -64,13 +64,13 @@ class ArticleController extends BaseController
             ->take(5)
             ->get();
 
-        if ($relatedGenerated){
-            foreach ($relatedGenerated as $item){
+        if ($relatedGenerated) {
+            foreach ($relatedGenerated as $item) {
                 $related[] = $item;
             }
         }
 
-        if (isset( $article->thumb) && isset( $article->thumb['copies'])){
+        if (isset($article->thumb) && isset($article->thumb['copies'])) {
             $resizer = new Resize();
             $image = $resizer->image->make(public_path($article->thumb['copies']['originals']['url']));
             $article->img = [
@@ -94,18 +94,18 @@ class ArticleController extends BaseController
             ->first()
             ->itemCount();
 
-        if ( ! $category){
+        if (!$category) {
             return abort(404);
         }
 
         $categories = [$category->id];
 
-        if (! is_array($category->descendants)){
+        if (!is_array($category->descendants)) {
             $categories = array_merge($categories, $category->descendants->pluck('id')->toArray());
         }
 
         $request->merge([
-            'category_id'=> implode(',', $categories),
+            'category_id' => implode(',', $categories),
             'orderBy' => 'published_at'
         ]);
 
@@ -115,10 +115,22 @@ class ArticleController extends BaseController
             ->filter($filters)
             ->paginate(Config::get('pages.items.per_page'));
 
-        return view('articles.index')
+        $view = (count($articles) > 0) ? 'articles.index' : 'articles.noArticlesFound';
+        $itemList = [];
+        $count = 1;
+
+        foreach ($articles as $article) {
+            $itemList[] = [
+                '@type' => 'ListItem',
+                'position' => $count,
+                'url' => $article->getSlug()
+            ];
+        }
+        return view($view)
             ->with([
                 'category' => $category,
-                'items' => $articles
+                'items' => $articles,
+                'itemList' => json_encode($itemList)
             ]);
     }
 }

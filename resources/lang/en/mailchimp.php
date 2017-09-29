@@ -1,4 +1,5 @@
 <?php
-return [
-    'mailchimp' => 'Mailchimp'
-];
+
+return array (
+  'mailchimp' => 'Mailchimp',
+);

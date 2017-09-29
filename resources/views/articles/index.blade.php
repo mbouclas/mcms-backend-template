@@ -48,4 +48,14 @@
 
     </div>
     @include('components.paginator')
+
+    <script type="application/ld+json">
+{
+  "@context":"http://schema.org",
+  "@type":"ItemList",
+  "itemListElement":[
+    {!! $itemList !!}
+  ]
+}
+</script>
 @endsection

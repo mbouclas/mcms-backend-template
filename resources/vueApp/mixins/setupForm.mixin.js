@@ -1,5 +1,5 @@
-import Vue from 'vue';
-import { required, email } from 'vuelidate/lib/validators';
+const Vue = require('vue');
+const { required, email } =  require('vuelidate/lib/validators');
 
 function remapOptions(options, locale) {
     let remap = [];

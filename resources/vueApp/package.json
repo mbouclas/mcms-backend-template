@@ -1,0 +1,21 @@
+{
+  "browser": {
+    "vue": "vue/dist/vue.common.js"
+  },
+  "dependencies": {
+    "babel-core": "^6.26.0",
+    "babel-plugin-transform-runtime": "^6.23.0",
+    "babel-preset-es2015": "^6.24.1",
+    "babel-runtime": "^6.26.0",
+    "babelify": "^7.3.0",
+    "browserify": "^14.4.0",
+    "gulp": "^3.9.1",
+    "gulp-streamify": "^1.0.2",
+    "gulp-uglify": "^3.0.0",
+    "gulp-vueify": "^0.0.3",
+    "vinyl-source-stream": "^1.1.0",
+    "vue-i18n": "latest",
+    "vueify-insert-css": "^1.0.0",
+    "vuelidate": "^0.5.0"
+  }
+}

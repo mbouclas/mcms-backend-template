@@ -9,21 +9,24 @@
     "type": "project",
     "repositories": [
         {
-            "type": "composer",
-            "url": "https:\/\/repos.ideaseven.com\/repos\/"
+            "type": "vcs",
+            "url": "https://github.com/exodusanto/critical-css"
         }
     ],
     "require": {
         "php": ">=5.6.4",
-        "laravel\/framework": "5.4.*",
+        "laravel\/framework": "5.5.*",
         "mcms\/core-package": "0.*",
         "mcms\/package-admin": "0.*",
         "mcms\/package-pages": "0.*",
         "mcms\/front-end": "0.*",
         "guzzlehttp\/guzzle": "^6.2",
         "barryvdh\/laravel-translation-manager": "dev-master",
-        "mbouclas\/mcms-mailchimp": "^1.0",
-        "krisawzm/critical-css": "^2.1"
+        "mbouclas\/mcms-mailchimp": "1.*",
+        "krisawzm/critical-css": "dev-laravel-55",
+        "laravel/scout": "^3.0",
+        "laravel/tinker": "^1.0",
+        "algolia/algoliasearch-client-php": "^1.20"
     },
     "require-dev": {
         "fzaninotto\/faker": "~1.4",
@@ -58,14 +61,14 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-            "php artisan optimize",
+
             "php artisan core:refreshAssets",
             "php artisan admin:refreshAssets",
             "php artisan frontend:refreshAssets",
             "php artisan pages:refreshAssets",
             "php artisan mcmsMailchimp:refreshAssets",
             "php artisan criticalcss:make",
-            "npm run prod"
+            "npm run production"
         ]
     },
     "config": {

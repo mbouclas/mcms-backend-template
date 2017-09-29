@@ -1,2 +1,5 @@
 span.error {
     color: #da3021;}
+.post-title a em { color: red;}
+.algolia.post-entry em { color: red;}
+.margin-top { margin-top: 10px;}

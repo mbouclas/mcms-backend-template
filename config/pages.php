@@ -2,6 +2,7 @@
 
 return [
     'items' => [
+        'per_page' => 15,
         'slug_pattern' => '/page/%slug$s',
         'previewController' => '\FrontEnd\Http\Controllers\HomeController@preview',
         'route' => 'article',

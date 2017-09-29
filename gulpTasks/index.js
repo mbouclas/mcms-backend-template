@@ -1,12 +1,12 @@
-var gulp = require('gulp');
-var args = require('yargs').argv;
-var path = require('path');
-var fs = require('fs-extra');
-var _ = require('lodash');
-var $ = require('gulp-load-plugins')({lazy: true});
+const gulp = require('gulp');
+const args = require('yargs').argv;
+const path = require('path');
+const fs = require('fs-extra');
+const _ = require('lodash');
+const $ = require('gulp-load-plugins')({lazy: true});
 $.log = log;
 $.clean = clean;
-var Config = require('./gulp.config');
+const Config = require('./gulp.config');
 
 gulp.task('help', $.taskListing);
 gulp.task('default', ['help']);
@@ -35,7 +35,7 @@ function clean(path, done) {
 
 function log(msg) {
     if (typeof(msg) === 'object') {
-        for (var item in msg) {
+        for (const item in msg) {
             if (msg.hasOwnProperty(item)) {
                 $.util.log($.util.colors.blue(msg[item]));
             }

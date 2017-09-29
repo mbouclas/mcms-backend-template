@@ -60,7 +60,7 @@
 
 <script>
     let SetupForm = require('../mixins/setupForm.mixin');
-    import {SubmitForm} from '../services/submitForm';
+    const {SubmitForm} = require('../services/submitForm');
     let Form = {};
 
     export default {

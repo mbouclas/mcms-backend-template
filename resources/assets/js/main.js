@@ -1,3 +1,12 @@
+function applyMasonry() {
+    if ($.isFunction($.fn.masonry)) {
+        $('.grid-layout').masonry({
+            itemSelector    : '.grid-item',
+            columnWidth     : '.grid-sizer',
+            percentPosition : true
+        });
+    }
+}
 
 (function($) {
 	'use strict';
@@ -20,17 +29,13 @@
 		if (carousel.length) {
 			carousel.each(function(){
 				var $this      = $(this),
-					rtl        = false,
 					responsive = {0 : {items : 1}, 768 : { items : 3}, 992 : { items : 4}};
-
-				if ($('body').hasClass('rtl')) rtl = true;
 
 				if ($this.data('responsive')) responsive = $this.data('responsive');
 
 				$this.owlCarousel({
 					animateOut : 'zoomOut',
 					animateIn  : 'zoomIn',
-					rtl        : rtl,
 					autoplay   : false,
 					loop       : true,
 					nav        : false,
@@ -264,13 +269,7 @@
 			mainPost();
 
 			//Masonry initial
-			if ($.isFunction($.fn.masonry)) {
-				$('.grid-layout').masonry({
-					itemSelector    : '.grid-item',
-					columnWidth     : '.grid-sizer',
-					percentPosition : true
-				});
-			}
+			applyMasonry();
 			pageHeight();
 		});
 
@@ -303,58 +302,6 @@
 			});
 		});
 
-		//Subscribe
-		$('.subscribe').on('submit', function(e){
-			var form           = $(this),
-					message        = form.find('.form-message'),
-					messageSuccess = 'Your email is sended',
-					messageInvalid = 'Please enter a valid email address',
-					messageSigned  = 'This email is already signed',
-					messageErrore  = 'Error request';
-
-			e.preventDefault();
-
-			$.ajax({
-				url     : 'php/notify-me.php',
-				type    : 'POST',
-				data    : form.serialize(),
-				success : function(data){
-					form.find('.btn').prop('disabled', true);
-					message.removeClass('red-text').removeClass('green-text').fadeIn();
-
-					switch(data) {
-						case 0:
-							message.html(messageSuccess).addClass('green-text').fadeIn();
-							setTimeout(function(){
-								form.trigger('reset');
-								message.fadeOut().delay(500).queue(function(){
-									message.html('').dequeue();
-								});
-							}, 2000);
-
-							break;
-						case 1:
-							message.html(messageInvalid).addClass('red-text').fadeIn();
-
-							break;
-						case 2:
-							message.html(messageSigned).addClass('red-text').fadeIn();
-							setTimeout(function(){
-								form.trigger('reset');
-								message.fadeOut().delay(500).queue(function(){
-									message.html('').dequeue();
-								});
-							}, 2000);
-
-							break;
-						default:
-							message.html(messageErrore).addClass('red-text').fadeIn();
-					}
-
-					form.find('.btn').prop('disabled', false);
-				}
-			});
-		});
 
 		$('.image-link:not(".gallery")').magnificPopup({
 			type : 'image',
@@ -373,6 +320,7 @@
 				}
 			}
 		});
+
 		$('.gallery-item').magnificPopup({
 			type : 'image',
 			mainClass : 'mfp-with-zoom',

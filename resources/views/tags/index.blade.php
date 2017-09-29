@@ -21,8 +21,6 @@
             </div>
 
         </div>
-
         @include('components.paginator', ['items' => $items])
-
     </div>
 @endsection
