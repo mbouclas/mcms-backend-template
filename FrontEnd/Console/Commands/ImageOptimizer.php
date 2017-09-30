@@ -68,7 +68,7 @@ class ImageOptimizer extends Command
     }
 
     private function resample($img) {
-        $this->image->make($img)->save($img, $this->option('quality'));
+        $this->image->make($img)->interlace()->save($img, $this->option('quality'));
     }
 
     private function optimize($path)

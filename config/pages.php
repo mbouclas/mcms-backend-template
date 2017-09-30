@@ -26,7 +26,7 @@ return [
                 'thumb' => [
                     'width' => 72,
                     'height' => 44,
-                    'quality' => 70,
+                    'quality' => 50,
                     'prefix' => 't_',
                     'resizeType' => 'fit',
                     'dir' => 'thumbs/',
@@ -34,7 +34,7 @@ return [
                 'big_thumb' => [
                     'width' => 350,
                     'height' => 213,
-                    'quality' => 70,
+                    'quality' => 50,
                     'prefix' => 't_',
                     'suffix' => '@2x',
                     'resizeType' => 'fit',
@@ -43,7 +43,7 @@ return [
                 'main' => [
                     'width' => 950,
                     'height' => 356,
-                    'quality' => 70,
+                    'quality' => 65,
                     'prefix' => 'm_',
                     'resizeType' => 'fit',
                     'dir' => '/',
