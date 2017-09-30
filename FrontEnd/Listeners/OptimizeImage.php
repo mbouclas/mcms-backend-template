@@ -2,13 +2,10 @@
 
 namespace FrontEnd\Listeners;
 
-
-
 class OptimizeImage
 {
     public function handle($image)
     {
-
         if ( ! isset($image['data']['path'])) {
             return;
         }
@@ -16,7 +13,8 @@ class OptimizeImage
             'jpg',
             'jpeg',
             'JPG',
-            'JPEG'
+            'JPEG',
+            'png'
         ];
         $info = pathinfo($image['data']['path']);
         if ( ! in_array($info['extension'], $allowedExtensions)){
@@ -28,22 +26,28 @@ class OptimizeImage
                 return;
             }
 
-            $this->compress(public_path($image['data']['url']));
+            $this->compress(public_path($image['data']['url']), 85);
             return;
         }
 
+        $module = new $image['model'];
+
         //we have copies
-        foreach ($image['copies'] as $copy) {
-            $this->compress(public_path($copy['url']));
+        foreach ($image['copies'] as $key => $copy) {
+            if ($key == 'originals') {
+                continue;
+            }
+
+            $this->compress(public_path($copy['url']), $module->config['images']['copies'][$key]['quality']);
         }
 
     }
 
-    private function compress($image)
+    private function compress($image, $quality)
     {
         try {
-            shell_exec("jpegoptim -o --strip-all --all-progressive --max=70 {$image}");//replace
-//          shell_exec("guetzli --quality=85 {$image} {$image}");//replace
+            $jpgCommand = "convert \"{$image}\" -sampling-factor 4:2:0 -strip -quality $quality -interlace JPEG -colorspace RGB \"{$image}\"";
+            shell_exec($jpgCommand);
         }
         catch (\Exception $e){
 

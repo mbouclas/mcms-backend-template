@@ -9,6 +9,10 @@ class PublishPageToAlgolia
 {
     public function handle($page)
     {
+        if (getenv('APP_ENV') != 'production') {
+            return;
+        }
+
         $record = new AlgoliaPage($page->toArray());
         $record->id = $page->id;
         $record->tagged = $page->tagged;
