@@ -82,10 +82,12 @@ class ResizeImages extends Command
             $resizeType = (isset($options['resizeType'])) ? $copy['resizeType'] : 'resize';
 
             $this->image->make(public_path($original))
-                ->interlace()
+                ->interlace(true)
                 ->{$resizeType}($copy['width'], $copy['height'])
                 ->save(public_path($outFile), $this->option('quality'));
 
+            $jpgCommand = "convert {$outFile} -sampling-factor 4:2:0 -strip -quality 75 -interlace JPEG -colorspace RGB {$outFile}";
+            shell_exec($jpgCommand);
             $this->info($outFile . " done");
         }
     }
