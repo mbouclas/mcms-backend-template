@@ -1,9 +1,9 @@
+process.env.NODE_ENV = 'production';
 window.Vue = require('vue');
 import Vuelidate from 'vuelidate'
 const VueI18n = require('vue-i18n');
+
 Vue.use(Vuelidate);
-
-
 Vue.config.lang = window.locale;
 const messages = {};
 messages[window.locale] = window.translations;

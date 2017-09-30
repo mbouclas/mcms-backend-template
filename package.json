@@ -5,6 +5,7 @@
     "concat-js": "gulp concat-js --gulpfile gulpTasks",
     "concat-css": "gulp concat-css --gulpfile gulpTasks",
     "build-vue": "cd resources/vueApp && node bundleApp.js",
+    "build-vue-prod": "cd resources/vueApp && cross-env NODE_ENV=production node bundleApp.js",
     "dev": "npm run development",
     "development": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
     "watch": "cross-env NODE_ENV=development node_modules/webpack/bin/webpack.js --watch --progress --hide-modules --config=node_modules/laravel-mix/setup/webpack.config.js",
