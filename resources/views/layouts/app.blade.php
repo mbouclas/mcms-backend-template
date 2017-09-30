@@ -37,7 +37,7 @@
 </div>
 @yield('script')
 
-<script src="{{ elixir('dist/combined'. ((env('APP_ENV') == 'production') ? 'min' : null) .'.js') }}" async></script>
+<script src="{{ elixir('dist/combined'. ((env('APP_ENV') == 'production') ? '.min' : null) .'.js') }}" async></script>
 <script src="{{ elixir('dist/app.min.js') }}" async></script>
 <script async src="https://static.addtoany.com/menu/page.js"></script>
 </body>
