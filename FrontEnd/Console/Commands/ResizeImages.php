@@ -35,7 +35,7 @@ class ResizeImages extends Command
             foreach ($this->argument('module') as $moduleName) {
                 $module = new $this->modules[$moduleName];
 
-//                $this->thumbs($module);
+                $this->thumbs($module);
                 $this->images($module);
             }
         }
