@@ -13,10 +13,11 @@
     ],
     "images" => [
         "savePath" => 'public_path',
-        "driver" => "gd",
+        "driver" => "imagick",
         "keepOriginals" => TRUE,
         "dirPattern" => "uploads",
         "optimize" => TRUE,
+        "quality" => 65,
         "filePattern" => "images",
         "types" => [
             "images"
