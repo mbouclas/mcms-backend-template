@@ -4,10 +4,9 @@ namespace FrontEnd;
 
 
 use FrontEnd\Console\Commands\ImageOptimizer;
-use FrontEnd\Console\Commands\TinyPngOptimizer;
+use FrontEnd\Console\Commands\ResizeImages;
 use FrontEnd\Console\Commands\UpdateAlgolia;
 use FrontEnd\StartUp\RegisterEvents;
-use Mcms\FrontEnd\FrontEndServiceProvider;
 use Illuminate\Contracts\Events\Dispatcher as DispatcherContract;
 use Illuminate\Contracts\Auth\Access\Gate as GateContract;
 use Illuminate\Routing\Router;
@@ -20,6 +19,7 @@ class CustomServiceProvider extends ServiceProvider
     protected $commands = [
         ImageOptimizer::class,
         UpdateAlgolia::class,
+        ResizeImages::class
     ];
 
     /**

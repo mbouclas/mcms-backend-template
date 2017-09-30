@@ -26,8 +26,8 @@
 <meta property="og:title" content="{!! $article->title !!}" />
 <meta property="og:description" content="{!! $article->description !!}" />
 <meta property="og:locale" content="{{ LaravelLocalization::getCurrentLocaleRegional() }}" />
-@if(isset( $article->thumb) && isset($article->thumb['copies']['originals']['url']))
-<meta property="og:image"  content="{{ url($article->thumb['copies']['originals']['url']) }}" />
+@if(isset( $article->thumb) && isset($article->thumb['copies']['main']['url']))
+<meta property="og:image"  content="{{ url($article->thumb['copies']['main']['url']) }}" />
 <meta property="og:image:width"  content="{{ $article->img['width'] }}" />
 <meta property="og:image:height"  content="{{ $article->img['height'] }}" />
 <meta property="og:image:type"  content="{{ $article->img['type'] }}" />
@@ -50,10 +50,10 @@
     <article class="post post-single page-content bg z-depth-1">
         @if(isset( $article->thumb) && isset( $article->thumb['copies']))
             <div class="post-img" itemprop="image" itemscope itemtype="https://schema.org/ImageObject">
-                <img class="retina" src="{{ $article->thumb['copies']['originals']['url'] }}"
+                <img class="retina" src="{{ $article->thumb['copies']['main']['url'] }}"
                      width="100%"
                      alt="{!! $article->title !!}">
-                <meta itemprop="url" content="{{ url($article->thumb['copies']['originals']['url']) }}">
+                <meta itemprop="url" content="{{ url($article->thumb['copies']['main']['url']) }}">
                 <meta itemprop="width" content="{{ $article->img['width'] }}">
                 <meta itemprop="height" content="{{ $article->img['height'] }}">
             </div>
@@ -79,7 +79,7 @@
                 <div class="carousel margin">
                     @foreach($article->images as $image)
                         <div class="carousel-item">
-                            <a href="{{ $image['copies']['originals']['url'] }}" class="gallery-item"
+                            <a href="{{ $image['copies']['main']['url'] }}" class="gallery-item"
                                title="{!! $image->title !!}"
                                data-description="{!! $image->description !!}">
                             <img class="owl-lazy" src="{{ $image['copies']['big_thumb']['url'] }}"
@@ -184,7 +184,7 @@
   "headline": "{!! $article->title !!}",
   @if(isset($article->thumb['copies']))
   "image": [
-            "{{ asset($article->thumb['copies']['originals']['url']) }}",
+            "{{ asset($article->thumb['copies']['main']['url']) }}",
             "{{ asset($article->thumb['copies']['thumb']['url']) }}",
             "{{ asset($article->thumb['copies']['big_thumb']['url']) }}"
    ],
