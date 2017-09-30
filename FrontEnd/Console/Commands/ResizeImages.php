@@ -88,7 +88,7 @@ class ResizeImages extends Command
                 ->{$resizeType}($copy['width'], $copy['height'])
                 ->save($outFile, $quality);
 
-            $jpgCommand = "convert {$outFile} -sampling-factor 4:2:0 -strip -quality $quality -interlace JPEG -colorspace RGB {$outFile}";
+            $jpgCommand = "convert \"{$outFile}\" -sampling-factor 4:2:0 -strip -quality $quality -interlace JPEG -colorspace RGB \"{$outFile}\"";
             shell_exec($jpgCommand);
             $this->info($outFile . " done");
         }
