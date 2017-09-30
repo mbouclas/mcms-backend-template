@@ -11,7 +11,7 @@ use Mcms\Pages\Models\Page;
 
 class ResizeImages extends Command
 {
-    protected $signature = 'images:resize {module?*} {--quality=70} {--copy=*}';
+    protected $signature = 'images:resize {module?*} {--quality=70} {--copy=*} {--id=}';
 
     protected $description = 'Resize images of a given module';
 
@@ -42,6 +42,20 @@ class ResizeImages extends Command
     }
 
     private function images($module) {
+        if ($this->option('id')){
+            $id = (int) $this->option('id');
+
+            $imageConfigurator = new $module->imageConfigurator($id);
+            $image = $module->find($id);
+            try {
+                $this->resize($imageConfigurator, $image->copies['originals']['url'], $module->config['images']['copies']);
+            }
+            catch (\Exception $e){
+                $this->error($e->getMessage());
+            }
+            return;
+        }
+
         foreach (Image::where('model', get_class($module))->cursor() as $image) {
             if (is_array($image->copies) && isset($image->copies['originals'])) {
                 $imageConfigurator = new $module->imageConfigurator($image->id);
@@ -56,6 +70,24 @@ class ResizeImages extends Command
     }
 
     private function thumbs($module) {
+        if ($this->option('id')) {
+            $id = (int) $this->option('id');
+
+            $imageConfigurator = new $module->imageConfigurator($id);
+            $image = $module->find($id);
+            if (is_array($image->thumb) && isset($image->thumb['copies']['originals'])) {
+                $imageConfigurator = new $module->imageConfigurator($image->id);
+                try {
+                    $this->resize($imageConfigurator, $image->thumb['copies']['originals']['url'], $module->config['images']['copies']);
+                }
+                catch (\Exception $e){
+                    $this->error($e->getMessage());
+                }
+            }
+
+            return;
+        }
+
         foreach ($module->cursor() as $image){
             if (is_array($image->thumb) && isset($image->thumb['copies']['originals'])) {
                 $imageConfigurator = new $module->imageConfigurator($image->id);
@@ -85,7 +117,7 @@ class ResizeImages extends Command
 
             $this->image->make(public_path($original))
                 ->interlace(true)
-                ->{$resizeType}($copy['width'], $copy['height'])
+                ->fit($copy['width'], $copy['height'])
                 ->save($outFile, $quality);
 
             $jpgCommand = "convert \"{$outFile}\" -sampling-factor 4:2:0 -strip -quality $quality -interlace JPEG -colorspace RGB \"{$outFile}\"";
