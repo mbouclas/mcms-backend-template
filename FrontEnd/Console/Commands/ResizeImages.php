@@ -46,12 +46,15 @@ class ResizeImages extends Command
             $id = (int) $this->option('id');
 
             $imageConfigurator = new $module->imageConfigurator($id);
-            $image = $module->find($id);
-            try {
-                $this->resize($imageConfigurator, $image->copies['originals']['url'], $module->config['images']['copies']);
-            }
-            catch (\Exception $e){
-                $this->error($e->getMessage());
+            $item = $module->find($id);
+
+            foreach ($item->images as $image) {
+                try {
+                    $this->resize($imageConfigurator, $image->copies['originals']['url'], $module->config['images']['copies']);
+                }
+                catch (\Exception $e){
+                    $this->error($image->copies['originals']['url'] . " " . $e->getMessage());
+                }
             }
             return;
         }
@@ -63,7 +66,7 @@ class ResizeImages extends Command
                     $this->resize($imageConfigurator, $image->copies['originals']['url'], $module->config['images']['copies']);
                 }
                 catch (\Exception $e){
-                    $this->error($e->getMessage());
+                    $this->error($image->copies['originals']['url'] . " " .$e->getMessage());
                 }
             }
         }
@@ -113,7 +116,6 @@ class ResizeImages extends Command
             $outFile = str_replace(['//', '/originals'], ['/', ''], $outFile);
             $outFile = public_path($outFile);
             $quality = $copy['quality'];
-            $resizeType = (isset($options['resizeType'])) ? $copy['resizeType'] : 'resize';
 
             $this->image->make(public_path($original))
                 ->interlace(true)
