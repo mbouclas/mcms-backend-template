@@ -47,4 +47,7 @@
 
     </div>
     <div id="pagination"></div>
+    <div class="text-md-right" style="margin-top: 20px;">
+        <img src="{{ asset('img/search-by-algolia.png') }}">
+    </div>
 @endsection

@@ -1,7 +1,7 @@
 @if (App::environment() === 'production')
 
     <div id="disqus_thread"></div>
-    <script>
+    <script async>
 
          var disqus_config = function () {
          this.page.url = window.location.href;  // Replace PAGE_URL with your page's canonical URL variable

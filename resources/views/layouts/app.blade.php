@@ -24,7 +24,7 @@
 <body class="dynamic-header">
 {{--<div class="preloader"><div class="loader"></div></div>--}}
 
-<div class="page-box" id="app">
+<div class="page-box" >
 
     @include('partials.header')
 
@@ -37,8 +37,8 @@
 </div>
 @yield('script')
 
-<script src="{{ elixir('dist/combined.js') }}" async></script>
-<script src="{{ elixir('dist/app.min.js') }}" async></script>
+<script data-cfasync="true" src="{{ elixir('dist/combined.js') }}" async></script>
+<script data-cfasync="true" src="{{ elixir('dist/app.min.js') }}" async></script>
 <script async src="https://static.addtoany.com/menu/page.js"></script>
 </body>
 </html>
