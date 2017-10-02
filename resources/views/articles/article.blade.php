@@ -125,9 +125,18 @@
 									</svg>
 								</span>
                         <ul class="social a2a_kit a2a_kit_size_32 a2a_default_style">
-                            <li><a href="#" class="facebook-bg a2a_button_facebook"><i class="fa fa-facebook"></i></a></li>
-                            <li><a href="#" class="twitter-bg a2a_button_twitter"><i class="fa fa-twitter"></i></a></li>
-                            <li><a href="#" class="google-plus-bg a2a_button_google_plus"><i class="fa fa-google-plus"></i></a></li>
+                            <li><a href="https://www.facebook.com/sharer/sharer.php?u={{ $url }}"
+                                   onclick="window.open(this.href, 'facebook-share','width=580,height=296'); return false;"
+                                   rel="nofollow"
+                                   class="facebook-bg a2a_button_facebook"><i class="fa fa-facebook"></i></a></li>
+                            <li><a href="http://twitter.com/share?text={{ $url }}"
+                                   onclick="window.open(this.href, 'twitter-share', 'width=550,height=235'); return false;"
+                                   rel="nofollow"
+                                   class="twitter-bg a2a_button_twitter"><i class="fa fa-twitter"></i></a></li>
+                            <li><a href="https://plus.google.com/share?url={{ $url }}"
+                                   onclick="window.open(this.href, 'google-plus-share', 'width=490,height=530'); return false;"
+                                   rel="nofollow"
+                                   class="google-plus-bg a2a_button_google_plus"><i class="fa fa-google-plus"></i></a></li>
                         </ul>
                     </div>
                 </div>

@@ -83,7 +83,8 @@ class ArticleController extends BaseController
         return view('articles.article')
             ->with([
                 'article' => $article,
-                'related' => $related
+                'related' => $related,
+                'url' => url($article->getSlug())
             ]);
     }
 
