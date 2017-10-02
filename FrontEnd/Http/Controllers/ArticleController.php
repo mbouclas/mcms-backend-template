@@ -5,6 +5,7 @@ namespace FrontEnd\Http\Controllers;
 use Config;
 use Intervention\Image\Image;
 use Mcms\Core\Services\Image\Resize;
+use Mcms\FrontEnd\Services\LayoutManager;
 use Mcms\Pages\Models\Filters\PageFilters;
 use Mcms\Pages\Models\Page;
 use Mcms\Pages\Models\PageCategory;
@@ -79,8 +80,21 @@ class ArticleController extends BaseController
                 'type' => $image->mime()
             ];
         }
+        $view = 'articles.article';
 
-        return view('articles.article')
+        if (isset($article->settings['Layout']) && isset($article->settings['Layout']['id'])){
+            $layout = LayoutManager::registry($article->settings['Layout']['id'], true);
+
+            if ($layout && isset($layout['view'])){
+                $view = $layout['view'];
+                if (isset($layout['handler'])){
+                    $article->custom = $layout['handler']->handle($request, $article, $pageService, $filters);
+                }
+            }
+        }
+
+
+        return view($view)
             ->with([
                 'article' => $article,
                 'related' => $related,

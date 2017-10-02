@@ -1,3 +1,4 @@
+<?php $hideDetails = (!isset($hideDetails)) ? true : $hideDetails ?>
 <article class="post bg z-depth-1">
     @if(isset($article->thumb['copies']))
     <div class="post-img">
@@ -22,11 +23,11 @@
             <h2 class="post-title"><a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">{!!  $article->title !!}</a></h2>
             <div class="date">{{ $article->published_at->format('d/m/Y') }}</div>
         </div>
-
+    @if (!$hideDetails)
         <div class="post-entry">
             {!! $article->description !!}
         </div>
-
+    @endif
         <div class="post-footer">
             <div class="post-footer-item">
                 <a href="{{ route('article', ['slug' => $article->slug]) }}" class="link" title="{!!  $article->title !!}">
