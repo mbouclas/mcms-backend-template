@@ -56,7 +56,7 @@ return [
     */
 
     'from' => [
-    "address" => "info@net-tomorrow.com",
+    "address" => "editor@galastyle.in",
     "name" => "Galastyle.in"
 ],
 

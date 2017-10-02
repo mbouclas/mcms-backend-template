@@ -289,7 +289,6 @@ function applyMasonry() {
 
 					if (data.success){
 						setTimeout(function(){
-							console.log(form.find('.form-message'))
 							form.trigger('reset');
 							form.find('.btn').prop('disabled', false);
 							form.find('.form-message').show().fadeOut().delay(500).queue(function(){
