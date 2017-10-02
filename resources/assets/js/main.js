@@ -291,9 +291,7 @@ function applyMasonry() {
 						setTimeout(function(){
 							form.trigger('reset');
 							form.find('.btn').prop('disabled', false);
-							form.find('.form-message').show().fadeOut().delay(500).queue(function(){
-								form.find('.form-message').html('').dequeue();
-							});
+							form.find('.form-message').show().fadeOut().delay(500);
 						}, 2000);
 					} else {
 						form.find('.btn').prop('disabled', false);
