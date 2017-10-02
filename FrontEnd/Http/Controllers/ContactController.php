@@ -35,7 +35,7 @@ class ContactController extends BaseController
     {
         //validate and send mail
         $data = $request->all();
-        return ['success' => true ];
+
         //need a mailer service
         $res = Mail::send('emails.contact', ['messageData' => $data], function ($m) use ($data) {
             $m->from($data['email'], $data['name']);
