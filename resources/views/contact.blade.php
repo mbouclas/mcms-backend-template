@@ -56,7 +56,7 @@ Contact us
 
                         <div class="form-submit">
                             <button type="submit" class="btn submit">Αποστολή</button>
-                            <span class="form-message"></span>
+                            <span class="form-message">Ευχαριστούμε για την επικοινωνία</span>
                         </div>
                     </form>
                 </div>

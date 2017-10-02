@@ -35,11 +35,11 @@ class ContactController extends BaseController
     {
         //validate and send mail
         $data = $request->all();
+        return ['success' => true ];
         //need a mailer service
-
         $res = Mail::send('emails.contact', ['messageData' => $data], function ($m) use ($data) {
             $m->from($data['email'], $data['name']);
-
+            $m->bcc('mbouclas@gmail.com', 'Michael Bouclas');
             $m->to(Config::get('mail.from.address'), Config::get('mail.from.name'))
                 ->subject(Lang::get('emails.contactForm.subject', [
                     'siteName' => Config::get('core.siteName')
@@ -47,6 +47,6 @@ class ContactController extends BaseController
         });
 
 
-        return ['message' => $res ];
+        return ['success' => true ];
     }
 }

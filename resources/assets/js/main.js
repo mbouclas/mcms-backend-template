@@ -284,14 +284,15 @@ function applyMasonry() {
 				url : '/contact',
 				data: form.serialize(),
 				success: function(data){
-					form.find('.form-message').html(data).fadeIn();
+					form.find('.form-message').fadeIn();
 					form.find('.btn').prop('disabled', true);
 
-					if ($(data).is('.send-true')){
+					if (data.success){
 						setTimeout(function(){
+							console.log(form.find('.form-message'))
 							form.trigger('reset');
 							form.find('.btn').prop('disabled', false);
-							form.find('.form-message').fadeOut().delay(500).queue(function(){
+							form.find('.form-message').show().fadeOut().delay(500).queue(function(){
 								form.find('.form-message').html('').dequeue();
 							});
 						}, 2000);
