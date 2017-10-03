@@ -83,7 +83,7 @@
                                 @endif
                                 <div class="col-md-@if($logo)9 @else 12 @endif"><ul class="contacts-list">
                                         @foreach($info as $key => $item)
-                                            @if($item['type'] != 'image')
+                                            @if($item['type'] != 'image' && $item['value'])
                                                 <li>
                                                     @if(isset($item['icon']))
                                                         <i class="material-icons">{{$item['icon']}}</i>
