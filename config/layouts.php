@@ -17,6 +17,30 @@ return [
         'area' => ['pages.items'],
         'config' => [
             [
+                'varName' => 'link',
+                'label' => 'Site Link',
+                'type' => 'text',
+                'options' => null
+            ],
+            [
+                'varName' => 'fbLink',
+                'label' => 'Facebook Link',
+                'type' => 'text',
+                'options' => null
+            ],
+            [
+                'varName' => 'phone',
+                'label' => 'Phone number',
+                'type' => 'text',
+                'options' => null
+            ],
+            [
+                'varName' => 'address',
+                'label' => 'Address',
+                'type' => 'textarea',
+                'options' => null
+            ],
+            [
                 "varName" => "logo",
                 "label" => "Client Logo",
                 "type" => "image",
