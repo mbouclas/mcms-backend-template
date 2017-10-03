@@ -119,7 +119,7 @@ class ResizeImages extends Command
 
             $this->image->make(public_path($original))
                 ->interlace(true)
-                ->fit($copy['width'], $copy['height'])
+                ->{$copy['resizeType']}($copy['width'], $copy['height'])
                 ->save($outFile, $quality);
 
             $jpgCommand = "convert \"{$outFile}\" -sampling-factor 4:2:0 -strip -quality $quality -interlace JPEG -colorspace RGB \"{$outFile}\"";
