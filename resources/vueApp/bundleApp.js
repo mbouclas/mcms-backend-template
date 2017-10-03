@@ -16,7 +16,7 @@ function build() {
         .transform(vueify)
         .bundle()
         .pipe(source('app.min.js'))
-        .pipe(streamify(uglify()))
+        // .pipe(streamify(uglify()))
         .pipe(gulp.dest(basePath));
 
     console.log('build complete')

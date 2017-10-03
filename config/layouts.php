@@ -19,25 +19,29 @@ return [
             [
                 'varName' => 'link',
                 'label' => 'Site Link',
-                'type' => 'text',
+                'type' => 'url',
+                'icon' => 'link',
                 'options' => null
             ],
             [
                 'varName' => 'fbLink',
                 'label' => 'Facebook Link',
-                'type' => 'text',
+                'type' => 'url',
+                'icon' => 'link',
                 'options' => null
             ],
             [
                 'varName' => 'phone',
                 'label' => 'Phone number',
                 'type' => 'text',
+                'icon' => 'phone',
                 'options' => null
             ],
             [
                 'varName' => 'address',
                 'label' => 'Address',
                 'type' => 'textarea',
+                'icon' => 'place',
                 'options' => null
             ],
             [
@@ -55,5 +59,13 @@ return [
                 ]
             ],
         ]
+    ],
+    [
+        'label' => 'Mall Category',
+        'varName' => 'mallCategory',
+        'view' => 'articles.mall',
+        'beforeRender' => '', //class that will be executed before render
+        'settings' => [],
+        'area' => ['pages.categories'],
     ],
 ];

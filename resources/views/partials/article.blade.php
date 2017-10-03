@@ -21,13 +21,15 @@
                 @endforeach
             </div>
             <h2 class="post-title"><a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">{!!  $article->title !!}</a></h2>
+            @if (!$hideDetails)
             <div class="date">{{ $article->published_at->format('d/m/Y') }}</div>
+            @endif
         </div>
-    @if (!$hideDetails)
+
         <div class="post-entry">
             {!! $article->description !!}
         </div>
-    @endif
+
         <div class="post-footer">
             <div class="post-footer-item">
                 <a href="{{ route('article', ['slug' => $article->slug]) }}" class="link" title="{!!  $article->title !!}">

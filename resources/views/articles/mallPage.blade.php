@@ -70,6 +70,26 @@
                     <div class="post-entry" itemprop="articleBody">
                         {!! $article->description_long !!}
 
+                        @if(count($info) > 0)
+                        <ul class="contacts-list">
+                            @foreach($info as $key => $item)
+                                @if($item['type'] != 'image')
+                            <li>
+                                @if(isset($item['icon']))
+                                <i class="material-icons">{{$item['icon']}}</i>
+                                @endif
+                                <strong>{!! $item['label'] !!}:</strong>
+                                    @if($item['type'] == 'url')
+                                        <a href="{!! $item['value'] !!}" target="_blank">{!! $item['value'] !!}</a>
+                                    @else
+                                        {!! $item['value'] !!}
+                                    @endif
+
+                            </li>
+                                @endif
+                            @endforeach
+                        </ul>
+                        @endif
                         <div class="carousel margin">
                             @foreach($article->images as $image)
                                 <div class="carousel-item">

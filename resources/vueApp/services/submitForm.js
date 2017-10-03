@@ -15,7 +15,6 @@ export class SubmitForm {
                     }
                 });
             }
-
             this.form = form;
             this.postTo = (typeof form.postTo !== 'undefined') ? form.postTo : '/contactForm';
         }, 1000);
@@ -23,8 +22,9 @@ export class SubmitForm {
 
     }
 
-    post(data) {
+    send(data) {
         let toPost = Vue.util.extend({}, data);
+
         if (typeof toPost.form === 'undefined' && typeof this.form.id !== 'undefined'){
             toPost.form = this.form.id;
         }
@@ -33,9 +33,6 @@ export class SubmitForm {
             toPost.inject = this.form.inject;
         }
 
-        return this.post(this.postTo, toPost)
-            .then((response) => {
-                return response.data;
-            });
+        return this.post(this.postTo, toPost);
     }
 }

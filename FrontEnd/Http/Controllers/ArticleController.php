@@ -81,7 +81,7 @@ class ArticleController extends BaseController
             ];
         }
         $view = 'articles.article';
-
+        $info = [];
         if (isset($article->settings['Layout']) && isset($article->settings['Layout']['id'])){
             $layout = LayoutManager::registry($article->settings['Layout']['id'], true);
 
@@ -91,6 +91,12 @@ class ArticleController extends BaseController
                     $article->custom = $layout['handler']->handle($request, $article, $pageService, $filters);
                 }
             }
+            foreach ($layout['config'] as $key  => $item) {
+                if (isset($article->settings['Layout'][$item['varName']])) {
+                    $info[$item['varName']] = $item;
+                    $info[$item['varName']]['value'] = $article->settings['Layout'][$item['varName']];
+                }
+            }
         }
 
 
@@ -98,7 +104,8 @@ class ArticleController extends BaseController
             ->with([
                 'article' => $article,
                 'related' => $related,
-                'url' => url($article->getSlug())
+                'url' => url($article->getSlug()),
+                'info' => $info
             ]);
     }
 
@@ -133,6 +140,16 @@ class ArticleController extends BaseController
         $view = (count($articles) > 0) ? 'articles.index' : 'articles.noArticlesFound';
         $itemList = [];
         $count = 1;
+
+        if (isset($category->settings['Layout']) && isset($category->settings['Layout']['id'])){
+            $layout = LayoutManager::registry($category->settings['Layout']['id'], true);
+            if ($layout){
+                $view = $layout['view'];
+                if (isset($layout['handler'])){
+                    $category->custom = $layout['handler']->handle($request, $category, $this->pageService, $filters);
+                }
+            }
+        }
 
         foreach ($articles as $article) {
             $itemList[] = [

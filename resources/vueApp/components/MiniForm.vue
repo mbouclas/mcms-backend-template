@@ -86,14 +86,15 @@
                     return;
                 }
                 this.submitting = true;
-                Form.post(this.formData)
+
+                Form.send(this.formData)
                     .then((response) => {
                         if (response.success) {
                             this.success = true;
                             this.submitting = false;
                             this.formData = {};
                         }
-                    });
+                    })
             }
         },
         validations: {
