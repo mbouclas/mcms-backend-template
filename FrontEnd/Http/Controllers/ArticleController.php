@@ -82,6 +82,7 @@ class ArticleController extends BaseController
         }
         $view = 'articles.article';
         $info = [];
+        $logo = null;
         if (isset($article->settings['Layout']) && isset($article->settings['Layout']['id'])){
             $layout = LayoutManager::registry($article->settings['Layout']['id'], true);
 
@@ -91,21 +92,25 @@ class ArticleController extends BaseController
                     $article->custom = $layout['handler']->handle($request, $article, $pageService, $filters);
                 }
             }
+
             foreach ($layout['config'] as $key  => $item) {
                 if (isset($article->settings['Layout'][$item['varName']])) {
                     $info[$item['varName']] = $item;
                     $info[$item['varName']]['value'] = $article->settings['Layout'][$item['varName']];
                 }
+
+                if ($item['varName'] == 'logo') {
+                    $logo = $article->settings['Layout'][$item['varName']];
+                }
             }
         }
-
-
         return view($view)
             ->with([
                 'article' => $article,
                 'related' => $related,
                 'url' => url($article->getSlug()),
-                'info' => $info
+                'info' => $info,
+                'logo' => $logo
             ]);
     }
 

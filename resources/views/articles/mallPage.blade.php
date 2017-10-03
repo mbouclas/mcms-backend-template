@@ -71,24 +71,35 @@
                         {!! $article->description_long !!}
 
                         @if(count($info) > 0)
-                        <ul class="contacts-list">
-                            @foreach($info as $key => $item)
-                                @if($item['type'] != 'image')
-                            <li>
-                                @if(isset($item['icon']))
-                                <i class="material-icons">{{$item['icon']}}</i>
-                                @endif
-                                <strong>{!! $item['label'] !!}:</strong>
-                                    @if($item['type'] == 'url')
-                                        <a href="{!! $item['value'] !!}" target="_blank">{!! $item['value'] !!}</a>
-                                    @else
-                                        {!! $item['value'] !!}
-                                    @endif
+                            <div class="row margin">
+                                @if($logo)
+                                <div class="col-md-3">
 
-                            </li>
+                                    <a href="{{$logo['href']}}" target="_blank">
+                                        <img src="{{ asset($logo['src']) }}" title="{!! $logo['title'] !!}">
+                                    </a>
+
+                                </div>
                                 @endif
-                            @endforeach
-                        </ul>
+                                <div class="col-md-@if($logo)9 @else 12 @endif"><ul class="contacts-list">
+                                        @foreach($info as $key => $item)
+                                            @if($item['type'] != 'image')
+                                                <li>
+                                                    @if(isset($item['icon']))
+                                                        <i class="material-icons">{{$item['icon']}}</i>
+                                                    @endif
+                                                    <strong>{!! $item['label'] !!}:</strong>
+                                                    @if($item['type'] == 'url')
+                                                        <a href="{!! $item['value'] !!}" target="_blank">{!! $item['value'] !!}</a>
+                                                    @else
+                                                        {!! $item['value'] !!}
+                                                    @endif
+
+                                                </li>
+                                            @endif
+                                        @endforeach
+                                    </ul></div>
+                            </div>
                         @endif
                         <div class="carousel margin">
                             @foreach($article->images as $image)
