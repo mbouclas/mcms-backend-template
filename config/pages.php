@@ -42,10 +42,10 @@ return [
                 ],
                 'main' => [
                     'width' => 950,
-                    'height' => 356,
-                    'quality' => 65,
+                    'height' => 0,
+                    'quality' => 75,
                     'prefix' => 'm_',
-                    'resizeType' => 'fit',
+                    'resizeType' => 'resize',
                     'dir' => '/',
                 ],
             ]
