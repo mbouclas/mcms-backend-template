@@ -5,7 +5,7 @@ namespace FrontEnd\Helpers;
 
 class FormToJs
 {
-    public static function convert($Form, $inject = null)
+    public static function convert($Form, $route = null, $inject = null)
     {
         $lang = \App::getLocale();
         $labels = \Lang::get('form');
@@ -13,10 +13,10 @@ class FormToJs
         $ret = [
             'Form' => [
                 'id' => $Form['slug'],
-                'label' => $Form['label'][$lang],
-                'description' => $Form['description'][$lang],
+                'label' => (is_array($Form['label'])) ? $Form['label'][$lang] : $Form['label'],
+                'description' => (is_array($Form['description'])) ? $Form['description'][$lang] : $Form['description'],
                 'fields' => $Form['fields'],
-                'postTo' => route('formBuilder-post'),
+                'postTo' => route($route ?: 'formBuilder-post'),
                 'CSRF' => csrf_token(),
                 'inject' => $inject
             ],

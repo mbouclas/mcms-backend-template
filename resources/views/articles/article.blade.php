@@ -71,11 +71,14 @@
                 </p>
             </div>
 
-            <div class="post-entry" itemprop="articleBody">
+            <div class="post-entry" itemprop="articleBody" >
+
             {!! $article->description_long !!}
+                <div>
                 @if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm'])
                 @Form('subscribeToNewsletter')
                 @endif
+                </div>
                 <div class="carousel margin">
                     @foreach($article->images as $image)
                         <div class="carousel-item">

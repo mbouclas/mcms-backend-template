@@ -57,6 +57,12 @@ module.exports = {
             }
         });
 
+        if (Form.inject && typeof Form.inject.defaults !== 'undefined') {
+            for (let key in Form.inject.defaults) {
+                fields[key] = Form.inject.defaults[key];
+            }
+        }
+
 
         this.formData = fields;
         this.Form = Form;

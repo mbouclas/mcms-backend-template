@@ -14,9 +14,27 @@ Route::group(['middleware' => ['web']], function ($router) {
 });
 
 
+Route::get('mailchimp', 'FrontEnd\Http\Controllers\MailchimpHooksController@index');
+Route::post('mailchimp', 'FrontEnd\Http\Controllers\MailchimpHooksController@index');
 
+Route::get('finish-registration/{hash}', [
+    'as' => 'finishRegistration',
+    'uses' => 'FrontEnd\Http\Controllers\MailRegistration@finishRegistration'
+]);
+
+Route::post('finish-registration', [
+    'as' => 'finishRegistrationPost',
+    'uses' => 'FrontEnd\Http\Controllers\MailRegistration@submitFinishRegistration'
+]);
+
+
+Route::post('pusher/send', [
+    'as' => 'pusherSend',
+    'uses' => 'FrontEnd\Http\Controllers\PusherController@send'
+]);
 
 // Authentication Routes...
+
 Route::get('login', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@showLoginForm');
 Route::post('login', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@login');
 Route::get('logout', 'Mcms\FrontEnd\Http\Controllers\Auth\AuthController@logout');

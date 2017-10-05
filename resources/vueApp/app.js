@@ -14,5 +14,6 @@ const i18n = new VueI18n({
 
 Vue.component('mini-form', require('./components/MiniForm.vue'));
 Vue.component('mcms-select', require('./components/McmsSelect.vue'));
+// Vue.component('registration-form', require('./components/RegistrationForm.vue'));
 
 new Vue({ i18n }).$mount('#app');

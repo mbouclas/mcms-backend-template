@@ -25,7 +25,6 @@
     </script>
     {{--<link rel="stylesheet" href="{{asset('css/styles.min.css')}}">--}}
     @yield('og')
-    <script async id="mcjs">!function(c,h,i,m,p){m=c.createElement(h),p=c.getElementsByTagName(h)[0],m.async=1,m.src=i,p.parentNode.insertBefore(m,p)}(document,"script","https://chimpstatic.com/mcjs-connected/js/users/e6771848d0f2c3f9edc23ddbc/d1e7476e129c19c5119db33d3.js");</script>
 </head>
 
 <body class="dynamic-header">
