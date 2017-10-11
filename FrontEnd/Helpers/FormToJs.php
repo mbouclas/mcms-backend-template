@@ -9,7 +9,7 @@ class FormToJs
     {
         $lang = \App::getLocale();
         $labels = \Lang::get('form');
-        $labels['success'] = trans($Form['settings']['labelSuccess']);
+        $labels['success'] = \Lang::get($Form['settings']['labelSuccess']);
         $ret = [
             'Form' => [
                 'id' => $Form['slug'],
