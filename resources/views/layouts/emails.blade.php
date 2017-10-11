@@ -12,7 +12,7 @@
         <tr>
             <td style="padding: 20px 0; text-align: center">
                 <a href="{{ url('/') }}">
-                <img src="{{asset('img/logo.png')}}"  alt="alt_text" border="0" style="height: auto; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
+                <img src="{{asset('img/logo.png')}}"  alt="GalaStyle logo" border="0" style="height: auto; font-family: sans-serif; font-size: 15px; line-height: 20px; color: #555555;">
                 </a>
             </td>
         </tr>
