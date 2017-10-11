@@ -1,5 +1,7 @@
 <?php
 
+use FrontEnd\Mail\SimpleMail;
+
 Route::group(['middleware' => ['web']], function ($router) {
     $router->get('/', ['as' => 'home', 'uses'=> 'FrontEnd\Http\Controllers\HomeController@index']);
     $router->get('/contact', ['as' => 'contact', 'uses' => 'FrontEnd\Http\Controllers\ContactController@index']);
@@ -26,6 +28,11 @@ Route::post('finish-registration', [
     'as' => 'finishRegistrationPost',
     'uses' => 'FrontEnd\Http\Controllers\MailRegistration@submitFinishRegistration'
 ]);
+
+Route::get('test-email', function (){
+    return new \FrontEnd\Mail\MailChimpNewSubscriber(['hash' => 'asadad']);
+});
+
 
 
 Route::post('pusher/send', [

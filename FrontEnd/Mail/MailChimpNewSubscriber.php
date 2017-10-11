@@ -23,7 +23,7 @@ class MailChimpNewSubscriber extends Mailable
     public function __construct(array $mailChimpData)
     {
         $this->mailChimpData = $mailChimpData;
-        $this->name = $mailChimpData['merges']['FNAME']. ' ' . $mailChimpData['merges']['LNAME'];
+//        $this->name = $mailChimpData['merges']['FNAME']. ' ' . $mailChimpData['merges']['LNAME'];
     }
 
     /**
@@ -35,7 +35,7 @@ class MailChimpNewSubscriber extends Mailable
     {
         $mailer = new SendMailViaConfig();
         return $this
-            ->subject(Lang::get('emails.mailchimp.subscriber.new.subject', ['name' => $this->name]))
+            ->subject(Lang::get('emails.subscribers.welcome.subject', ['name' => $this->name]))
             ->from($mailer->formAdminUser())
             ->with('data', $this->mailChimpData)
             ->view('emails.notifications.mailChimpNewSubscriber');

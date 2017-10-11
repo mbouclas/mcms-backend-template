@@ -28,7 +28,7 @@ class MailchimpHooksController extends Controller
     {
         // add user to DB. Only unique users
         $hash = str_random(28);
-        MailSubscriber::where('email' ,$mailChimpResponse['data']['email'])->delete();
+
         try {
             MailSubscriber::create([
                 'email' => $mailChimpResponse['data']['email'],
@@ -45,7 +45,7 @@ class MailchimpHooksController extends Controller
 
         $mailChimpResponse['data']['hash'] = $hash;
         // send an email to user
-        return new \FrontEnd\Mail\MailChimpNewSubscriber($mailChimpResponse['data']);
+//        return new \FrontEnd\Mail\MailChimpNewSubscriber($mailChimpResponse['data']);
         Mail::to($mailChimpResponse['data']['email'])
             ->send(new \FrontEnd\Mail\MailChimpNewSubscriber($mailChimpResponse['data']));
     }
