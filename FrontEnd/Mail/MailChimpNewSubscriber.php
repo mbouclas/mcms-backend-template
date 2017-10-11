@@ -36,7 +36,6 @@ class MailChimpNewSubscriber extends Mailable
         $mailer = new SendMailViaConfig();
         return $this
             ->subject(Lang::get('emails.subscribers.welcome.subject', ['name' => $this->name]))
-            ->from($mailer->formAdminUser())
             ->with('data', $this->mailChimpData)
             ->view('emails.notifications.mailChimpNewSubscriber');
     }
