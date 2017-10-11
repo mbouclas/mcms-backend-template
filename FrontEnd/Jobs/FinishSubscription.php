@@ -71,14 +71,13 @@ class FinishSubscription implements ShouldQueue
                 'username' => $username[0],
                 'roles' => [['id' => $role->id]]
             ]);
-
-            $subscriber->update(['user_id' => $user->id]);
-
-            // Send welcome mail
-            Mail::to(Config::get('mail.from.address'), Config::get('mail.from.name'))
-                ->queue(new SimpleMail($this->formData, Lang::get('emails.subscribers.thanks.subject', [
-                    'name' => $this->formData['firstName']
-                ]), 'emails.subscribers.welcome'));
         }
+
+        $subscriber->update(['user_id' => $user->id]);
+        // Send welcome mail
+        Mail::to($user->email, $user->firstName . ' ' . $user->lastName)
+            ->queue(new SimpleMail($this->formData, Lang::get('emails.subscribers.thanks.subject', [
+                'name' => $this->formData['firstName']
+            ]), 'emails.subscribers.welcome'));
     }
 }
