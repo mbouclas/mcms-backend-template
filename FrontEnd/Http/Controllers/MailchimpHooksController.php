@@ -20,6 +20,10 @@ class MailchimpHooksController extends Controller
 {
     public function index(Request $request)
     {
+        if (empty($request->all())) {
+            return response(['success' => true]);
+        }
+
         return $this->{$request->type}($request->all());
 //        return $request->all();
     }
