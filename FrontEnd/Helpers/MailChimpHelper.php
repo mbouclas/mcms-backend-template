@@ -50,6 +50,7 @@ class MailChimpHelper
             'FNAME' => $userData['firstName'],
             'LNAME' => $userData['lastName'],
             'PHONE' => $userData['phone'],
+            'CONFIRMED' => $userData['confirmed'],
             'ADDRESS' => [
                 "addr1" => $address['addr1'],
                 "country" => $address['country'],

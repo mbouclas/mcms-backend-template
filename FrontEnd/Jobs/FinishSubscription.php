@@ -31,6 +31,7 @@ class FinishSubscription implements ShouldQueue
     public function handle()
     {
         // send the details to mailChimp
+        $this->formData['confirmed'] = 1;
         $updateResult = (new MailChimpHelper())->update($this->formData);
         $query = (isset($this->formData['inject']) && isset($this->formData['inject']['link_hash'])) ?
             ['link_hash' => $this->formData['inject']['link_hash']] :
