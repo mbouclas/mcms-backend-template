@@ -2,7 +2,7 @@
 <article class="post bg z-depth-1">
     @if(isset($article->thumb['copies']))
     <div class="post-img">
-        <a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">
+        <a href="{{ $article->getSlug() }}" title="{!!  $article->title !!}">
             <img class="retina"
                  @if(isset($mode) && $mode == 'small')
                  src="{{ $article->thumb['copies']['big_thumb']['url'] }}"

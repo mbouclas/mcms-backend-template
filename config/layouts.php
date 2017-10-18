@@ -14,7 +14,7 @@ return [
         'view' => 'articles.mallPage',
         'beforeRender' => '', //class that will be executed before render
         'settings' => [
-            'route' => 'store'
+//            'route' => 'store'
         ],
         'area' => ['pages.items', 'listings.items'],
         'config' => [
