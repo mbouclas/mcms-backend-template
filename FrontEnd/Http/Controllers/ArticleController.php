@@ -71,7 +71,7 @@ class ArticleController extends BaseController
             }
         }
 
-        if (isset($article->thumb) && isset($article->thumb['copies'])) {
+/*        if (isset($article->thumb) && isset($article->thumb['copies'])) {
             $resizer = new Resize();
             $image = $resizer->image->make(public_path($article->thumb['copies']['originals']['url']));
             $article->img = [
@@ -79,7 +79,7 @@ class ArticleController extends BaseController
                 'height' => $image->height(),
                 'type' => $image->mime()
             ];
-        }
+        }*/
         $view = 'articles.article';
         $info = [];
         $logo = null;
@@ -104,13 +104,27 @@ class ArticleController extends BaseController
                 }
             }
         }
+        $form = null;
+        $injectToForm = null;
+        if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm']){
+            $Form = new \Mcms\FrontEnd\FormBuilder\FormBuilderService();
+            $form = $Form->bySlug('subscriptionForm');
+            $injectToForm = [
+                'formData' => [
+                    'contestId' => $article->id
+                ]
+            ];
+        }
+
         return view($view)
             ->with([
                 'article' => $article,
                 'related' => $related,
                 'url' => url($article->getSlug()),
                 'info' => $info,
-                'logo' => $logo
+                'logo' => $logo,
+                'form' => $form,
+                'injectToForm' => $injectToForm
             ]);
     }
 

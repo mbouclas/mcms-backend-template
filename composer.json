@@ -10,7 +10,7 @@
     "repositories": [
         {
             "type": "vcs",
-            "url": "https://github.com/exodusanto/critical-css"
+            "url": "https:\/\/github.com\/exodusanto\/critical-css"
         }
     ],
     "require": {
@@ -23,11 +23,14 @@
         "guzzlehttp\/guzzle": "^6.2",
         "barryvdh\/laravel-translation-manager": "dev-master",
         "mbouclas\/mcms-mailchimp": "1.*",
-        "krisawzm/critical-css": "dev-laravel-55",
-        "laravel/scout": "^3.0",
-        "laravel/tinker": "^1.0",
-        "algolia/algoliasearch-client-php": "^1.20",
-        "predis/predis": "~1.0"
+        "mbouclas\/mcms-products": "0.*",
+        "mbouclas\/mcms-listings": "0.*",
+        "mbouclas\/mcms-notifications": "0.*",
+        "krisawzm\/critical-css": "dev-laravel-55",
+        "laravel\/scout": "^3.0",
+        "laravel\/tinker": "^1.0",
+        "algolia\/algoliasearch-client-php": "^1.20",
+        "predis\/predis": "~1.0"
     },
     "require-dev": {
         "fzaninotto\/faker": "~1.4",
@@ -45,9 +48,11 @@
         }
     },
     "autoload-dev": {
-        "classmap": [ "tests/TestCase.php" ],
+        "classmap": [
+            "tests\/TestCase.php"
+        ],
         "psr-4": {
-            "Tests\\": "tests/"
+            "Tests\\": "tests\/"
         }
     },
     "scripts": {
@@ -62,12 +67,14 @@
         ],
         "post-update-cmd": [
             "Illuminate\\Foundation\\ComposerScripts::postUpdate",
-
             "php artisan core:refreshAssets",
             "php artisan admin:refreshAssets",
             "php artisan frontend:refreshAssets",
             "php artisan pages:refreshAssets",
-            "php artisan mcmsMailchimp:refreshAssets"
+            "php artisan mcmsMailchimp:refreshAssets",
+            "php artisan products:refreshAssets",
+            "php artisan listings:refreshAssets",
+            "php artisan notifications:refreshAssets"
         ]
     },
     "config": {

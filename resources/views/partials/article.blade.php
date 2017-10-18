@@ -17,10 +17,10 @@
         <div class="post-header center-align">
             <div class="tags">
                 @foreach($article->categories as $category)
-                    <a href="{{ route('articles', ['slug' => $category->slug]) }}">{!! $category->title !!}</a>
+                    <a href="{{ $category->getSlug() }}">{!! $category->title !!}</a>
                 @endforeach
             </div>
-            <h2 class="post-title"><a href="{{ route('article', ['slug' => $article->slug]) }}" title="{!!  $article->title !!}">{!!  $article->title !!}</a></h2>
+            <h2 class="post-title"><a href="{{ $article->getSlug() }}" title="{!!  $article->title !!}">{!!  $article->title !!}</a></h2>
             @if (!$hideDetails)
             <div class="date">{{ $article->published_at->format('d/m/Y') }}</div>
             @endif

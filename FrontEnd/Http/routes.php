@@ -11,6 +11,20 @@ Route::group(['middleware' => ['web']], function ($router) {
     $router->get('/pages/{slug}', ['as' => 'articles', 'uses'=> 'FrontEnd\Http\Controllers\ArticleController@articles']);
     $router->view('/search', 'articles.search');
 
+    $router->get('/listing/{slug}', ['as' => 'listing', 'uses'=> 'FrontEnd\Http\Controllers\ListingController@index']);
+    $router->get('/listings/{slug}', ['as' => 'listings', 'uses'=> 'FrontEnd\Http\Controllers\ListingsController@index'
+        , 'defaultSlug' => 'listings']);
+
+    $router->get('/store/{slug}', ['as' => 'store', 'uses'=> 'FrontEnd\Http\Controllers\ListingController@index'
+        , 'defaultSlug' => 'store']);
+    $router->get('/stores/{slug}', ['as' => 'stores', 'uses'=> 'FrontEnd\Http\Controllers\ListingController@articles'
+        , 'defaultSlug' => 'stores']);
+
+    $router->get('/product/{slug}', ['as' => 'product', 'uses'=> 'FrontEnd\Http\Controllers\ArticleController@index']);
+    $router->get('/products/{slug}', ['as' => 'products', 'uses'=> 'FrontEnd\Http\Controllers\ArticleController@articles'
+        , 'defaultSlug' => 'listings']);
+
+
     $router->get('/sitemap.xml', ['as' => 'sitemap', 'uses'=> 'FrontEnd\Http\Controllers\SiteMapController@index']);
     $router->get('/tag/{slug}', ['as' => 'tag', 'uses'=> 'FrontEnd\Http\Controllers\TagController@index']);
 });
@@ -27,6 +41,11 @@ Route::get('finish-registration/{hash}', [
 Route::post('finish-registration', [
     'as' => 'finishRegistrationPost',
     'uses' => 'FrontEnd\Http\Controllers\MailRegistration@submitFinishRegistration'
+]);
+
+Route::post('subscribeToContent', [
+    'as' => 'subscribeToContent',
+    'uses' => 'FrontEnd\Http\Controllers\MailRegistration@subscribeToContent'
 ]);
 
 Route::get('test-email', function (){

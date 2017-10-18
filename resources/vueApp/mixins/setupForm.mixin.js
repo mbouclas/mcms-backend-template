@@ -39,6 +39,7 @@ module.exports = {
         let Form =  (typeof window[this.$options.propsData.formSettings] !== 'undefined') ? window[this.$options.propsData.formSettings] : {};
         let fields = {};
         let validations = this.$options.validations;
+        let emailField = null;
 
         Form.fields.map((field ) => {
             fields[field.varName] = '';
@@ -49,22 +50,35 @@ module.exports = {
                 let defaultValue = selectDefaultValue(field.options, 'default', true);
                 fields[field.varName] = (defaultValue) ? defaultValue.value : '';
             }
+
             if (typeof field.required !== 'undefined' && field.required) {
                 validations.formData[field.varName] = {required};
                 if (field.type === 'email') {
                     validations.formData[field.varName]['email'] = email;
                 }
             }
+
+            if (field.type === 'email' && field.varName === 'email') {
+                emailField = field;
+            }
         });
 
         if (Form.inject && typeof Form.inject.defaults !== 'undefined') {
             for (let key in Form.inject.defaults) {
                 fields[key] = Form.inject.defaults[key];
+                // disable email if there's a default value. Don't want the user to be changing this around
+                if (key === 'email' && emailField) {
+                    emailField.disabled = true;
+                }
             }
         }
 
-
         this.formData = fields;
+
+        if (typeof Form.inject.formData !== 'undefined') {
+            fields.formData = Form.inject.formData;
+        }
+
         this.Form = Form;
         this.$options.validations = validations;
 

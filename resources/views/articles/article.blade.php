@@ -74,11 +74,11 @@
             <div class="post-entry" itemprop="articleBody" >
 
             {!! $article->description_long !!}
-                <div>
+
                 @if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm'])
-                @Form('subscribeToNewsletter')
+                    @include('partials.contest-subscription-form', ['Form' => $form ])
                 @endif
-                </div>
+
                 <div class="carousel margin">
                     @foreach($article->images as $image)
                         <div class="carousel-item">

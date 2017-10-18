@@ -13,8 +13,10 @@ return [
         'varName' => 'mallPage',
         'view' => 'articles.mallPage',
         'beforeRender' => '', //class that will be executed before render
-        'settings' => [],
-        'area' => ['pages.items'],
+        'settings' => [
+            'route' => 'store'
+        ],
+        'area' => ['pages.items', 'listings.items'],
         'config' => [
             [
                 'varName' => 'link',
@@ -65,7 +67,9 @@ return [
         'varName' => 'mallCategory',
         'view' => 'articles.mall',
         'beforeRender' => '', //class that will be executed before render
-        'settings' => [],
-        'area' => ['pages.categories'],
+        'settings' => [
+            'route' => 'stores'
+        ],
+        'area' => ['pages.categories', 'listings.categories'],
     ],
 ];

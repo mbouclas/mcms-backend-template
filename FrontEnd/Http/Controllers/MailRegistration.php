@@ -2,10 +2,15 @@
 
 namespace FrontEnd\Http\Controllers;
 
+use FrontEnd\Jobs\ContestThankYouMail;
 use FrontEnd\Jobs\FinishSubscription;
+use FrontEnd\Jobs\SubscriberWelcomeMail;
+use FrontEnd\Mail\SimpleMail;
 use FrontEnd\Models\MailSubscriber;
 use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
+use Lang;
+use Mail;
 
 
 class MailRegistration extends Controller
@@ -34,9 +39,16 @@ class MailRegistration extends Controller
     public function submitFinishRegistration(Request $request)
     {
         // dispatch job
-        FinishSubscription::dispatch($request->all());
+        FinishSubscription::dispatch($request->all(), [SubscriberWelcomeMail::class]);
 
 
-        return response('ok');
+        return response(['success' => true]);
+    }
+
+    public function subscribeToContent(Request $request)
+    {
+        FinishSubscription::dispatch($request->all(), [ContestThankYouMail::class]);
+
+        return response(['success' => true]);
     }
 }

@@ -22,10 +22,12 @@ class FinishSubscription implements ShouldQueue
     use Dispatchable, InteractsWithQueue, Queueable, SerializesModels;
 
     protected $formData;
+    protected $extra;
 
-    public function __construct(array $formData)
+    public function __construct(array $formData, $extra = [])
     {
         $this->formData = $formData;
+        $this->extra = $extra;
     }
 
     public function handle()
@@ -74,10 +76,11 @@ class FinishSubscription implements ShouldQueue
         }
 
         $subscriber->update(['user_id' => $user->id]);
-        // Send welcome mail
-        Mail::to($user->email, $user->firstName . ' ' . $user->lastName)
-            ->queue(new SimpleMail($this->formData, Lang::get('emails.subscribers.thanks.subject', [
-                'name' => $this->formData['firstName']
-            ]), 'emails.subscribers.welcome'));
+
+        // Execute any extra classes
+        foreach ($this->extra as $extra) {
+            $class = new $extra();
+            $class->handle($user, $subscriber, $this->formData);
+        }
     }
 }

@@ -12,6 +12,7 @@
                        v-if="field.type === 'email'"
                        class="input--full"
                        v-bind:name="field.varName"
+                       v-bind:disabled="field.disabled"
                        v-model="formData[field.varName]">
                 <input type="text"
                        @input="$v.formData[field.varName].$touch()"

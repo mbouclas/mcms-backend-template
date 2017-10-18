@@ -62,7 +62,7 @@
                     <div class="post-header">
                         <div class="tags">
                             @foreach($article->categories as $category)
-                                <a href="{{ route('articles', ['slug' => $category->slug]) }}">{{ $category->title }}</a>
+                                <a href="{{ $category->getSlug() }}">{{ $category->title }}</a>
                             @endforeach
                         </div>
                     </div>

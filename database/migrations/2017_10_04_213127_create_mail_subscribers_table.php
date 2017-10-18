@@ -20,9 +20,9 @@ class CreateMailSubscribersTable extends Migration
             $table->string('firstName')->nullable();
             $table->string('lastName')->nullable();
             $table->text('data')->nullable();
-            $table->boolean('converted_to_user')->default(false);
+            $table->boolean('converted_to_user')->default(false)->nullable();
             $table->integer('user_id')->nullable()->unique()->index()->unsigned();
-            $table->dateTime('converted_at');
+            $table->dateTime('converted_at')->nullable();
             $table->string('link_hash')->nullable()->index();
             $table->timestamps();
         });

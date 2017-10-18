@@ -535,6 +535,43 @@
                     "label" => "Allow filters"
                 ]
             ]
+        ],
+        [
+            'type' => 'map',
+            'label' => 'Map',
+            'params' => [
+                'lat' => [
+                    'label' => 'Latitude',
+                    'type' => 'text',
+                    'required' => true,
+                ],
+                'long' => [
+                    'label' => 'Longitude',
+                    'type' => 'text',
+                    'required' => true
+                ],
+                'zoom' => [
+                    'label' => 'Zoom level',
+                    'type' => 'number',
+                    'required' => true,
+                ],
+                'required' => [
+                    'type' => 'boolean',
+                    'value' => false
+                ]
+            ],
+            'settings' => [
+                'markerColor' => [
+                    'label' => 'Marker Color',
+                    'type' => 'text',
+                    'required' => false
+                ],
+                'markerIcon' => [
+                    'label' => 'Marker Icon',
+                    'type' => 'text',
+                    'required' => false
+                ],
+            ]
         ]
     ]
 ];
