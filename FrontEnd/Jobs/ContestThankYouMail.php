@@ -15,11 +15,13 @@ class ContestThankYouMail
 
     public function handle($user, $subscriber, $formData)
     {
-        if (!$formData['formData']) {
+        if (!isset($formData['inject'])) {
             return;
         }
 
-        $this->item = Page::find($formData['formData']['contestId']);
+        $data = $formData['inject']['formData'];
+
+        $this->item = Page::find($data['contestId']);
         $body = Lang::get('emails.contests.thanks.body', [
             'title' => $this->item->title,
             'url' => url($this->item->getSlug())
