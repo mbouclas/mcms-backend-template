@@ -130,10 +130,15 @@ class ArticleController extends BaseController
 
     public function articles(PageFilters $filters, Page $page, PageCategory $pageCategory, $slug, Request $request)
     {
-        $category = $pageCategory
-            ->where('slug', $slug)
-            ->first()
-            ->itemCount();
+        try {
+            $category = $pageCategory
+                ->where('slug', $slug)
+                ->first()
+                ->itemCount();
+        }
+        catch (\Exception $exception) {
+            return abort(404);
+        }
 
         if (!$category) {
             return abort(404);

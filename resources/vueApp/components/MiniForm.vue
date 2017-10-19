@@ -1,12 +1,16 @@
 <template>
     <div>
         <div class="alert alert-success" v-if="success">{{ $t('labels.success') }}</div>
+        <div class="alert alert-danger" v-if="error">{{ $t('validations.alreadyParticipated') }}</div>
         <div class="alert alert-info" v-if="submitting">{{ $t('labels.submitting') }}</div>
 
         <form id="miniForm" name="miniForm" method="post" novalidate="novalidate"
               v-if="!success && !submitting"
               v-on:submit.prevent="onSubmit">
             <div class="input-field" v-for="field in Form.fields">
+                <div v-if="field.type === 'number'">
+                    {{ field }}
+                </div>
                 <input type="email"
                        @input="$v.formData[field.varName].$touch()"
                        v-if="field.type === 'email'"
@@ -23,6 +27,9 @@
                 <input type="number"
                        @input="$v.formData[field.varName].$touch()"
                        v-if="field.type === 'number'"
+                       :min="field.min"
+                       :max="field.max"
+                       :step="field.step"
                        class="input--full"
                        v-bind:name="field.varName"
                        v-model="formData[field.varName]">
@@ -71,6 +78,7 @@
         data () {
             return {
                 success : false,
+                error : false,
                 submitting : false,
                 locale: Vue.config.lang,
             };
@@ -94,6 +102,12 @@
                             this.success = true;
                             this.submitting = false;
                             this.formData = {};
+                        } else {
+                            this.success = false;
+                            this.error = true;
+                            this.submitting = false;
+
+                            setTimeout(() => {this.error = false;}, 5000);
                         }
                     })
             }
@@ -103,3 +117,11 @@
         }
     }
 </script>
+<style>
+    input::-webkit-outer-spin-button,
+    input::-webkit-inner-spin-button {
+        /* display: none; <- Crashes Chrome on hover */
+        -webkit-appearance: none;
+        margin: 0; /* <-- Apparently some margin are still there even though it's hidden */
+    }
+</style>

@@ -23,15 +23,22 @@ class FinishSubscription implements ShouldQueue
 
     protected $formData;
     protected $extra;
+    protected $before;
 
-    public function __construct(array $formData, $extra = [])
+    public function __construct(array $formData, $extra = [], $before = [])
     {
         $this->formData = $formData;
         $this->extra = $extra;
+        $this->before = $before;
     }
 
     public function handle()
     {
+        foreach ($this->before as $before) {
+            $class = new $before();
+            $class->handle($this->formData);
+        }
+
         // send the details to mailChimp
         $this->formData['confirmed'] = 1;
 
