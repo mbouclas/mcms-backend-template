@@ -29,11 +29,11 @@
     <table role="presentation" cellspacing="0" cellpadding="0" border="0" align="center" width="600" style="margin: auto; font-family: sans-serif; color: #888888; line-height:18px;" class="email-container">
         <tr>
             <td style="padding: 40px 10px;width: 100%;font-size: 12px; font-family: sans-serif; line-height:18px; text-align: center; color: #888888;" class="x-gmail-data-detectors">
-                Galastyle<br>79 Kantaras Aven.<br>(123) 456-7890, 3rd Floor,
+                Galastyle<br>79 Kantaras Aven.<br> 3rd Floor,
                 <br>
                 2043 Strovolos, Nicosia, P.O.Box: 20368 CY 2151
                 <br>
-                Phone <strong>Phone:</strong> (+357) 22252222
+                <strong>Phone:</strong> (+357) 22252222
             </td>
         </tr>
     </table>
