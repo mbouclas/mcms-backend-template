@@ -7,10 +7,8 @@
         <form id="miniForm" name="miniForm" method="post" novalidate="novalidate"
               v-if="!success && !submitting"
               v-on:submit.prevent="onSubmit">
+
             <div class="input-field" v-for="field in Form.fields">
-                <div v-if="field.type === 'number'">
-                    {{ field }}
-                </div>
                 <input type="email"
                        @input="$v.formData[field.varName].$touch()"
                        v-if="field.type === 'email'"
