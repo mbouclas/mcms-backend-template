@@ -38,6 +38,7 @@ class MailRegistration extends Controller
 
     public function submitFinishRegistration(Request $request)
     {
+        $request->merge(['ip' => \Request::ip()]);
         // dispatch job
         FinishSubscription::dispatch($request->all(), [SubscriberWelcomeMail::class]);
 
@@ -47,6 +48,7 @@ class MailRegistration extends Controller
 
     public function subscribeToContent(Request $request)
     {
+        $request->merge(['ip' => \Request::ip()]);
         FinishSubscription::dispatch($request->all(), [ContestThankYouMail::class]);
 
         return response(['success' => true]);

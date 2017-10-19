@@ -3,6 +3,7 @@
 namespace FrontEnd\Helpers;
 
 
+use Carbon\Carbon;
 use Mcms\Mailchimp\Service\MailchimpListCollection;
 use Mcms\Mailchimp\Service\MailchimpService;
 
@@ -10,6 +11,7 @@ class MailChimpHelper
 {
     protected $list;
     public $mc;
+    protected $collection;
 
     public function __construct()
     {
@@ -21,7 +23,7 @@ class MailChimpHelper
         }
 
         $this->mc = (new MailchimpService($mailChimpCollection));
-
+        $this->collection = $mailChimpCollection;
         return $this;
     }
 
@@ -36,9 +38,55 @@ class MailChimpHelper
         return 'lists/' . $this->list->getId() . '/members/' . $subscriberHash;
     }
 
+    public function subscribe(array $userData)
+    {
+        $url = 'lists/'. $this->list->getId() . '/members';
+
+        $data = [
+            'email_address' => $userData['email'],
+            'status' => 'subscribed',
+            'email_type' => 'html',
+            'timestamp_signup' => Carbon::now()->format('Y-m-d\TH:i:sP'),
+            'ip_signup' => (isset($userData['ip'])) ? $userData['ip'] : \Request::ip(),
+        ];
+
+        try {
+            $res = $this->mc->mailChimp->post($url, $data);
+        }
+        catch (\Exception $exception) {
+            print_r($exception);
+        }
+
+        // need to run a second update as MC is not accepting all merge data during subscribe
+        return $this->update($userData);
+    }
+
     public function update(array $userData)
     {
         $url = $this->getMemberUrl($this->subscriberHash($userData['email']));
+        $subscriber = null;
+        try {
+            $subscriber = $this->mc->mailChimp->get($url);
+        }
+        catch (\Exception $exception) {
+        }
+
+        if (!$subscriber) {
+            return $this->subscribe($userData);
+        }
+
+        $res = $this->mc->mailChimp->patch($url, $this->setUpUserData($userData));
+
+        return $res;
+    }
+
+    public function delete($email)
+    {
+
+    }
+
+    private function setUpUserData($userData)
+    {
         // check if we have a full address
         $address = [
             'addr1' => (isset($userData['address'])) ? $userData['address'] : 'undefined',
@@ -72,16 +120,9 @@ class MailChimpHelper
             'timezone' => 'Europe/Nicosia',
         ];
 
-        $res = $this->mc->mailChimp->patch($url, [
+        return [
             'location' => $location,
             'merge_fields' => $mergeFields
-        ]);
-
-        return $res;
-    }
-
-    public function delete($email)
-    {
-
+        ];
     }
 }
