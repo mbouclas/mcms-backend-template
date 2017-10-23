@@ -75,7 +75,7 @@ module.exports = {
 
         this.formData = fields;
 
-        if (typeof Form.inject.formData !== 'undefined') {
+        if (typeof Form.inject !== 'undefined' && Form.inject && typeof Form.inject.formData !== 'undefined') {
             fields.formData = Form.inject.formData;
         }
 

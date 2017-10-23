@@ -85,6 +85,12 @@
             Form = new SubmitForm(this.Form);
         },
         methods: {
+            ga() {
+                try {
+                    ga('send', 'event', this.Form.id, this.formData.email);
+                }
+                catch (e) {}
+            },
             updateModel(key,value) {
                 this.formData[key] = value;
             },
@@ -100,6 +106,7 @@
                             this.success = true;
                             this.submitting = false;
                             this.formData = {};
+                            this.ga();
                         } else {
                             this.success = false;
                             this.error = true;
