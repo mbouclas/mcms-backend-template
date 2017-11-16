@@ -275,14 +275,26 @@ function applyMasonry() {
 
 		//Contact Form
 		$('.contact-form').on('submit', function(e){
-			var form = $(this);
+			var form = $(this),
+				formData = form.serialize(),
+				reCaptcha = form.find('#g-recaptcha-response').first().val();
+
 
 			e.preventDefault();
+            if (typeof reCaptcha !== 'string' || !reCaptcha || reCaptcha === '') {
+            	var errorMessage = form.find('.form-message-fail');
+            	errorMessage.show();
+            	setTimeout(function () {
+					errorMessage.hide();
+                }, 5000);
+
+            	return;
+			}
 
 			$.ajax({
 				type: 'POST',
 				url : '/contact',
-				data: form.serialize(),
+				data: formData,
 				success: function(data){
 					form.find('.form-message').fadeIn();
 					form.find('.btn').prop('disabled', true);
@@ -292,6 +304,7 @@ function applyMasonry() {
 							form.trigger('reset');
 							form.find('.btn').prop('disabled', false);
 							form.find('.form-message').show().fadeOut().delay(500);
+                            grecaptcha.reset();
 						}, 2000);
 					} else {
 						form.find('.btn').prop('disabled', false);

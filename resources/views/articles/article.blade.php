@@ -76,7 +76,8 @@
             {!! $article->description_long !!}
 
                 @if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm'])
-                    @include('partials.contest-subscription-form', ['Form' => $form ])
+                    ---- {!! $article->settings['subscriptionForm'] !!}
+                    @include("partials.forms.{$article->settings['subscriptionForm']}", ['Form' => $form ])
                 @endif
 
                 <div class="carousel margin">

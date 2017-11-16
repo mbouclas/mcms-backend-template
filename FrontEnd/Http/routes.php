@@ -49,7 +49,9 @@ Route::post('subscribeToContent', [
 ]);
 
 Route::get('test-email', function (){
-    return new \FrontEnd\Mail\MailChimpNewSubscriber(['hash' => 'asadad']);
+
+
+    return \FrontEnd\Helpers\AllFormsAsOptions::get();
 });
 
 Route::get('fbia', function (){

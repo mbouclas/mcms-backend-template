@@ -108,7 +108,10 @@ class ArticleController extends BaseController
         $injectToForm = null;
         if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm']){
             $Form = new \Mcms\FrontEnd\FormBuilder\FormBuilderService();
-            $form = $Form->bySlug('subscriptionForm');
+            if ($article->settings['subscriptionForm'] == 'true' || $article->settings['subscriptionForm'] == true) {
+                $article->settings['subscriptionForm']  = 'subscriptionForm';
+            }
+            $form = $Form->bySlug($article->settings['subscriptionForm']);
             $injectToForm = [
                 'formData' => [
                     'contestId' => $article->id

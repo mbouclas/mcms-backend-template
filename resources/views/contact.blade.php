@@ -53,10 +53,15 @@ Contact us
                                 </div>
                             </div>
                         </div>
+                        <div class="alert alert-danger form-message-fail" style="display: none">
+                            Πρέπει να κάνετε click στο πεδίο "i'm not a robot"
+                        </div>
+                        <div class="g-recaptcha" data-sitekey="6Ld60DgUAAAAAIr6O66SmooyHQjLNrHBq0imWWOp"
+                        style="margin-bottom: 10px;"></div>
 
                         <div class="form-submit">
                             <button type="submit" class="btn submit">Αποστολή</button>
-                            <span class="form-message">Ευχαριστούμε για την επικοινωνία</span>
+                            <span class="form-message form-message-success">Ευχαριστούμε για την επικοινωνία</span>
                         </div>
                     </form>
                 </div>

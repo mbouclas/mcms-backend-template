@@ -5,7 +5,29 @@ return [
         [
             'varName' => 'subscriptionForm',
             'label' => 'Show subscription form',
-            'type' => 'boolean',
+            'type' => 'select',
+            'options' => [
+                [
+                    'default' => true,
+                    'label' => 'No form',
+                    'value' => null
+                ],
+                [
+                    'default' => false,
+                    'label' => 'Subscribe to newsletter',
+                    'value' => 'subscribeToNewsletter'
+                ],
+                [
+                    'default' => false,
+                    'label' => 'Subscription Form',
+                    'value' => 'subscriptionForm'
+                ],
+                [
+                    'default' => false,
+                    'label' => 'Subscription For Professionals',
+                    'value' => 'subscriptionForProfessionalsForm'
+                ],
+            ]
         ],
     ],
     'categories' => [

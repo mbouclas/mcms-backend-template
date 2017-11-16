@@ -1,6 +1,7 @@
 process.env.NODE_ENV = 'production';
 window.Vue = require('vue');
 import Vuelidate from 'vuelidate'
+import VueRecaptcha from 'vue-recaptcha';
 const VueI18n = require('vue-i18n');
 
 Vue.use(Vuelidate);
@@ -14,6 +15,7 @@ const i18n = new VueI18n({
 
 Vue.component('mini-form', require('./components/MiniForm.vue'));
 Vue.component('mcms-select', require('./components/McmsSelect.vue'));
+
 // Vue.component('registration-form', require('./components/RegistrationForm.vue'));
 
 new Vue({ i18n }).$mount('#app');
