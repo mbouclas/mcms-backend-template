@@ -76,7 +76,6 @@
             {!! $article->description_long !!}
 
                 @if (isset($article->settings['subscriptionForm']) && $article->settings['subscriptionForm'])
-                    ---- {!! $article->settings['subscriptionForm'] !!}
                     @include("partials.forms.{$article->settings['subscriptionForm']}", ['Form' => $form ])
                 @endif
 
