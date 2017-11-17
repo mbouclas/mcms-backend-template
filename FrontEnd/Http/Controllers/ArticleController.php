@@ -93,16 +93,19 @@ class ArticleController extends BaseController
                 }
             }
 
-            foreach ($layout['config'] as $key  => $item) {
-                if (isset($article->settings['Layout'][$item['varName']])) {
-                    $info[$item['varName']] = $item;
-                    $info[$item['varName']]['value'] = $article->settings['Layout'][$item['varName']];
-                }
+            if (isset($layout['config'])) {
+                foreach ($layout['config'] as $key  => $item) {
+                    if (isset($article->settings['Layout'][$item['varName']])) {
+                        $info[$item['varName']] = $item;
+                        $info[$item['varName']]['value'] = $article->settings['Layout'][$item['varName']];
+                    }
 
-                if ($item['varName'] == 'logo') {
-                    $logo = $article->settings['Layout'][$item['varName']];
+                    if ($item['varName'] == 'logo') {
+                        $logo = $article->settings['Layout'][$item['varName']];
+                    }
                 }
             }
+
         }
         $form = null;
         $injectToForm = null;
