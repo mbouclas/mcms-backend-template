@@ -87,6 +87,7 @@ class MailChimpHelper
 
     private function setUpUserData($userData)
     {
+        $form_name = (isset($userData['form'])) ? $userData['form'] : 'no_form_defined';
         // check if we have a full address
         $address = [
             'addr1' => (isset($userData['address'])) ? $userData['address'] : 'undefined',
@@ -99,6 +100,7 @@ class MailChimpHelper
             'LNAME' => $userData['lastName'],
             'PHONE' => $userData['phone'],
             'CONFIRMED' => $userData['confirmed'],
+            'FORM_NAME' => $form_name,
             'ADDRESS' => [
                 "addr1" => $address['addr1'],
                 "country" => $address['country'],
