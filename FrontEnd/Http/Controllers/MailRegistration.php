@@ -13,6 +13,8 @@ use Illuminate\Http\Request;
 use Illuminate\Routing\Controller;
 use Lang;
 use Mail;
+use Mcms\FrontEnd\FormBuilder\FormBuilderService;
+use Mcms\FrontEnd\FormBuilder\FormLogService;
 
 
 class MailRegistration extends Controller
@@ -52,6 +54,15 @@ class MailRegistration extends Controller
     {
         // lets check if this user exists
         $user = Contest::where('email', $request->email)->first();
+        $formBuilder = new FormBuilderService();
+        $form = $formBuilder->bySlug($request->form);
+        if ( ! $form){
+            //die, not a valid form
+            return response(['success' => true]);
+        }
+        $formBuilder->process($form->provider, $request, $form);
+
+
         if ($user) {
             return response(['success' => false, 'error' => Lang::get('validation.alreadyParticipated')]);
         }

@@ -48,6 +48,11 @@ Route::post('subscribeToContent', [
     'uses' => 'FrontEnd\Http\Controllers\MailRegistration@subscribeToContent'
 ]);
 
+Route::post('subscriptionForm', [
+    'as' => 'subscriptionForm',
+    'uses' => 'FrontEnd\Http\Controllers\MailRegistration@subscribeToContent'
+]);
+
 Route::get('test-email', function (){
 
 
