@@ -56,7 +56,7 @@ Contact us
                         <div class="alert alert-danger form-message-fail" style="display: none">
                             Πρέπει να κάνετε click στο πεδίο "i'm not a robot"
                         </div>
-                        <div class="g-recaptcha" data-sitekey="6Le_3DwUAAAAAP-0ZEohKUWRmXNCbT855ckUFKNN"
+                        <div class="g-recaptcha" data-sitekey="{!! env('RECAPTCHA_SITE_KEY') !!}"
                         style="margin-bottom: 10px;"></div>
 
                         <div class="form-submit">
