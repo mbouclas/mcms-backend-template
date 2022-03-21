@@ -1,0 +1,99 @@
+<md-card class="md-whiteframe-4dp">
+ <md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <h2 class="md-title">Translations</h2>
+        <div flex=""></div>
+        <md-button class="md-icon-button" ng-click="VM.toggleFilters()">
+            <md-icon class="material-icons">filter_list</md-icon>
+            <md-tooltip md-direction="top">
+                Filter results
+            </md-tooltip>
+        </md-button>
+
+        <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                   ng-click="VM.add($event)">
+            <md-icon class="material-icons">add</md-icon>
+            <md-tooltip md-direction="top">
+                Create new
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                   ng-click="VM.sync()">
+            <md-icon class="material-icons">sync</md-icon>
+            <md-tooltip md-direction="top">
+                Sync
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
+    <md-progress-circular md-mode="indeterminate" ng-if="VM.Loading"></md-progress-circular>
+    <md-list>
+        <md-list-item class="md-3-line" ng-repeat="item in VM.Translations"
+                      ng-click="VM.showActions($event, item)">
+            <div class="md-list-item-text" layout="column">
+
+                <h3>{{ item.key }}</h3>
+                <h4>{{ item.group }}</h4>
+                <p>{{ item[VM.defaultLang].value | truncate }}</p>
+            </div>
+        </md-list-item>
+    </md-list>
+
+    <paginator
+            md-limit="VM.Pagination.perPage"
+            md-page="VM.Pagination.currentPage"
+            md-total="{{VM.Pagination.total}}"
+            md-page-select="false"
+            md-boundary-links="true"
+            mdOptions="false"
+            md-on-paginate="VM.changePage"
+    >
+    </paginator>
+</md-card>
+
+
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filters">
+
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Filter results</h1>
+    </md-toolbar>
+    <md-content  layout-padding="">
+        <form method="post" novalidate ng-submit="VM.applyFilters()">
+            <md-input-container class="md-block">
+                <label for="key">Key</label>
+                <input type="text" id="key" ng-model="VM.filters.key" md-autofocus="">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Value</label>
+                <input type="text" ng-model="VM.filters.value">
+            </md-input-container>
+
+            <md-input-container class="md-block">
+                <label>Status</label>
+                <md-select ng-model="VM.filters.status">
+                    <md-option ng-repeat="state in VM.boolValues" value="{{state.value}}">
+                        {{state.label}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Group</label>
+
+                <md-select ng-model="VM.filters.group">
+                    <md-option value="">All</md-option>
+                    <md-option ng-repeat="group in VM.Groups" value="{{group}}">
+                        {{group}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+
+        <md-button type="submit"  class="md-primary md-raised">
+            Filter
+        </md-button>
+        </form>
+    </md-content>
+
+</md-sidenav>

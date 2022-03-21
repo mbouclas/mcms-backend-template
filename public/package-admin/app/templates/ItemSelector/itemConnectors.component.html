@@ -1,0 +1,12 @@
+<md-tabs md-dynamic-height md-border-bottom md-autoselect>
+    <md-tab label="{{ section.name }}"
+            ng-repeat="section in VM.Sections">
+
+        <item-connector-filter
+                section="section"
+                connector="VM.Connector"
+                on-select="VM.onSelect(result)"
+        >
+        </item-connector-filter>
+    </md-tab>
+</md-tabs>

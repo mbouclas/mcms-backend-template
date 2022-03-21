@@ -1,0 +1,66 @@
+<form name="filterForm" ng-submit="VM.filter()">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">{{ VM.Pagination.total }} Items</h2>
+            <div flex></div>
+
+
+            <md-button class="md-icon-button" ng-click="VM.toggleFilters()">
+                <md-icon class="material-icons">filter_list</md-icon>
+                <md-tooltip md-direction="top">
+                    Filter results
+                </md-tooltip>
+            </md-button>
+        </div>
+
+    </md-toolbar>
+
+    <paginator
+            md-limit="VM.Pagination.per_page"
+            md-page="VM.Pagination.current_page"
+            md-total="{{VM.Pagination.total}}"
+            md-page-select="false"
+            md-boundary-links="true"
+            mdOptions="false"
+            md-on-paginate="VM.changePage">
+    </paginator>
+<div ng-show="showFilters" flex="">
+
+      <tags ng-model="VM.Filters.tag" options="VM.tagOptions"></tags>
+      <md-input-container class="md-block" flex-gt-sm>
+          <label>Name</label>
+          <input ng-model="VM.Filters.name" name="name">
+      </md-input-container>
+      <md-input-container class="md-block" flex-gt-sm>
+          <label>File Name</label>
+          <input ng-model="VM.Filters.file_name" name="file_name">
+      </md-input-container>
+
+      <md-button class="md-button md-primary md-raised md-accent" type="submit">Filter</md-button>
+
+</div>
+</form>
+
+<div class='md-padding' layout="row" layout-wrap>
+
+        <md-card ng-repeat="item in VM.Items" flex-xs="50" >
+            <a href="" ng-click="VM.set(item)">
+            <img ng-src="{{ item.url }}" class="md-card-image" >
+            </a>
+            <md-card-footer>
+                <small>{{ item.settings.meta.width }}x{{ item.settings.meta.height }}px</small>
+            </md-card-footer>
+        </md-card>
+
+
+</div>
+
+<paginator
+        md-limit="VM.Pagination.per_page"
+        md-page="VM.Pagination.current_page"
+        md-total="{{VM.Pagination.total}}"
+        md-page-select="false"
+        md-boundary-links="true"
+        mdOptions="false"
+        md-on-paginate="VM.changePage">
+</paginator>

@@ -1,0 +1,195 @@
+<div ng-repeat="field in VM.Items">
+    <div ng-if="field.type=='number'">
+        <md-input-container class="md-block" flex flex-gt-sm>
+            <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+            <input type="number" ng-model="VM.models[field.varName]"
+                   max="{{ field.max }}" min="{{ field.min }}" step="{{ field.step }}"
+                   ng-change="VM.changed(field.varName)"
+                   ng-required="field.required" name="{{ field.varName }}">
+            <div ng-messages="Form[field.varName].$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+        </md-input-container>
+    </div>
+    <div ng-if="field.type=='email'">
+        <md-input-container class="md-block" flex flex-gt-sm>
+
+            <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+            <input type="email" ng-model="VM.models[field.varName]"
+                   ng-change="VM.changed(field.varName)"
+                   ng-required="field.required" name="{{ field.varName }}">
+            <div ng-messages="Form[field.varName].$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+        </md-input-container>
+    </div>
+    <div ng-if="field.type=='text'">
+
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
+
+        <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+        <input ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)"
+               ng-required="field.required" name="{{ field.varName }}">
+        <div ng-messages="Form[field.varName].$error">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label[VM.defaultLang] || field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
+
+                <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+                <input ng-model="VM.models[field.varName][key]" ng-change="VM.changed(field.varName[key])"
+                       ng-required="field.required" name="{{ field.varName[key] }}">
+                <div ng-messages="Form[field.varName[key]].$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+            </div>
+    </div>
+    <div ng-if="field.type=='url'">
+
+        <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
+
+            <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+            <input ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)" type="url"
+                   ng-required="field.required" name="{{ field.varName }}">
+            <div ng-messages="Form[field.varName].$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+        </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label[VM.defaultLang] || field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
+
+                <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+                <input ng-model="VM.models[field.varName][key]" ng-change="VM.changed(field.varName[key])" type="url">
+            </md-input-container>
+        </div>
+    </div>
+    <div ng-if="field.type=='textarea'">
+        <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
+            <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+            <textarea ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)"
+                      ng-required="field.required" name="{{ field.varName }}">
+            </textarea><div ng-messages="Form[field.varName].$error">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+        </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label[VM.defaultLang] || field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
+                <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+                <textarea ng-model="VM.models[field.varName][key]"
+                          ng-change="VM.changed(field.varName[key])"
+                          ng-required="field.required" name="{{ field.varName[key] }}">
+            </textarea><div ng-messages="Form[field.varName[key].$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+            </md-input-container>
+        </div>
+    </div>
+
+    <div ng-if="field.type=='richtext'">
+        <md-input-container class="md-block" flex flex-gt-sm ng-if="!field.translatable">
+            <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+            <textarea ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)"
+                      placeholder="{{ field.label[VM.defaultLang] || field.label }}"
+                      redactor
+                      ng-required="field.required" name="{{ field.varName }}">
+            </textarea>
+            <div ng-messages="Form[field.varName].$error">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+        </md-input-container>
+        <div ng-repeat="(key, locale) in VM.Locales" ng-if="field.translatable">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ field.label[VM.defaultLang] || field.label }} in {{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+            <md-input-container class="md-block" flex flex-gt-sm>
+                <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+                <textarea ng-model="VM.models[field.varName][key]" ng-change="VM.changed(field.varName[key])"
+                          placeholder="{{ field.label[VM.defaultLang] || field.label }}"
+                          redactor
+                          ng-required="field.required" name="{{ field.varName[key] }}">
+            </textarea>
+                <div ng-messages="Form[field.varName[key]].$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+            </md-input-container>
+        </div>
+    </div>
+<div ng-if="field.type=='boolean'">
+
+    <md-switch aria-label="{{ field.label[VM.defaultLang] || field.label }}"
+               ng-model="VM.models[field.varName]" ng-change="VM.changed(field.varName)">
+        {{ field.label[VM.defaultLang] || field.label }}
+    </md-switch>
+
+</div>
+
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="field.type=='select'">
+
+        <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+        <md-select aria-label="{{ field.label[VM.defaultLang] || field.label }}" placeholder="{{ field.label[VM.defaultLang] || field.label }}"
+                   ng-change="VM.changed(field.varName)"
+                   ng-model="VM.models[field.varName]" >
+            <md-option value="{{ item.value }}" ng-repeat="item in field.options">{{ item.label[VM.defaultLang] || item.label }}</md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="field.type=='selectMultiple'">
+        <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+        <md-select aria-label="{{ field.label[VM.defaultLang] || field.label }}" placeholder="{{ field.label[VM.defaultLang] || field.label }}"
+                   multiple
+                   ng-change="VM.changed(field.varName)"
+                   ng-model="VM.models[field.varName]" >
+            <md-option value="{{ item.value }}" ng-repeat="item in field.options">{{ item.label[VM.defaultLang] || item.label }}</md-option>
+        </md-select>
+    </md-input-container>
+    <div ng-if="field.type=='image'">
+        <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+
+    <image-component ng-model="VM.models[field.varName]" layout-type="column"
+                     name="{{ field.varName }}"
+                     on-change="VM.changed(field, value)"
+                     settings="field.settings"
+                     options="VM.imageOptions" ></image-component>
+    </div>
+    <div ng-if="field.type=='file'">
+        <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+    <file-component ng-model="VM.models[field.varName]" layout-type="column"
+                     name="{{ field.varName }}"
+                     on-change="VM.changed(field, value)"
+                     options="VM.fileOptions" ></file-component>
+    </div>
+
+    <div ng-if="field.type == 'date'">
+        <h4>{{ field.label[VM.defaultLang] || field.label }}</h4>
+        <md-datepicker ng-model="VM.models[field.varName]" md-placeholder="Enter date"
+                       name="{{ field.varName }}"
+                       ng-change="VM.changed(field, value)"
+                       md-open-on-focus></md-datepicker>
+    </div>
+
+    <div ng-if="field.type == 'itemSelector'">
+        <item-selector items="VM.models[field.varName]"
+                       on-result="VM.changed(field, result)"
+                       options="field.config"
+                       title="{{  field.label[VM.defaultLang] || field.label }}"></item-selector>
+    </div>
+</div>

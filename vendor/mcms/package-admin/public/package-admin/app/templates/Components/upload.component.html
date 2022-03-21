@@ -1,0 +1,33 @@
+<md-tabs md-dynamic-height md-border-bottom md-selected="0" ng-if="withMediaLibrary">
+    <md-tab id="file">
+        <md-tab-label>
+            <md-button aria-label="comment" class="md-icon-button" >
+                <md-icon class="material-icons">file_upload</md-icon>
+            </md-button>
+        </md-tab-label>
+        <md-tab-body>
+            <div class="dropzone"
+                 options="dzOptions"
+                 callbacks="dzCallbacks"
+                 methods="dzMethods" drop-zone></div>
+        </md-tab-body>
+    </md-tab>
+    <md-tab id="library">
+        <md-tab-label>
+            <md-button aria-label="label" class="md-icon-button" ng-click="changeMode('library')">
+                <md-icon class="material-icons">library_add</md-icon>
+            </md-button>
+        </md-tab-label>
+        <md-tab-body>
+            <media-library on-select="onMediaLibrarySelected(item)" ng-if="options.mediaLibrary.withSelector"></media-library>
+            <media-library-contents on-select="onMediaLibrarySelected(item)" ng-if="!options.mediaLibrary.withSelector"></media-library-contents>
+        </md-tab-body>
+    </md-tab>
+</md-tabs>
+
+<div class="dropzone" ng-if="!withMediaLibrary"
+     options="dzOptions"
+     callbacks="dzCallbacks"
+     methods="dzMethods" drop-zone></div>
+
+

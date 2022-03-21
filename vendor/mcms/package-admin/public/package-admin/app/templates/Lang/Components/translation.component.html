@@ -1,0 +1,46 @@
+<md-content layout-padding="">
+    <form ng-submit="ItemForm.$valid && VM.save()" novalidate name="ItemForm">
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Key</label>
+            <input ng-model="VM.Item.key" required>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Group</label>
+
+            <md-select ng-model="VM.Item.group">
+                <md-option ng-repeat="group in VM.groups" value="{{group}}">
+                    {{group}}
+                </md-option>
+            </md-select>
+        </md-input-container>
+
+        <div ng-repeat="(key, locale) in VM.locales">
+            <md-toolbar class="md-accent">
+                <div class="md-toolbar-tools">
+                    <h3><span>{{ locale.name }}</span></h3>
+                </div>
+            </md-toolbar>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <md-switch ng-model="VM.Item[key].status" aria-label="Active">
+                    Status
+                </md-switch>
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Value</label>
+                <textarea ng-model="VM.Item[key].value" required redactor placeholder="Value"></textarea>
+            </md-input-container>
+
+        </div>
+
+        <md-button type="submit" class="md-accent md-raised">
+            <md-icon class="material-icons">save</md-icon>
+            Save
+        </md-button>
+
+    </form>
+</md-content>
+
+
+
+

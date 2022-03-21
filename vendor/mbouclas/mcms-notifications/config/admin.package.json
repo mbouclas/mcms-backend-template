@@ -1,0 +1,14 @@
+{
+  "name" : "Notifications",
+  "package" : "mcms-notifications",
+  "modules" : [
+    "mcms.notifications"
+  ],
+  "files" : {
+    "js" : [
+      "vendor/mcms/notifications/js/notifications-compiled.js"
+    ],
+    "css" : [
+    ]
+  }
+}

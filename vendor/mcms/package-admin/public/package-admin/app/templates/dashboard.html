@@ -1,0 +1,33 @@
+<md-content class="md-whitespace-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2>
+               Dashboard
+            </h2>
+            <div flex=""></div>
+            <md-button class="md-icon-button" ng-click="VM.reorder()">
+                <md-icon class="material-icons">reorder</md-icon>
+                <md-tooltip md-direction="top">
+                   Reorder
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+
+    <widget-monitor containers="['#left', '#right']"></widget-monitor>
+    <md-content layout-xs="column" layout="row">
+        <div flex-xs flex-gt-xs="50" layout="column" id="left">
+            <widget-provider ng-repeat="widget in VM.Cols.left track by $index" item="widget" class="widget"
+                             append-to="'#left'"></widget-provider>
+        </div>
+
+
+        <div flex-xs flex-gt-xs="50" layout="column" id="right">
+            <widget-provider ng-repeat="widget in VM.Cols.right track by $index" item="widget" class="widget"
+                             append-to="'#right'"></widget-provider>
+        </div>
+    </md-content>
+</md-content>
+
+
+

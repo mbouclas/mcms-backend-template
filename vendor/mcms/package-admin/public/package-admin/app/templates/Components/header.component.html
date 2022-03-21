@@ -1,0 +1,30 @@
+<md-toolbar layout="row" ng-show="!showSearch" class="md-hue-2">
+    <div class="md-toolbar-tools">
+    <md-button ng-click="VM.toggleMenu()" hide-gt-sm><md-icon class="material-icons">menu</md-icon></md-button>
+    <h3><a href="{{ siteUrl }}" target="_blank">{{ siteName }} Admin</a></h3>
+
+
+    <span flex></span>
+<!--    <md-button aria-label="Search" ng-click="showSearch = !showSearch"
+               class="md-icon-button md-primary md-button md-ink-ripple">
+        <ng-md-icon class="material-icons">search</ng-md-icon>
+    </md-button>-->
+
+        </div>
+</md-toolbar>
+
+<md-toolbar class="md-hue-1 md-whiteframe-z2" ng-if="showSearch">
+    <div class="md-toolbar-tools search-bar">
+        <md-button ng-click="showSearch = !showSearch" aria-label="Back" class="md-icon-button md-primary md-button md-ink-ripple">
+            <ng-md-icon class="material-icons">arrow_back</ng-md-icon>
+        </md-button>
+        <md-input-container  flex>
+            <label>&nbsp;</label>
+            <input ng-model="search.who" placeholder="Search">
+        </md-input-container>
+        <md-button aria-label="Search" ng-click="showSearch = !showSearch" class="md-icon-button md-primary md-button md-ink-ripple">
+            <md-icon class="material-icons">search</md-icon>
+        </md-button>
+    </div>
+
+</md-toolbar>

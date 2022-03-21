@@ -1,0 +1,55 @@
+<div class="md-dialog-content">
+<form ng-submit="ItemsForm.$valid && VM.save()" novalidate name="ItemsForm">
+
+    <div flex>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Name</label>
+            <input ng-model="VM.Role.display_name" required name="label">
+            <div ng-messages="ItemsForm.label.$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+        </md-input-container>
+
+        <div>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Alias</label>
+                <input ng-model="VM.Role.name" required name="name">
+                <div ng-messages="ItemsForm.name.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Description</label>
+                <input ng-model="VM.Role.description" name="description" required>
+
+                <div ng-messages="ItemsForm.description.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Level</label>
+                <input ng-model="VM.Role.level" required name="level">
+                <div ng-messages="ItemsForm.level.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+            <h2>Permissions</h2>
+            <div ng-repeat="item in VM.Permissions">
+                <md-checkbox ng-checked="VM.exists(item)" ng-click="VM.toggle(item)">
+                    {{ item.name }}
+                </md-checkbox>
+            </div>
+        </div>
+    </div>
+
+
+    <md-button type="submit" class="md-accent md-raised">
+        <md-icon class="material-icons">save</md-icon>
+        Save
+    </md-button>
+</form>
+</div>

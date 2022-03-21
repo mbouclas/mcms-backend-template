@@ -1,0 +1,73 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <h2 class="md-title">{{VM.Pagination.total}} items in Media Library</h2>
+        <div flex=""></div>
+
+
+        <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                   ng-click="VM.toggleUploadBox()">
+            <md-icon class="material-icons">file_upload</md-icon>
+            <md-tooltip md-direction="top">
+                Upload files
+            </md-tooltip>
+        </md-button>
+        <md-button class="md-icon-button" ng-click="VM.toggleFilters()">
+            <md-icon class="material-icons">filter_list</md-icon>
+            <md-tooltip md-direction="top">
+                Filter results
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<upload  ng-model="VM.model"
+         ng-if="showUploadBox"
+         options="VM.UploadConfig"
+         instance="VM.dzInstance(instance)"
+         callbacks="VM.Callbacks"></upload>
+<md-list>
+    <md-list-item ng-repeat="item in VM.Items" class="md-3-line" ng-click="VM.edit(item)">
+        <img ng-src="{{ item.url }}" class="md-avatar" sv-handle />
+        <div class="md-list-item-text" layout="column">
+            <h3><strong>{{ item.name }}</strong> ({{ item.settings.meta.width }}x{{ item.settings.meta.height }}px)</h3>
+            <h4><span ng-repeat="tag in item.tagged">{{ tag.tag_name }} <em ng-if="!$last">, </em> </span>
+            <span ng-if="item.tagged.length == 0 || !item.tagged">No tags found</span> </h4>
+            <p>{{ item.created_at | moment }}</p>
+            <md-divider ng-if="!$last"></md-divider>
+        </div>
+    </md-list-item>
+
+</md-list>
+
+<paginator
+        md-limit="VM.Pagination.per_page"
+        md-page="VM.Pagination.current_page"
+        md-total="{{VM.Pagination.total}}"
+        md-page-select="false"
+        md-boundary-links="true"
+        mdOptions="false"
+        md-on-paginate="VM.changePage">
+</paginator>
+<md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filters">
+
+    <md-toolbar class="md-theme-light">
+        <h1 class="md-toolbar-tools">Filter results</h1>
+    </md-toolbar>
+    <md-content  layout-padding="">
+        <form method="post" novalidate ng-submit="VM.filter()">
+
+            <tags ng-model="VM.Filters.tag" options="VM.tagOptions"></tags>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Name</label>
+                <input ng-model="VM.Filters.name" name="name">
+            </md-input-container>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>File Name</label>
+                <input ng-model="VM.Filters.file_name" name="file_name">
+            </md-input-container>
+
+            <md-button class="md-button md-primary md-raised md-accent" type="submit">Filter</md-button>
+        </form>
+    </md-content>
+
+</md-sidenav>

@@ -1,0 +1,12 @@
+<md-toolbar class="md-default">
+    <div class="md-toolbar-tools">
+        <h2 class="md-title">Build The Frontend</h2>
+        <div flex></div>
+    </div>
+</md-toolbar>
+
+<h2 ng-if="VM.building">Building in progress</h2>
+<md-button type="submit" class="md-accent md-raised" ng-click="VM.startBuild()">
+    <md-icon class="material-icons">save</md-icon>
+    Start Build
+</md-button>

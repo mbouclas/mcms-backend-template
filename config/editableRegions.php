@@ -20,6 +20,34 @@
                 ]
             ]
         ],
+        "hero" => [
+            "label" => "Hero",
+            "slug" => "hero",
+            "type" => "generic",
+            "allow" => [
+                "item"
+            ],
+            "items" => [
+
+            ],
+            "settings" => [
+
+            ],
+            "options" => [
+                [
+                    "varName" => "limit",
+                    "label" => "Number of items",
+                    "type" => "text",
+                    "options" => NULL,
+                    "default" => 1
+                ]
+            ],
+            "regionSettings" => [
+                "image" => [
+
+                ]
+            ]
+        ],
         "banners" => [
             "label" => "Sponsored Posts",
             "slug" => "banners",
@@ -39,7 +67,7 @@
                 ]
             ]
         ],
-        "featuredBlogPosts" => [
+        "featuredArticles" => [
             "label" => "Featured Posts",
             "slug" => "featuredBlogPosts",
             "type" => "generic",
@@ -78,7 +106,7 @@
                 ]
             ]
         ],
-        "latestBlogPosts" => [
+        "latestArticles" => [
             "label" => "Latest Blog posts",
             "slug" => "latestBlogPosts",
             "type" => "class",

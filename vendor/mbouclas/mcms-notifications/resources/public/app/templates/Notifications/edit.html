@@ -1,0 +1,18 @@
+<md-card class="md-whitespace-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">{{ VM.Item.title || 'Create Notification'}}</h2>
+            <div flex></div>
+            <md-button class="md-fab md-hue-2 md-accent" aria-label="open in new"
+                       href="{{ 'user-notifications-home' | url }}">
+                <md-icon class="material-icons">arrow_back</md-icon>
+                <md-tooltip md-direction="top">
+                    Back to list
+                </md-tooltip>
+            </md-button>
+        </div>
+
+    </md-toolbar>
+
+    <edit-user-notification ng-model="VM.Item" on-save="VM.onSave(item, isNew)"></edit-user-notification>
+</md-card>

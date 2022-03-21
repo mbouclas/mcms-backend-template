@@ -1,0 +1,163 @@
+    <md-toolbar class="md-table-toolbar md-default" ng-if="options.showToolbar">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">{{ VM.Pagination.total }} users</h2>
+            <div flex=""></div>
+            <md-button class="md-icon-button" ng-click="VM.toggleFilters()">
+                <md-icon class="material-icons">filter_list</md-icon>
+                <md-tooltip md-direction="top">
+                    Filter results
+                </md-tooltip>
+            </md-button>
+            <md-menu md-position-mode="target-right target">
+                <md-button class="md-icon-button" ng-click="$mdOpenMenu($event)">
+                    <md-icon class="material-icons">sort</md-icon>
+                    <md-tooltip md-direction="top">
+                        Sort results
+                    </md-tooltip>
+                </md-button>
+                <md-menu-content width="2">
+                    <md-button class="md-button" ng-class="{'md-primary' : (VM.filters.orderBy == 'created_at' && VM.filters.way == 'ASC')}" ng-click="VM.sort('created_at','ASC')">Created Ascending</md-button>
+                    <md-button class="md-button" ng-class="{'md-primary' : (VM.filters.orderBy == 'created_at' && VM.filters.way == 'DESC')}" ng-click="VM.sort('created_at','DESC')">Created Descending</md-button>
+                    <md-button class="md-button" ng-class="{'md-primary' : (VM.filters.orderBy == 'updated_at' && VM.filters.way == 'ASC')}" ng-click="VM.sort('updated_at','ASC')">Updated Ascending</md-button>
+                    <md-button class="md-button" ng-class="{'md-primary' : (VM.filters.orderBy == 'updated_at' && VM.filters.way == 'DESC')}" ng-click="VM.sort('updated_at','DESC')">Updated Descending</md-button>
+                    <md-button class="md-button" ng-class="{'md-primary' : (VM.filters.orderBy == 'email')}" ng-click="VM.sort('email','ASC')">email</md-button>
+                </md-menu-content>
+            </md-menu>
+
+            <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                       ng-if="$root.ACL.inGates('users.add')"
+                       href="{{ 'edit-user' |url : {id : 'new'} }}">
+                <md-icon class="material-icons">add</md-icon>
+                <md-tooltip md-direction="top">
+                    Create new
+                </md-tooltip>
+            </md-button>
+        </div>
+
+    </md-toolbar>
+
+<md-list>
+    <md-list-item class="md-3-line" ng-repeat="user in VM.Users"
+                  ng-click="VM.showActions($event, user)">
+
+        <canvas id="user-avatar-{{ $index }}" width="100" height="100" class="md-avatar" draw-canvas="user.firstName[0]"></canvas>
+        <div class="md-list-item-text" layout="column">
+
+            <h3>{{ user.lastName }} {{ user.firstName }}</h3>
+            <h4>
+                <label class="label label-success" ng-if="user.active">Active</label>
+                <label class="label label-error" ng-if="!user.active">Disabled</label>
+                <label class="label label-info" ng-if="user.awaits_moderation">Awaiting moderation</label>
+                {{ user.email }}</h4>
+            <p>member since : {{ user.created_at | moment }}</p>
+        </div>
+    </md-list-item>
+</md-list>
+
+    <paginator
+            md-limit="VM.Pagination.per_page"
+            md-page="VM.Pagination.current_page"
+            md-total="{{VM.Pagination.total}}"
+            md-page-select="false"
+            md-boundary-links="true"
+            mdOptions="false"
+            md-on-paginate="VM.changePage">
+    </paginator>
+    <md-sidenav class="md-sidenav-right md-whiteframe-4dp" md-component-id="filters">
+
+        <md-toolbar class="md-theme-light">
+            <div class="md-toolbar-tools">
+                <h2 class="md-title" class="md-toolbar-tools">Filter</h2>
+                <div flex></div>
+                <md-button class="md-icon-button" ng-click="VM.resetFilters()">
+                    <md-icon class="material-icons">clear</md-icon>
+                    <md-tooltip md-direction="top">
+                        Reset filters
+                    </md-tooltip>
+                </md-button>
+            </div>
+        </md-toolbar>
+        <md-content layout-padding="">
+            <form method="post" novalidate ng-submit="VM.applyFilters()">
+                <md-input-container class="md-block">
+                    <label for="id">#ID</label>
+                    <input type="text" id="id" ng-model="VM.filters.id" md-autofocus="">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>email</label>
+                    <input type="text" id="slug" ng-model="VM.filters.email">
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" ng-model="VM.filters.name">
+                </md-input-container>
+
+
+                <md-input-container class="md-block">
+                    <label>Status</label>
+                    <md-select ng-model="VM.filters.active">
+                        <md-option ng-repeat="state in VM.boolValues" value="{{state.value}}">
+                            {{state.label}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Role</label>
+                    <md-select ng-model="VM.filters.role">
+                        <md-option value="">
+                            None
+                        </md-option>
+                        <md-option ng-repeat="role in VM.Roles" value="{{role.name}}">
+                            {{role.display_name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Permission</label>
+                    <md-select ng-model="VM.filters.permission">
+                        <md-option value="">
+                            None
+                        </md-option>
+                        <md-option ng-repeat="permission in VM.Permissions" value="{{permission.name}}">
+                            {{permission.display_name}}
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Date mode</label>
+                    <md-select ng-model="VM.filters.dateMode">
+                        <md-option value="created_at">Created</md-option>
+                        <md-option value="update_at">Updated</md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label>Category</label>
+                    <md-select ng-model="VM.filters.category_id" aria-label="Category">
+                        <md-option value="">
+                            Any
+                        </md-option>
+                        <md-option ng-repeat="category in VM.Categories" value="{{category.id}}">
+                            <span ng-bind-html="category.label"></span>
+                        </md-option>
+                    </md-select>
+                </md-input-container>
+
+                <md-datepicker ng-model="VM.filters.dateStart"
+                               md-placeholder="From date"></md-datepicker>
+
+                <md-datepicker ng-model="VM.filters.dateEnd"
+                               md-placeholder="To date"></md-datepicker>
+
+                <md-button type="submit" class="md-primary md-raised">
+                    Filter
+                </md-button>
+            </form>
+        </md-content>
+
+    </md-sidenav>

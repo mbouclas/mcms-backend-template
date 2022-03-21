@@ -1,0 +1,27 @@
+<section layout="row" flex class="dialog" ng-init="VM.selectedTab = 0">
+    <md-sidenav class="md-whiteframe-z2" md-component-id="menus" md-is-locked-open="true">
+        <md-list>
+            <md-list-item
+                    ng-class="{'active-light' : VM.selectedTab == $index}"
+                    ng-repeat="connector in VM.Connectors"
+                    ng-click="VM.selectedTab = $index">
+                <md-icon class="material-icons">keyboard_arrow_right</md-icon>
+                <p>{{ connector.name }}</p>
+            </md-list-item>
+        </md-list>
+    </md-sidenav>
+    <md-content flex layout-padding>
+        <div ng-repeat="connector in VM.Connectors"  ng-if="$index == VM.selectedTab">
+            <menu-connector connector="connector"
+                            on-result="VM.onResult(result)"
+                            ng-if="connector.type != 'custom'">
+            </menu-connector>
+            <custom-link-connector
+                    on-result="VM.onResult(result)"
+                    ng-if="connector.type == 'custom'"
+            >
+            </custom-link-connector>
+        </div>
+    </md-content>
+</section>
+

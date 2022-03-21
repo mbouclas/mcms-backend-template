@@ -1,0 +1,19 @@
+<div class="chipsTags">
+<md-chips ng-model="VM.Model"
+          md-autocomplete-snap=""
+          md-transform-chip="VM.transformChip($chip)"
+          md-require-match="options.autocompleteRequireMatch">
+    <md-autocomplete md-selected-item="VM.selectedItem"
+                     md-search-text="VM.searchText"
+                     md-items="item in VM.querySearch(VM.searchText)"
+                     md-item-text="item.name"
+                     placeholder="Tags">
+        <span md-highlight-text="VM.searchText">{{item.name}}</span>
+    </md-autocomplete>
+    <md-chip-template>
+        <span>
+          <strong>{{$chip.name}}</strong>
+        </span>
+    </md-chip-template>
+</md-chips>
+</div>

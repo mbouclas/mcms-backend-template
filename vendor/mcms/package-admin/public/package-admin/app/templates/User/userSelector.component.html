@@ -1,0 +1,20 @@
+<md-autocomplete
+        md-select-on-focus="true"
+        md-no-cache="false"
+        md-delay="500"
+        md-search-text="VM.searchText"
+        md-selected-item-change="VM.onUserSelected(user)"
+        md-items="user in VM.getUsers(VM.searchText)"
+        md-item-text="user.fullName"
+        md-min-length="0"
+        placeholder="Select user">
+    <md-item-template>
+        <span>{{ user.fullName}} <{{ user.email }}></span>
+    </md-item-template>
+    <md-not-found>
+        Nothing found
+    </md-not-found>
+</md-autocomplete>
+<div ng-if="showCurrentUser" layout-padding>
+    Current owner : <strong>{{ VM.Model.fullName }} <{{ VM.Model.email }}></strong>
+</div>

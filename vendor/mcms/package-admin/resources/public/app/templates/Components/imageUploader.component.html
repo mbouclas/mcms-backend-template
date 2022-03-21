@@ -1,0 +1,21 @@
+<md-dialog aria-label="Upload">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                Upload
+            </h2>
+            <div flex=""></div>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content style="min-width: 600px;">
+        <div class="dropzone"
+             options="VM.dzOptions"
+             callbacks="VM.dzCallbacks"
+             methods="VM.dzMethods"
+             ng-dropzone></div>
+    </md-dialog-content>
+</md-dialog>
+

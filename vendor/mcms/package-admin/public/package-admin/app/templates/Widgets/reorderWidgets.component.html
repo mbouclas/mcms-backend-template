@@ -1,0 +1,45 @@
+<md-content class="md-whitespace-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2>
+                Reorder widgets
+            </h2>
+            <div flex=""></div>
+            <md-button class="md-fab md-hue-2 md-accent" aria-label="save"
+                       hide-sm hide-xs
+                       ng-click="VM.save()">
+                <md-icon class="material-icons">save</md-icon>
+                <md-tooltip md-direction="top">
+                    Save
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+<md-content layout-xs="column" layout="row" sv-root>
+    <div flex-xs flex-gt-xs="50" layout="column" id="center"  sv-part="VM.Model.left">
+        <md-list>
+            <md-list-item ng-repeat="item in VM.Model.left" sv-element>
+                <div sv-placeholder class="placeholder-right"></div>
+                <md-button class="md-icon-button" aria-label="Move" sv-handle>
+                    <md-icon class="material-icons">drag_handle</md-icon>
+                </md-button>
+                <div class="md-list-item-text" layout="column">
+                    <p>{{ item.title }}</p>
+                </div>
+                </md-list-item>
+        </md-list>
+    </div>
+    <div flex-xs flex-gt-xs="50" layout="column" id="right"  sv-part="VM.Model.right">
+        <md-list>
+            <md-list-item ng-repeat="item in VM.Model.right" sv-element>
+                <div sv-placeholder class="placeholder-right"></div>
+                <md-button class="md-icon-button" aria-label="Move" sv-handle>
+                    <md-icon class="material-icons">drag_handle</md-icon>
+                </md-button>
+                <div class="md-list-item-text" layout="column">
+                    <p>{{ item.title }}</p>
+                </div>
+            </md-list-item>
+        </md-list>
+    </div>
+</md-content>

@@ -1,0 +1,31 @@
+<md-content layout-padding="">
+
+    <form action="" ng-submit="VM.save()" novalidate>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Name</label>
+            <input ng-model="VM.Item.name" required>
+        </md-input-container>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Native name</label>
+            <input ng-model="VM.Item.native" required>
+        </md-input-container>
+
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Region code</label>
+            <input ng-model="VM.Item.regional" required>
+        </md-input-container>
+
+        <md-content layout-gt-sm="row">
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Flag icon</label>
+            <input ng-model="VM.Item.flag_icon" required>
+        </md-input-container>
+
+        </md-content>
+
+        <md-button type="submit" class="md-accent md-raised">
+            <md-icon class="material-icons">save</md-icon>
+            Save
+        </md-button>
+    </form>
+</md-content>

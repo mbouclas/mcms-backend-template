@@ -1,0 +1,28 @@
+<md-dialog aria-label="Upload Files"  style="min-width: 500px;">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>Upload Files</h2>
+            <span flex></span>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon  class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+<div class="md-dialog-content" style="min-height: 400px">
+
+    <upload  ng-model="VM.model" ng-if="VM.onSelectFromMediaLibrary"
+             options="VM.UploadConfig"
+             instance="VM.dzInstance(instance)"
+             on-media-library-select="VM.onSelectFromMediaLibrary(item)"
+             callbacks="VM.Callbacks"></upload>
+
+
+    <upload  ng-model="VM.model" ng-if="!VM.onSelectFromMediaLibrary"
+             options="VM.UploadConfig"
+             instance="VM.dzInstance(instance)"
+             callbacks="VM.Callbacks"></upload>
+
+
+</div>
+
+</md-dialog>

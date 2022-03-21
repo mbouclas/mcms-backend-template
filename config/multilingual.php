@@ -1,9 +1,10 @@
 <?php
-        return [
+            return [
     "locales" => [
         "en",
         "el",
-        "ace"
+        "ace",
+        "en"
     ],
     "fallback_locale" => "en"
 ];

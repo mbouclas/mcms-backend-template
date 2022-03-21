@@ -1,0 +1,81 @@
+<md-toolbar class="md-table-toolbar md-default">
+    <div class="md-toolbar-tools">
+        <h2 class="md-title">{{ Title || 'Featured items' }}</h2>
+        <div flex=""></div>
+        <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                   ng-click="searchOn=true;" ng-show="!searchOn">
+            <md-icon class="material-icons">add</md-icon>
+            <md-tooltip md-direction="top">
+                Add featured item
+            </md-tooltip>
+        </md-button>
+
+        <md-button class="md-button" aria-label="Add"
+                   ng-click="searchOn=false;" ng-show="searchOn">
+            <md-icon class="material-icons">arrow_back</md-icon>
+            <md-tooltip md-direction="top">
+                Back
+            </md-tooltip>
+        </md-button>
+    </div>
+</md-toolbar>
+
+<div layout="row"  ng-init="VM.selectedTab = 0" ng-if="searchOn">
+    <md-list>
+        <md-list-item
+                ng-class="{'active-light' : VM.selectedTab == $index}"
+                ng-repeat="connector in VM.Connectors"
+                ng-click="VM.selectedTab = $index">
+            <md-icon class="material-icons">keyboard_arrow_right</md-icon>
+            <p>{{ connector.name }}</p>
+        </md-list-item>
+    </md-list>
+    <md-content layout="column" class="content-wrapper md-padding" flex layout-column >
+        <div flex>
+            <div ng-repeat="connector in VM.Connectors" ng-if="$index == VM.selectedTab">
+
+                <item-connector
+                        connector="connector"
+                        on-result="VM.onResult(result)"
+                        options="options.connector"
+                        ng-if="connector.type != 'custom'">
+                </item-connector>
+            </div>
+        </div>
+    </md-content>
+</div>
+
+<div ng-hide="searchOn || options.itemsHidden" ng-if="!options.multiple && VM.Item.item_id" layout-padding="">
+    <p>
+        <em>{{ VM.Item.type }} <strong>#{{ VM.Item.item_id }}</strong></em>
+        {{ VM.Item.VM.Item.title[VM.defaultLang] || VM.Item.title }}
+        <md-button class="md-icon-button md-secondary"
+                   ng-click="VM.resetItem()"
+                   aria-label="delete">
+            <md-icon class="material-icons">delete</md-icon>
+        </md-button>
+    </p>
+</div>
+<md-list sv-root sv-part="VM.SelectedItems" ng-hide="searchOn || options.itemsHidden" ng-if="options.multiple">
+    <md-list-item
+            ng-repeat="item in VM.Items"
+            sv-element="opts"
+    >
+        <div sv-placeholder class="placeholder-right"></div>
+        <md-button class="md-icon-button" aria-label="Move" sv-handle>
+            <md-icon class="material-icons">drag_handle</md-icon>
+        </md-button>
+        <div class="md-list-item-text" layout="column">
+            <p>
+                <em>{{ item.type }} <strong>#{{ item.item_id }}</strong></em> {{ item.item.title[VM.defaultLang] || item.title }}
+                <md-button class="md-icon-button md-secondary"
+                           ng-click="VM.removeItem(item)"
+                           aria-label="delete">
+                    <md-icon class="material-icons">delete</md-icon>
+                </md-button>
+            </p>
+
+        </div>
+        <md-divider></md-divider>
+    </md-list-item>
+</md-list>

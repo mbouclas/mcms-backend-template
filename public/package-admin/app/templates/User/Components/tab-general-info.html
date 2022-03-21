@@ -1,0 +1,66 @@
+<div flex>
+
+    <md-switch ng-model="VM.User.active" aria-label="Active" ng-if="!VM.showApproved">
+        Status
+    </md-switch>
+
+    <md-switch ng-model="VM.userApproved" aria-label="Active" ng-change="VM.approveUser()" ng-if="VM.showApproved">
+        Approve user <span style="color: red;" ng-if="VM.userApproved">User approved</span>
+    </md-switch>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Name</label>
+    <input ng-model="VM.User.firstName" required name="firstName">
+    <div ng-messages="UserForm.firstName.$error">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+
+<div>
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Surname</label>
+    <input ng-model="VM.User.lastName" required name="lastName">
+
+    <div ng-messages="UserForm.lastName.$error" ng-show="UserForm.lastName.$touched">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>email</label>
+    <input ng-model="VM.User.email" required name="email" validate-user-fields-async="VM.User">
+    <div ng-messages="UserForm.email.$error" ng-show="UserForm.email.$touched">
+        <div ng-message="emailUnique">This email is already taken</div>
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Username</label>
+        <input ng-model="VM.User.username" name="username" validate-user-fields-async="VM.User">
+
+        <div ng-messages="UserForm.username.$error" ng-show="UserForm.username.$touched">
+            <div ng-message="usernameUnique">This username is already taken</div>
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Password</label>
+    <input type="password" ng-model="VM.User.password" ng-required="!VM.User.id" name="password">
+
+    <div ng-messages="UserForm.password.$error">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Confirm Password</label>
+    <input type="password" ng-model="confirm" ng-required="!VM.User.id" compare-to="VM.User.password" name="compare">
+
+    <div ng-messages="UserForm.compare.$error">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+</div>
+</div>

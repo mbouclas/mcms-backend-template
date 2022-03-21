@@ -1,0 +1,44 @@
+{
+    "name": "mcms/package-admin",
+    "type": "library",
+    "description": "The admin interface",
+    "keywords": [
+    ],
+    "license": "MIT",
+    "authors": [
+        {
+            "name": "Michael Bouclas",
+            "email": "mbouclas@gmail.com",
+            "homepage": "",
+            "role": "Developer"
+        }
+    ],
+    "require": {
+        "illuminate/support": "~5.1",
+        "php" : ">=5.6.4",
+        "intervention/image": "^2.3"
+    },
+    "require-dev": {
+        "intervention/image": "^2.3"
+    },
+    "autoload": {
+        "psr-4": {
+            "Mcms\\Admin\\": "src"
+        }
+    },
+    "autoload-dev": {
+        "psr-4": {
+            "Mcms\\Admin\\": "tests"
+        }
+    },
+    "scripts": {
+        "post-package-update": [
+
+        ]
+    },
+    "extra": {
+        "branch-alias": {
+            "dev-master": "1.0-dev"
+        }
+    }
+}

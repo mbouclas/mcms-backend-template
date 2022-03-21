@@ -1,6 +1,20 @@
 <?php
 
 use FrontEnd\Mail\SimpleMail;
+use Illuminate\Support\Facades\DB;
+Route::get('build/pages', 'Mcms\Pages\Http\Controllers\PageController@index');
+Route::get('build/page/{id}', 'Mcms\Pages\Http\Controllers\PageController@show');
+
+Route::prefix('astro')->middleware(['astroAuth'])->group(function($router) {
+    $router->get('/boot', '\FrontEnd\Http\Controllers\Astro\AstroBootController@index');
+    $router->get('/home', '\FrontEnd\Http\Controllers\Astro\AstroHomePageController@index');
+    $router->get('/categories', '\FrontEnd\Http\Controllers\Astro\AstroCategoriesController@index');
+    $router->get('/tags', '\FrontEnd\Http\Controllers\Astro\AstroTagController@index');
+    $router->get('/pages', '\FrontEnd\Http\Controllers\Astro\AstroPageController@index');
+    $router->get('/pages/count', '\FrontEnd\Http\Controllers\Astro\AstroPageController@count');
+});
+
+
 
 Route::group(['middleware' => ['web']], function ($router) {
     $router->get('/', ['as' => 'home', 'uses'=> 'FrontEnd\Http\Controllers\HomeController@index']);
@@ -28,6 +42,7 @@ Route::group(['middleware' => ['web']], function ($router) {
     $router->get('/sitemap.xml', ['as' => 'sitemap', 'uses'=> 'FrontEnd\Http\Controllers\SiteMapController@index']);
     $router->get('/tag/{slug}', ['as' => 'tag', 'uses'=> 'FrontEnd\Http\Controllers\TagController@index']);
 });
+
 
 
 Route::get('mailchimp', 'FrontEnd\Http\Controllers\MailchimpHooksController@index');

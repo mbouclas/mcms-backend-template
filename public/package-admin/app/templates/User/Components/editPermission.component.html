@@ -1,0 +1,39 @@
+<div class="md-dialog-content">
+<form name="ItemsForm" ng-submit="ItemsForm.$valid && VM.save()" novalidate>
+    <div flex>
+        <md-input-container class="md-block" flex-gt-sm>
+            <label>Name</label>
+            <input ng-model="VM.Permission.display_name" name="label" required>
+            <div ng-messages="ItemsForm.label.$error">
+                <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+            </div>
+        </md-input-container>
+
+        <div>
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Alias</label>
+                <input ng-model="VM.Permission.name" name="name" required>
+                <div ng-messages="ItemsForm.name.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Description</label>
+                <input ng-model="VM.Permission.description" name="description" required>
+                <div ng-messages="ItemsForm.description.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+        </div>
+    </div>
+
+
+    <md-button type="submit" class="md-accent md-raised">
+        <md-icon class="material-icons">save</md-icon>
+        Save
+    </md-button>
+</form>
+</div>

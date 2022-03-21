@@ -1,0 +1,99 @@
+<md-card class="md-whitespace-4dp">
+    <md-toolbar class="md-hue-2" ng-if="settings.width">
+        <div class="md-toolbar-tools">
+            <h2>
+                <span>Image will be resized to {{ settings.width }}x{{ settings.height }}px</span>
+            </h2>
+        </div>
+    </md-toolbar>
+    <div layout="{{ layoutType || 'row' }}" layout-xs="column">
+        <img ng-src="{{ Item.src || 'package-admin/img/no-image.png' }}"
+             ng-if="options.showPreview"
+             flex style="width: 100%">
+
+        <upload  ng-model="Item.src" ng-hide="!options.showUpload"
+                 options="uploadOptions"
+                 callbacks="callbacks"></upload>
+        <md-card-content flex="70" flex-xs="100" ng-show="options.showDetails">
+
+            <md-input-container layout  flex-gt-sm>
+                <label>Image URL</label>
+                <input ng-model="Item.src" ng-change="itemChange()">
+            </md-input-container>
+            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+                <label>Link</label>
+                <input ng-model="Item.href">
+            </md-input-container>
+
+            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+                <label>Open in</label>
+                <md-select ng-model="Item.target" flex>
+                    <md-option ng-repeat="target in targetOptions" value="{{target.value}}">
+                        {{target.label}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+
+            <div ng-if="!settings.translatable">
+                <md-input-container layout  flex-gt-sm>
+                    <label>Title</label>
+                    <input ng-model="Item.title" name="title-{{ key }}">
+                </md-input-container>
+                <md-input-container layout  flex-gt-sm>
+                    <label>Alt</label>
+                    <input ng-model="Item.alt" name="alt-{{ key }}">
+                </md-input-container>
+                <md-input-container layout  flex-gt-sm>
+                    <label>Description</label>
+                    <textarea ng-model="Item.description" name="description-{{ key }}" redactor placeholder="Description"></textarea>
+                </md-input-container>
+            </div>
+
+            <div ng-repeat="(key, locale) in VM.Locales" ng-if="settings.translatable">
+                <md-toolbar class="md-accent">
+                    <div class="md-toolbar-tools">
+                        <h3><span>{{ locale.name }}</span></h3>
+                    </div>
+                </md-toolbar>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Alt</label>
+                    <input ng-model="Item.alt[key]"
+                           name="alt-{{ key }}">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Title</label>
+                    <input ng-model="Item.title[key]"
+                           name="title-{{ key }}">
+                </md-input-container>
+
+                <md-input-container class="md-block" flex-gt-sm>
+                    <label>Description</label>
+                    <textarea ng-model="Item.description[key]" name="description-{{ key }}" redactor placeholder="Description"></textarea>
+                </md-input-container>
+
+            </div>
+
+        </md-card-content>
+
+
+
+    </div>
+
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button class="material-icons" aria-label="details" ng-click="VM.toggle('showDetails')">
+            <md-icon>details</md-icon>
+            <md-tooltip md-direction="top">
+                Toggle details
+            </md-tooltip>
+        </md-button>
+        <md-button class="material-icons" aria-label="preview" ng-click="VM.toggle('showPreview')">
+            <md-icon>remove_red_eye</md-icon>
+            <md-tooltip md-direction="top">
+                Toggle preview
+            </md-tooltip>
+        </md-button>
+
+    </md-card-actions>
+</md-card>

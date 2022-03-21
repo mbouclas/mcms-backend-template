@@ -1,0 +1,15 @@
+<md-card class="md-whitespace-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Extra Fields</h2>
+        </div>
+    </md-toolbar>
+
+<settings-creator ng-model="VM.Fields"
+                  options="VM.defaultOptions"
+                  inject-to-fields="additionalFields"
+                  on-save="VM.onSave(field, allFields,  editedModel)"
+                  on-delete="VM.onDelete(field, $index, allFields)"
+></settings-creator>
+
+</md-card>

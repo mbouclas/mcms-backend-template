@@ -1,0 +1,57 @@
+<md-card class="md-whitespace-4dp">
+    <div layout="{{ layoutType || 'row' }}" layout-xs="column">
+
+        <upload  ng-model="Item.src" ng-hide="!options.showUpload"
+                 options="uploadOptions"
+                 callbacks="callbacks"></upload>
+        <md-card-content flex="70" flex-xs="100">
+
+            <md-input-container layout  flex-gt-sm>
+                <label>file URL</label>
+                <input ng-model="Item.src" ng-change="itemChange()">
+            </md-input-container>
+            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+                <label>Link</label>
+                <input ng-model="Item.href">
+            </md-input-container>
+            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+                <label>Title</label>
+                <input ng-model="Item.title">
+            </md-input-container>
+
+            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+                <label>Open in</label>
+                <md-select ng-model="Item.target" flex>
+                    <md-option ng-repeat="target in targetOptions" value="{{target.value}}">
+                        {{target.label}}
+                    </md-option>
+                </md-select>
+            </md-input-container>
+            <md-input-container layout  flex-gt-sm ng-if="options.showDetails">
+                <label>Description</label>
+                <textarea ng-model="Item.description" rows="3"></textarea>
+            </md-input-container>
+
+
+        </md-card-content>
+
+
+
+    </div>
+
+    <md-card-actions layout="row" layout-align="end center">
+        <md-button class="material-icons" aria-label="details" ng-click="VM.toggle('showDetails')">
+            <md-icon>details</md-icon>
+            <md-tooltip md-direction="top">
+                Toggle details
+            </md-tooltip>
+        </md-button>
+        <md-button class="material-icons" aria-label="preview" ng-click="VM.toggle('showPreview')">
+            <md-icon>remove_red_eye</md-icon>
+            <md-tooltip md-direction="top">
+                Toggle preview
+            </md-tooltip>
+        </md-button>
+
+    </md-card-actions>
+</md-card>

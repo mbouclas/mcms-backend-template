@@ -1,0 +1,44 @@
+<form name="ItemForm" ng-submit="ItemForm.$valid && VM.save()">
+
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Name</label>
+        <input ng-model="VM.Item.name" required name="name">
+        <div ng-messages="ItemForm.name.$error">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+
+
+    <tags ng-model="VM.Item.tagged" ng-if="VM.Item.id"></tags>
+
+    <md-content ng-show="showExif">
+        <h5>exif data</h5>
+        <ul>
+            <li ng-repeat="(key, value) in VM.Item.settings.meta.exif">
+                {{ key }} : {{ value }}
+            </li>
+        </ul>
+    </md-content>
+
+    <md-button type="submit" class="md-accent md-raised">
+        <md-icon class="material-icons">save</md-icon>
+        Save
+    </md-button>
+
+    <md-button ng-click="VM.delete()" class="md-primary md-raised">
+        <md-icon class="material-icons">delete</md-icon>
+        Delete
+    </md-button>
+
+    <md-button ng-href="{{ VM.Item.url }}" target="_blank" class="md-primary md-raised">
+        <md-icon class="material-icons">open_in_new</md-icon>
+        View larger
+    </md-button>
+
+    <md-button ng-click="showExif = !showExif" class="md-primary md-raised" ng-init="showExif = false">
+        <md-icon class="material-icons">list</md-icon>
+        Show exif data
+    </md-button>
+
+
+</form>

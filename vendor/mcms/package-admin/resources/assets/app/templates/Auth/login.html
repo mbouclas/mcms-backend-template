@@ -1,0 +1,81 @@
+<section layout="row"  layout-align="center center" class="login" layout-padding>
+    <md-card class="md-whiteframe-4dp" flex-xl="100" flex="70" flex-xs="80">
+        <md-toolbar>
+            <div layout="column" layout-padding layout-align="center center">
+                <div>
+                    <md-icon class="logo">home</md-icon>
+                </div>
+                <div class="md-headline md-padding">Login</div>
+            </div>
+        </md-toolbar>
+        <md-card-content>
+
+<!--            <div ng-if="ACL.can('create.users')">Can create users</div>
+            <div ng-if="ACL.level(2)">Is of level</div>
+            <div ng-if="ACL.role('admin')">Is admin</div>-->
+            <md-toolbar class="md-accent" ng-if="VM.errorMessage" style="margin-bottom: 10px; background-color: #d9534f;">
+                <h2 class="md-toolbar-tools">
+                    <span flex>{{ VM.errorMessage | translate }}</span>
+                </h2>
+            </md-toolbar>
+            <div class="alert alert-info">
+                System Optimized for Chrome browser
+            </div>
+            <form name="LoginForm" method="POST"  ng-submit="LoginForm.$valid && VM.login()" novalidate ng-if="!showLostPassword">
+                <md-input-container class="md-block">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" ng-model="VM.Login.email" id="email" required/>
+                    <div ng-messages="LoginForm.email.$error" ng-show="LoginForm.email.$touched">
+                        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <label for="password">Password</label>
+                    <input type="password" id="password" name="password" ng-model="VM.Login.password" required/>
+                    <div ng-messages="LoginForm.password.$error" ng-show="LoginForm.password.$touched">
+                        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                    </div>
+                </md-input-container>
+
+                <md-input-container class="md-block">
+                    <md-checkbox ng-model="VM.Login.remember">Keep me logged in</md-checkbox>
+                </md-input-container>
+
+
+                <div layout="row" layout-align="center center">
+                    <md-button class="md-raised md-accent"
+                               type="submit"
+                               style="width:100%; margin: 15px 0px 0px 0px;">Login
+                    </md-button>
+                </div>
+
+            </form>
+            <div class="alert alert-success" ng-if="VM.resetEmailSent">
+                We sent you an email with instructions on how to reset your password
+            </div>
+            <div layout="row" layout-align="center center" ng-show="!showLostPassword" ng-init="showLostPassword = false">
+                <md-button class="md-raised md-primary" ng-click="showLostPassword = true"
+                           style="width:100%; margin: 15px 0px 0px 0px;">Forgot password
+                </md-button>
+            </div>
+
+            <form name="LostPassword" method="POST"  ng-submit="VM.resetPassword()" novalidate ng-if="showLostPassword">
+                <md-input-container class="md-block">
+                    <label for="email">Email</label>
+                    <input type="email" name="email" ng-model="VM.LostPass.email" required/>
+                    <p>You will receive an email with instructions on how to reset your password</p>
+                </md-input-container>
+                <md-button class="md-raised md-accent"
+                           type="submit"
+                           style="width:100%; margin: 15px 0px 0px 0px;">Reset
+                </md-button>
+
+            </form>
+            <md-button class="md-raised md-primary" ng-click="showLostPassword = false"
+                       ng-show="showLostPassword"
+                       style="width:100%; margin: 15px 0px 0px 0px;">Back to login
+            </md-button>
+        </md-card-content>
+    </md-card>
+</section>

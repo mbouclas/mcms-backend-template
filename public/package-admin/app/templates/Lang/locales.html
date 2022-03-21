@@ -1,0 +1,65 @@
+<md-card class="md-whiteframe-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Enabled Locales</h2>
+        </div>
+    </md-toolbar>
+<md-list>
+    <md-list-item class="secondary-button-padding"
+                  ng-repeat="(code, locale) in VM.Locales"
+                  ng-click="VM.itemClick($event)"
+    >
+        <p>{{ locale.name }}</p>
+        <md-button  ng-click="VM.edit($event, code)">
+            <md-icon class="material-icons">edit</md-icon>
+            <md-tooltip>Edit locale</md-tooltip>
+        </md-button>
+
+        <md-button  ng-click="VM.disable($event, code)">
+            <md-icon class="material-icons">delete</md-icon>
+            <md-tooltip>Delete locale</md-tooltip>
+        </md-button>
+        <md-switch ng-model="locale.default" aria-label="Active" ng-change="VM.setDefault(locale)">
+
+        </md-switch>
+    </md-list-item>
+</md-list>
+</md-card>
+
+
+<md-card class="md-whiteframe-4dp">
+    <md-toolbar class="md-table-toolbar md-default">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Add new locale</h2>
+        </div>
+    </md-toolbar>
+    <md-autocomplete
+        md-select-on-focus="true"
+        md-no-cache="false"
+        md-delay="500"
+        md-search-text="VM.searchText"
+        md-selected-item-change="VM.onLocaleSelected(item)"
+        md-items="item in VM.getLocale(VM.searchText)"
+        md-item-text="item.name"
+        md-min-length="0"
+        placeholder="Select a locale">
+        <md-item-template>
+            <span md-highlight-text="VM.searchText" md-highlight-flags="^i">{{item.name}}</span>
+        </md-item-template>
+        <md-not-found>
+            Nothing found
+        </md-not-found>
+    </md-autocomplete>
+<!--    <md-list>
+        <md-subheader class="md-no-sticky">Available locales</md-subheader>
+        <md-list-item class="secondary-button-padding"
+                      ng-if="!VM.Locales[key]"
+                      ng-repeat="(key, locale) in VM.LocalesAvailable">
+            <p>{{ locale.name }}</p>
+            <md-input class="md-secondary" ng-click="VM.delete()">
+                <md-icon class="material-icons">delete</md-icon>
+                <md-tooltip>Delete locale</md-tooltip>
+            </md-input>
+        </md-list-item>
+    </md-list>-->
+</md-card>

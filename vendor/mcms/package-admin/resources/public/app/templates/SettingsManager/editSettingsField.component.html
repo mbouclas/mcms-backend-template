@@ -1,0 +1,168 @@
+<form name="ItemForm" ng-submit="ItemForm.$valid && VM.save()" novalidate>
+    <div ng-repeat="(name, field) in VM.Model.params">
+        <div ng-include src="field.type" onload=""></div>
+        <div ng-if="field.params">
+            <div ng-include src="'array'" onload="Item = field.value; Name = name; template = field.params"></div>
+        </div>
+    </div>
+    <div ng-if="VM.Model.settings">
+        <h2>Settings</h2>
+        <div ng-repeat="(name, field) in VM.Model.settings">
+            <div ng-include src="field.type" onload=""></div>
+        </div>
+    </div>
+
+    <div ng-if="VM.Model.config">
+        <h2>Config</h2>
+        <div ng-repeat="(name, field) in VM.Model.config">
+            <div ng-include src="field.type" onload=""></div>
+        </div>
+    </div>
+    <md-button type="submit" class="md-button md-raised md-primary">Save field</md-button>
+</form>
+
+<script type="text/ng-template" id="text">
+    <md-input-container class="md-block" flex flex-gt-sm ng-if="!VM.isObject(field.value)">
+        <label>{{ field.label || name }}</label>
+        <input ng-model="field.value" ng-required="field.required" name="{{ field.randomId }}"
+               to-slug="VM.Model.params[field.toSlug].value">
+
+        <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+    <md-input-container class="md-block" flex flex-gt-sm
+                        ng-repeat="(key, locale) in VM.Locales"
+                        ng-if="VM.isObject(field.value)">.
+
+        <label>{{ field.label || name }} in {{ locale.name }}</label>
+        <input ng-model="field.value[key]" ng-required="field.required" name="{{ field.randomId }}"
+               to-slug="VM.Model.params[field.toSlug].value">
+
+        <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+</script>
+
+<script type="text/ng-template" id="url">
+    <md-input-container class="md-block" flex flex-gt-sm>
+        <label>{{ field.label || name }}</label>
+        <input ng-model="field.value" ng-required="field.required" name="{{ field.randomId }}"
+               to-slug="VM.Model.params[field.toSlug].value" type="text">
+
+        <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+</script>
+
+<script type="text/ng-template" id="email">
+    <md-input-container class="md-block" flex flex-gt-sm>
+        <label>{{ field.label || name }} </label>
+        <input type="email" ng-model="field.value" ng-required="field.required" name="{{ field.randomId }}"
+               to-slug="VM.Model.params[field.toSlug].value">
+
+        <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+</script>
+
+<script type="text/ng-template" id="number">
+    <md-input-container class="md-block" flex flex-gt-sm>
+        <label>{{ field.label || name }}</label>
+        <input type="number" step="1" min="0" ng-model="field.value" name="{{ field.randomId }}">
+        <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+</script>
+
+<script type="text/ng-template" id="select">
+    <label>{{ field.label || name }}</label>
+
+    <md-select aria-label="{{ field.label || name }}" placeholder="{{ field.label || name }}"
+               ng-model="field.value">
+        <md-option value="{{ option.value }}" ng-repeat="option in field.options">{{ option.label }}</md-option>
+    </md-select>
+    <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</script>
+
+<script type="text/ng-template" id="selectMultiple">
+    <label>{{ field.label || name }}</label>
+
+    <md-select aria-label="{{ field.label || name }}" placeholder="{{ field.label || name }}"
+               ng-model="field.value" multiple="">
+        <md-option value="{{ option.value }}" ng-repeat="option in field.options">{{ option.label }}</md-option>
+    </md-select>
+    <div ng-messages="ItemForm[name].$error" ng-if="field.required">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</script>
+
+<script type="text/ng-template" id="boolean">
+    <md-switch aria-label="{{ field.label || name }}"
+               ng-change="VM.checkUnique(field, name, arrayOfItems)"
+               ng-model="field.value">
+        {{ field.label || name }}
+    </md-switch>
+</script>
+
+<script type="text/ng-template" id="image">
+    <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+    <image-component ng-model="field.value" layout-type="column"
+                     name="{{ field.label || name }}"
+                     settings="field.settings"
+                     pass-through="field"
+                     on-change="VM.uploadDone(field, value, passThrough)"
+                     options="VM.imageOptions" ></image-component>
+</script>
+
+<script type="text/ng-template" id="file">
+    <label>{{ field.label[VM.defaultLang] || field.label }}</label>
+    <file-component ng-model="field.value" layout-type="column"
+                    name="{{ field.label || name }}"
+                    pass-through="field"
+                    on-change="VM.uploadDone(field, value, passThrough)"
+                    options="VM.fileOptions" ></file-component>
+</script>
+
+<script type="text/ng-template" id="array">
+    <md-toolbar class="md-accent">
+        <div class="md-toolbar-tools">
+            <h2 class="md-title">Add {{Name}}</h2>
+            <div flex=""></div>
+            <md-button class="md-fab md-hue-2 md-accent" aria-label="Add"
+                       ng-click="VM.addOption(Item, template)">
+                <md-icon class="material-icons">add</md-icon>
+                <md-tooltip md-direction="top">
+                    Create new
+                </md-tooltip>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-list sv-root sv-part="Item">
+        <md-list-item
+                ng-repeat="item in Item"
+                sv-element="opts"
+        >
+            <div sv-placeholder class="placeholder-right"></div>
+            <md-button class="md-icon-button" aria-label="Move" sv-handle>
+                <md-icon class="material-icons">drag_handle</md-icon>
+            </md-button>
+            <md-button class="md-icon-button" aria-label="delete" ng-click="VM.deleteOption(Item, $index)">
+                <md-icon class="material-icons">delete</md-icon>
+            </md-button>
+            <div ng-repeat="(key, obj) in item" onload="field = obj; name = key; arrayOfItems = Item"
+                 ng-include src="obj.type" style="padding-right: 10px"></div>
+            <md-divider></md-divider>
+        </md-list-item>
+
+    </md-list>
+
+</script>
+
+

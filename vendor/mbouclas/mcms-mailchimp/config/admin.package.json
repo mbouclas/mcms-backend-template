@@ -1,0 +1,14 @@
+{
+  "name" : "McmsMailchimp",
+  "package" : "mcms-mailchimp",
+  "modules" : [
+    "mcms.mailchimp"
+  ],
+  "files" : {
+    "js" : [
+      "vendor/mcms/mailchimp/js/mailchimp-compiled.js"
+    ],
+    "css" : [
+    ]
+  }
+}

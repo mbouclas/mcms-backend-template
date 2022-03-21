@@ -1,5 +1,5 @@
 <?php
-        return [
+            return [
     "supportedLocales" => [
         "el" => [
             "name" => "Greek",
@@ -9,8 +9,26 @@
             "flag_icon" => "asasasas",
             "code" => "el",
             "default" => TRUE
+        ],
+        "en" => [
+            "name" => "English",
+            "script" => "Latn",
+            "native" => "English",
+            "regional" => "en_GB",
+            "code" => "en",
+            "default" => FALSE
         ]
     ],
     "useAcceptLanguageHeader" => TRUE,
-    "hideDefaultLocaleInURL" => FALSE
+    "hideDefaultLocaleInURL" => FALSE,
+    "localesOrder" => [
+
+    ],
+    "localesMapping" => [
+
+    ],
+    "utf8suffix" => ".UTF-8",
+    "urlsIgnored" => [
+        "/skipped"
+    ]
 ];

@@ -1,0 +1,28 @@
+<div class="md-dialog-content">
+    <form ng-submit="MenuForm.$valid && VM.save()" novalidate name="MenuForm">
+        <div flex>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Title</label>
+                <input ng-model="VM.Menu.title" required name="title">
+
+                <div ng-messages="MenuForm.title.$error">
+                    <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+                </div>
+            </md-input-container>
+
+            <md-input-container class="md-block" flex-gt-sm>
+                <label>Description</label>
+                <textarea ng-model="VM.Menu.description"  name="description" rows="5"></textarea>
+            </md-input-container>
+
+            <settings-creator ng-model="VM.Menu.settings.extraFields"></settings-creator>
+
+        <md-button type="submit" class="md-accent md-raised">
+            <md-icon class="material-icons">save</md-icon>
+            Save
+        </md-button>
+            </div>
+    </form>
+
+</div>

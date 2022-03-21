@@ -1,0 +1,53 @@
+<form ng-submit="ItemForm.$valid && VM.save()" novalidate name="ItemForm">
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Title</label>
+    <input ng-model="VM.Item.title"
+           required name="title">
+    <div ng-messages="ItemForm.title.$error">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+
+    <md-input-container class="md-block" flex-gt-sm>
+        <label>Body</label>
+        <textarea ng-model="VM.Item.body"
+                  name="body"
+                  placeholder="Description" redactor required></textarea>
+        <div ng-messages="ItemForm.body.$error">
+            <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+        </div>
+    </md-input-container>
+
+    <h4>Send this notification to the following users :</h4>
+    <user-selector ng-model="VM.Item.users"
+                   show-current-user="false"></user-selector>
+
+    <md-chips ng-model="VM.Item.users" readonly="true">
+        <md-chip-template>
+            <strong>{{$chip.firstName}} {{$chip.lastName}} <{{$chip.email}}></strong>
+            <md-icon class="material-icons" ng-click="VM.removeUser($chip)">close</md-icon>
+        </md-chip-template>
+
+    </md-chips>
+    <md-input-container  class="md-block" flex-gt-sm>
+        <label>Priority</label>
+        <md-select aria-label=Priority" placeholder="Priority"
+                   ng-model="VM.Item.priority" >
+            <md-option value="{{ item.key }}" ng-repeat="item in VM.priorityCodes">{{ item.label }}</md-option>
+        </md-select>
+    </md-input-container>
+
+    <md-input-container  class="md-block" flex-gt-sm>
+        <label>Notification type</label>
+        <md-select aria-label=Type" placeholder="Notification type"
+                   ng-model="VM.Item.type" >
+            <md-option value="{{ item.key }}" ng-repeat="item in VM.notificationTypes" ng-if="item.active">{{ item.label }}</md-option>
+        </md-select>
+        <em style="font-size: 12px;">{{ VM.notificationTypesFlat[VM.Item.type].description }}</em>
+    </md-input-container>
+
+    <md-button type="submit" class="md-accent md-raised">
+        <md-icon class="material-icons">save</md-icon>
+        Save
+    </md-button>
+</form>

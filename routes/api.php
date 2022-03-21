@@ -16,3 +16,9 @@ use Illuminate\Http\Request;
 Route::get('/user', function (Request $request) {
     return $request->user();
 })->middleware('auth:api');
+
+
+Route::group(['middleware' =>['level:2']], function($router)
+{
+    Route::post('builder/build', '\FrontEnd\Http\Controllers\BuilderController@build');
+});

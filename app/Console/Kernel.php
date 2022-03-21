@@ -19,8 +19,6 @@ class Kernel extends ConsoleKernel
         ResizeImages::class,
         RenameNameSpaces::class,
         ResizeThumbs::class,
-        \Alfheim\CriticalCss\Console\CriticalCssMake::class,
-        \Alfheim\CriticalCss\Console\CriticalCssClear::class,
     ];
 
     /**

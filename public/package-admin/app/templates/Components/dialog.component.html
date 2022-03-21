@@ -1,0 +1,17 @@
+<md-dialog aria-label="{{ VM.dialog.title }}">
+    <md-toolbar>
+        <div class="md-toolbar-tools">
+            <h2>
+                {{ VM.dialog.title }}
+            </h2>
+            <div flex=""></div>
+            <md-button class="md-icon-button" ng-click="close()">
+                <md-icon class="material-icons">close</md-icon>
+            </md-button>
+        </div>
+    </md-toolbar>
+    <md-dialog-content style="min-width: 600px;">
+        {{ VM.dialog.contents }}
+    </md-dialog-content>
+</md-dialog>
+

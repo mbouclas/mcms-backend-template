@@ -1,0 +1,15 @@
+<md-input-container class="md-block" flex-gt-sm>
+    <label>email address</label>
+    <input ng-model="VM.Settings.mail.address" required name="mailAddress">
+    <div ng-messages="ItemForm.mailAddress.$error">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
+
+<md-input-container class="md-block" flex-gt-sm>
+    <label>Name on email</label>
+    <input ng-model="VM.Settings.mail.name" required name="mailName">
+    <div ng-messages="ItemForm.mailName.$error">
+        <ng-messages-include src="{{ VM.ValidationMessagesTemplate }}"></ng-messages-include>
+    </div>
+</md-input-container>
