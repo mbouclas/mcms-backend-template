@@ -33,7 +33,7 @@ class AstroBootController
         $allTranslations = [];
         foreach ($this->translations->locales() as $locale) {
             app()->setLocale($locale['code']);
-            $allTranslations[$locale['code']] = Lang::get('site');
+            $allTranslations[$locale['code']] = Lang::get('astro');
         }
 
         return response()->json([
