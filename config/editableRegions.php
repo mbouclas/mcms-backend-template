@@ -48,25 +48,6 @@
                 ]
             ]
         ],
-        "banners" => [
-            "label" => "Sponsored Posts",
-            "slug" => "banners",
-            "type" => "generic",
-            "allow" => [
-                "item"
-            ],
-            "items" => [
-
-            ],
-            "settings" => [
-
-            ],
-            "regionSettings" => [
-                "image" => [
-
-                ]
-            ]
-        ],
         "featuredArticles" => [
             "label" => "Featured Posts",
             "slug" => "featuredBlogPosts",
@@ -75,25 +56,6 @@
                 "item"
             ],
             "maxItemsAllowed" => 5,
-            "items" => [
-
-            ],
-            "settings" => [
-
-            ],
-            "regionSettings" => [
-                "image" => [
-
-                ]
-            ]
-        ],
-        "latestIssue" => [
-            "label" => "Latest Issue",
-            "slug" => "latestIssue",
-            "type" => "generic",
-            "allow" => [
-                "item"
-            ],
             "items" => [
 
             ],
