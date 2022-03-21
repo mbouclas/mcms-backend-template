@@ -1,2 +1,8 @@
 <?php
-return [];
+return [
+    'home' => [
+        'labels' => [
+            'hello' => 'Hello world'
+        ]
+    ]
+];
