@@ -7,6 +7,7 @@ return [
         'previewController' => '\FrontEnd\Http\Controllers\HomeController@preview',
         'route' => 'article',
         'images' => [
+            'afterUpload' => \FrontEnd\Listeners\SendToCloudinary::class,
             'savePath' => 'public_path',
             'optimize' => true,
             'keepOriginals' => true,
