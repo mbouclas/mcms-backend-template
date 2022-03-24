@@ -43,7 +43,7 @@ return [
                 ],
                 'main' => [
                     'width' => 950,
-                    'height' => 0,
+                    'height' => 500,
                     'quality' => 75,
                     'prefix' => 'm_',
                     'resizeType' => 'resize',
